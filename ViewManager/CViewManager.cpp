@@ -54,27 +54,28 @@ void CViewManager::pushViewByEvt(uchar &event)
     }
 
 
-    if(m_event_history[event]->type == E_VIEW_TYPE::POPUP_TYPE)
-    {
 
-    }
-
-
-    m_event_history[event]->fnEntry();
 
     if(m_stack.length() > 0)
     {
-        // [1] check if top of the stack is a popup -> pop stack & got into fnExit()
-        if(m_stack.top()->type == E_VIEW_TYPE::POPUP_TYPE)
+
+        if(m_event_history[event]->type == E_VIEW_TYPE::POPUP_TYPE) // check if current view  is a popup
+        {
+
+        }
+        else if(m_stack.top()->type == E_VIEW_TYPE::POPUP_TYPE) // check if top of the stack is a popup -> pop stack & got into fnExit()
         {
             m_stack.pop();
+            m_stack.top()->fnExit();
+        } else if(m_stack.top()->type == E_VIEW_TYPE::SCREEN_TYPE)
+        {
+            m_stack.top()->fnExit();
         }
-
-        m_stack.top()->fnExit();
     }
 
+    m_event_history[event]->fnEntry();
     m_stack.push(m_event_history[event]);
-    qInfo() << m_stack;
+//    qInfo() << m_stack;
 }
 
 void CViewManager::popLastView()
