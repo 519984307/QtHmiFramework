@@ -70,6 +70,8 @@ public:
         E_POPUP_X_EVT_MIN = E_SCREEN_C_EVT_MAX + 1  ,
         E_POPUP_X_EVT_SHOW                          ,
         E_POPUP_X_EVT_NAV_SCREEN_A                  ,
+        E_POPUP_X_EVT_OPEN_POPUP_Y                  ,
+        E_POPUP_X_EVT_OPEN_POPUP_Z                  ,
         E_POPUP_X_EVT_MAX
     };
 
@@ -78,14 +80,18 @@ public:
         E_POPUP_Y_EVT_MIN = E_POPUP_X_EVT_MAX + 1   ,
         E_POPUP_Y_EVT_SHOW                          ,
         E_POPUP_Y_EVT_NAV_SCREEN_B                  ,
+        E_POPUP_Y_EVT_OPEN_POPUP_X                  ,
+        E_POPUP_Y_EVT_OPEN_POPUP_Z                  ,
         E_POPUP_Y_EVT_MAX
     };
 
     enum E_POPUP_Z_EVT
     {
-        E_POPUP_Z_EVT_MIN = E_POPUP_Y_EVT_MAX + 1  ,
+        E_POPUP_Z_EVT_MIN = E_POPUP_Y_EVT_MAX + 1   ,
         E_POPUP_Z_EVT_SHOW                          ,
         E_POPUP_Z_EVT_NAV_SCREEN_C                  ,
+        E_POPUP_Z_EVT_OPEN_POPUP_X                  ,
+        E_POPUP_Z_EVT_OPEN_POPUP_Y                  ,
         E_POPUP_Z_EVT_MAX
     };
 

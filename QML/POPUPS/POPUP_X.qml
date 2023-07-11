@@ -11,6 +11,43 @@ Qml.QmlContainer {
 
     Row {
         spacing: 10
+        anchors.centerIn: parent
+        Rectangle {
+            width: 100
+            height: 50
+            color: "white"
+            Text {
+                text: qsTr("POPUP Y")
+                anchors.centerIn: parent
+                color: "orange"
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    QmlNgin.sendEvent(EVT.E_POPUP_X_EVT_OPEN_POPUP_Y)
+                }
+            }
+        }
+        Rectangle {
+            width: 100
+            height: 50
+            color: "white"
+            Text {
+                text: qsTr("POPUP Z")
+                anchors.centerIn: parent
+                color: "purple"
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    QmlNgin.sendEvent(EVT.E_POPUP_X_EVT_OPEN_POPUP_Z)
+                }
+            }
+        }
+    }
+
+    Row {
+        spacing: 10
         anchors {
             bottom: parent.bottom
             right: parent.right
