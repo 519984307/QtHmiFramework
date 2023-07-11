@@ -28,47 +28,54 @@ void CViewManager::pushViewByEvt(uchar &event)
 {
     QList<const S_VIEW_EVENT*>::iterator evtIt = m_events.begin();
     QList<const S_VIEW_INFORMATION*>::iterator infoIt = m_views.begin();
-
-    for(; evtIt != m_events.end(); evtIt++)
+    if(m_event_history[event] == nullptr)
     {
-        if(event == (*evtIt)->event)
+        qInfo() << "No Data";
+        for(; evtIt != m_events.end(); evtIt++)
         {
+            if(event == (*evtIt)->event)
+            {
+                break;
+            }
+        }
+
+        while(infoIt != m_views.end())
+        {
+            if((*evtIt)->destination != (*infoIt)->id)
+            {
+                ++infoIt;
+                continue;
+            }
+
+            m_event_history[event] = (*infoIt);
             break;
         }
     }
 
-    while(infoIt != m_views.end())
+
+    // [1] check if top of the stack is a popup -> pop stack & got into fnExit()
+    // [2] check if current iterator is a screen -> got into fnExit()
+    if(m_stack.length() > 0)
     {
-        if((*evtIt)->destination != (*infoIt)->id)
+        //[1]
+        if(m_stack.top()->type == E_VIEW_TYPE::POPUP_TYPE)
         {
-            ++infoIt;
-            continue;
+            m_stack.top()->fnExit();
+            m_stack.pop();
+            return;
         }
 
-        // [1] check if top of the stack is a popup -> pop stack & got into fnExit()
-        // [2] check if current iterator is a screen -> got into fnExit()
-        if(m_stack.length() > 0)
+        //[2]
+        if((*infoIt)->type == E_VIEW_TYPE::SCREEN_TYPE)
         {
-            //[1]
-            if(m_stack.top()->type == E_VIEW_TYPE::POPUP_TYPE)
-            {
-                m_stack.top()->fnExit();
-                m_stack.pop();
-                return;
-            }
-
-            //[2]
-            if((*infoIt)->type == E_VIEW_TYPE::SCREEN_TYPE)
-            {
-                m_stack.top()->fnExit();
-            }
+            m_stack.top()->fnExit();
         }
-
-
-        (*infoIt)->fnEntry();
-        m_stack.push((*infoIt));
-        return;
     }
+
+
+    m_event_history[event]->fnEntry();
+    m_stack.push(m_event_history[event]);
+    qInfo() << m_stack;
 }
 
 void CViewManager::popLastView()

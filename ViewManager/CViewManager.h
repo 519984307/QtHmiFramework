@@ -25,6 +25,7 @@ private:
     QList<const S_VIEW_INFORMATION*>                    m_views{};
     QList<const S_VIEW_EVENT*>                          m_events{};
     QList<CPopupObject*>                                m_popupObjs{};
+    QHash<uchar, const S_VIEW_INFORMATION*>             m_event_history;
 };
 
 #endif // CVIEWMANAGER_H
