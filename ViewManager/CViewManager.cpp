@@ -30,7 +30,6 @@ void CViewManager::pushViewByEvt(uchar &event)
     QList<const S_VIEW_INFORMATION*>::iterator infoIt = m_views.begin();
     if(m_event_history[event] == nullptr)
     {
-        qInfo() << "No Data";
         for(; evtIt != m_events.end(); evtIt++)
         {
             if(event == (*evtIt)->event)
@@ -53,20 +52,17 @@ void CViewManager::pushViewByEvt(uchar &event)
     }
 
 
-    // [1] check if top of the stack is a popup -> pop stack & got into fnExit()
-    // [2] check if current iterator is a screen -> got into fnExit()
     if(m_stack.length() > 0)
     {
-        //[1]
+        // [1] check if top of the stack is a popup -> pop stack & got into fnExit()
         if(m_stack.top()->type == E_VIEW_TYPE::POPUP_TYPE)
         {
             m_stack.top()->fnExit();
-            m_stack.pop();
-            return;
+//            m_stack.pop();
         }
 
-        //[2]
-        if((*infoIt)->type == E_VIEW_TYPE::SCREEN_TYPE)
+        // [2] check if current iterator is a screen -> got into fnExit()
+        if(m_event_history[event]->type == E_VIEW_TYPE::SCREEN_TYPE)
         {
             m_stack.top()->fnExit();
         }

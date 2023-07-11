@@ -40,7 +40,8 @@ Qml.QmlContainer {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    QmlNgin.sendEvent(EVT.E_POPUP_Z_EVT_OPEN_POPUP_Y)
+                    //                    QmlNgin.sendEvent(EVT.E_POPUP_Z_EVT_OPEN_POPUP_Y)
+                    QmlNgin.previousView()
                 }
             }
         }
