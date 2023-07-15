@@ -17,6 +17,7 @@ CPopupObject::~CPopupObject()
 void CPopupObject::setData(const S_VIEW_INFORMATION *view)
 {
     m_info = view;
+    m_timer->setInterval(view->duration * 1000);
 }
 
 void CPopupObject::setDuration(uint32_t milliseconds)
@@ -31,7 +32,7 @@ void CPopupObject::show()
 
 void CPopupObject::close()
 {
-
+    m_timer->stop();
 }
 
 void CPopupObject::onPopupTimeout()

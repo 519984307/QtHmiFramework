@@ -23,8 +23,6 @@ public:
     Q_INVOKABLE void sendEvent(uchar);
     Q_INVOKABLE void previousView();
 public slots:
-    void onClosePopup();
-    void onPopupTimeout();
 
 signals:
     void initCompleted();
@@ -43,6 +41,10 @@ private:
     QObject                                *m_rootObject        = nullptr;
     QTimer                                 *m_popupTimer        = nullptr;
     CViewManager                           *m_viewManager       = nullptr;
+    QHash<uchar, const S_VIEW_INFORMATION*> m_events_history;
+    QList<const S_VIEW_INFORMATION*>        m_viewInfos{};
+    QList<const S_VIEW_EVENT*>              m_events{};
+
 };
 
 #endif // CNGIN_H

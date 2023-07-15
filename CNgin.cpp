@@ -77,7 +77,7 @@ void CNgin::registerViews(const S_VIEW_INFORMATION *views, uint32_t len)
 {
     for(uint32_t i = 0; i < len; i++)
     {
-        m_viewManager->addView(&views[i]);
+        m_viewInfos.append(&views[i]);
     }
 }
 
@@ -85,30 +85,52 @@ void CNgin::registerEvents(const S_VIEW_EVENT *events, uint32_t len)
 {
     for(uint32_t i = 0; i < len; i++)
     {
-        m_viewManager->addEvents(&events[i]);
+        m_events.append(&events[i]);
     }
 }
 
 void CNgin::sendEvent(uchar event)
 {
-    m_viewManager->pushViewByEvt(event);
+    // the lambda function capture current object and the sent event
+    auto _findInfoByEvent = [this, event](QList<const S_VIEW_EVENT*>::iterator evtIt)
+    {
+        // [5] Loop: iterate over the list [m_viewInfos]
+        for (QList<const S_VIEW_INFORMATION*>::Iterator it = m_viewInfos.begin();  it != m_viewInfos.end(); it++) {
+            // [6] Check: if [destination] property of the current event itorator is not same as the current view iterator's [id]
+            if((*evtIt)->destination != (*it)->id)
+            {
+                continue;
+            }
+
+            // Log event sent
+            m_events_history[event] = (*it);
+            break;
+        }
+    };
+    // [1] Check: if event was ever sent
+    if(m_events_history[event] == nullptr)
+    {
+        // [2] Loop: iterate over the list [m_event]
+        for(QList<const S_VIEW_EVENT*>::iterator it = m_events.begin(); it != m_events.end(); it++)
+        {
+            // [3] Check: if the sent event is the same as the current iterator's [event]
+            if(event == (*it)->event)
+            {
+                // [4] find View Info by the sent event
+                _findInfoByEvent(it);
+                break;
+            }
+        }
+    }
+
+    m_viewManager->pushEnter(m_events_history[event]);
     loadView();
 }
 
 void CNgin::previousView()
 {
-    m_viewManager->popLastView();
+    m_viewManager->popExit();
     loadView();
-}
-
-void CNgin::onClosePopup()
-{
-    m_rootObject->findChild<QObject*>("qml_root_popup_loader")->setProperty("source", "");
-}
-
-void CNgin::onPopupTimeout()
-{
-
 }
 
 void CNgin::loadView()
