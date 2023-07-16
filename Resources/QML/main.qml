@@ -7,7 +7,7 @@ Window {
     width: QmlRootScreenWidth
     height: QmlRootScreenHeight
     visible: true
-    title: qsTr("XXX")
+    title: qsTr("HMIFramework")
 
     Connections {
         target: QmlNgin
@@ -16,6 +16,15 @@ Window {
         }
     }
 
+    //    Qml.QmlStack {
+    //        model: QmlViewManager
+    //        delegate: comp
+    //    }
+
+    //    Component {
+    //        id: comp
+    //        Qml.QmlLoader {}
+    //    }
     Qml.QmlLoader {
         id: idQmlScreenLoader
         objectName: "qml_root_screen_loader"

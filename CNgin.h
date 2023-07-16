@@ -20,8 +20,9 @@ public:
     void setCtxProperty(QString, QVariant);
     void registerViews(const S_VIEW_INFORMATION*, uint32_t);
     void registerEvents(const S_VIEW_EVENT*, uint32_t);
+
     Q_INVOKABLE void sendEvent(uchar);
-    Q_INVOKABLE void previousView();
+
 public slots:
 
 signals:

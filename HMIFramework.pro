@@ -4,13 +4,16 @@ QT += quick
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+#QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-function
+
 SOURCES += \
         CNgin.cpp \
         ViewManager/CPopupObject.cpp \
+        ViewManager/CScreenObject.cpp \
         ViewManager/CViewManager.cpp \
         main.cpp
 
-RESOURCES += qml.qrc
+RESOURCES += $$PWD/Resources/QML/qml_resources.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -41,7 +44,9 @@ HEADERS += \
     View/ViewData.h \
     View/ViewDefines.h \
     ViewManager/CPopupObject.h \
-    ViewManager/CViewManager.h
+    ViewManager/CScreenObject.h \
+    ViewManager/CViewManager.h \
+    ViewManager/IViewObject.h
 
 INCLUDEPATH += \
     $$PWD/ViewManager \

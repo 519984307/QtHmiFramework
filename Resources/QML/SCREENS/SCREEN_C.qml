@@ -75,7 +75,7 @@ Qml.QmlContainer {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    QmlNgin.previousView()
+                    QmlNgin.sendEvent(EVT.E_SCREEN_C_EVT_BACK)
                 }
             }
         }

@@ -19,6 +19,7 @@ public:
     enum E_SCREEN_ID
     {
         E_SCREEN_ID_MIN = 0 ,
+        E_SCREEN_ANY_ID     ,
         E_SCREEN_A_ID       ,
         E_SCREEN_B_ID       ,
         E_SCREEN_C_ID       ,
@@ -28,6 +29,7 @@ public:
     enum E_POPUP_ID
     {
         E_POPUP_ID_MIN = E_SCREEN_ID_MAX + 1,
+        E_POPUP_ANY_ID                      ,
         E_POPUP_X_ID                        ,
         E_POPUP_Y_ID                        ,
         E_POPUP_Z_ID                        ,
@@ -39,6 +41,7 @@ public:
     {
         E_SCREEN_A_EVT_MIN = E_POPUP_ID_MAX + 1 ,
         E_SCREEN_A_EVT_SHOW                     ,
+        E_SCREEN_A_EVT_BACK                     ,
         E_SCREEN_A_EVT_NAV_SCREEN_B             ,
         E_SCREEN_A_EVT_NAV_SCREEN_C             ,
         E_SCREEN_A_EVT_OPEN_POPUP_X             ,
@@ -49,6 +52,7 @@ public:
     {
         E_SCREEN_B_EVT_MIN = E_SCREEN_A_EVT_MAX + 1 ,
         E_SCREEN_B_EVT_SHOW                         ,
+        E_SCREEN_B_EVT_BACK                         ,
         E_SCREEN_B_EVT_NAV_SCREEN_A                 ,
         E_SCREEN_B_EVT_NAV_SCREEN_C                 ,
         E_SCREEN_B_EVT_OPEN_POPUP_X                 ,
@@ -59,6 +63,7 @@ public:
     {
         E_SCREEN_C_EVT_MIN = E_SCREEN_B_EVT_MAX + 1 ,
         E_SCREEN_C_EVT_SHOW                         ,
+        E_SCREEN_C_EVT_BACK                         ,
         E_SCREEN_C_EVT_NAV_SCREEN_A                 ,
         E_SCREEN_C_EVT_NAV_SCREEN_B                 ,
         E_SCREEN_C_EVT_OPEN_POPUP_X                 ,
@@ -69,6 +74,7 @@ public:
     {
         E_POPUP_X_EVT_MIN = E_SCREEN_C_EVT_MAX + 1  ,
         E_POPUP_X_EVT_SHOW                          ,
+        E_POPUP_X_EVT_BACK                          ,
         E_POPUP_X_EVT_NAV_SCREEN_A                  ,
         E_POPUP_X_EVT_OPEN_POPUP_Y                  ,
         E_POPUP_X_EVT_OPEN_POPUP_Z                  ,
@@ -79,6 +85,7 @@ public:
     {
         E_POPUP_Y_EVT_MIN = E_POPUP_X_EVT_MAX + 1   ,
         E_POPUP_Y_EVT_SHOW                          ,
+        E_POPUP_Y_EVT_BACK                          ,
         E_POPUP_Y_EVT_NAV_SCREEN_B                  ,
         E_POPUP_Y_EVT_OPEN_POPUP_X                  ,
         E_POPUP_Y_EVT_OPEN_POPUP_Z                  ,
@@ -89,6 +96,7 @@ public:
     {
         E_POPUP_Z_EVT_MIN = E_POPUP_Y_EVT_MAX + 1   ,
         E_POPUP_Z_EVT_SHOW                          ,
+        E_POPUP_Z_EVT_BACK                          ,
         E_POPUP_Z_EVT_NAV_SCREEN_C                  ,
         E_POPUP_Z_EVT_OPEN_POPUP_X                  ,
         E_POPUP_Z_EVT_OPEN_POPUP_Y                  ,

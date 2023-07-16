@@ -6,8 +6,8 @@ import "../" as Qml
 Qml.QmlContainer {
     width: 420
     height: 255
-    color: "orange"
-    title: "POPUP Y"
+    color: "gray"
+    title: "POPUP X"
 
     Row {
         spacing: 10
@@ -17,14 +17,14 @@ Qml.QmlContainer {
             height: 50
             color: "white"
             Text {
-                text: qsTr("POPUP X")
+                text: qsTr("POPUP Y")
                 anchors.centerIn: parent
-                color: "gray"
+                color: "orange"
             }
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    QmlNgin.sendEvent(EVT.E_POPUP_Y_EVT_OPEN_POPUP_X)
+                    QmlNgin.sendEvent(EVT.E_POPUP_X_EVT_OPEN_POPUP_Y)
                 }
             }
         }
@@ -40,7 +40,7 @@ Qml.QmlContainer {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    QmlNgin.sendEvent(EVT.E_POPUP_Y_EVT_OPEN_POPUP_Z)
+                    QmlNgin.sendEvent(EVT.E_POPUP_X_EVT_OPEN_POPUP_Z)
                 }
             }
         }
@@ -83,8 +83,7 @@ Qml.QmlContainer {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    //                    QmlNgin.sendEvent(EVT.E_POPUP_Y_EVT_NAV_SCREEN_B)
-                    QmlNgin.previousView()
+                    QmlNgin.sendEvent(EVT.E_POPUP_X_EVT_BACK)
                 }
             }
         }

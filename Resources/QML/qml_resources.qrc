@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/MEDIA_RESOURCE"/>
+    <qresource prefix="/QML_RESOURCE">
+        <file>POPUPS/POPUP_X.qml</file>
+        <file>POPUPS/POPUP_Y.qml</file>
+        <file>POPUPS/POPUP_Z.qml</file>
+        <file>SCREENS/SCREEN_A.qml</file>
+        <file>SCREENS/SCREEN_B.qml</file>
+        <file>SCREENS/SCREEN_C.qml</file>
+        <file>main.qml</file>
+        <file>QmlContainer.qml</file>
+        <file>QmlLoader.qml</file>
+        <file>QmlStack.qml</file>
+    </qresource>
+</RCC>

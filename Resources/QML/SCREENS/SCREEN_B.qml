@@ -4,68 +4,25 @@ import VIEWENUMS 1.0
 import "../" as Qml
 
 Qml.QmlContainer {
-    width: 420
-    height: 255
-    color: "purple"
-    title: "POPUP Z"
+    color: "yellow"
+    title: "SCREEN B"
 
-    Row {
+    Column {
         spacing: 10
         anchors.centerIn: parent
         Rectangle {
             width: 100
             height: 50
-            color: "white"
+            color: "black"
             Text {
-                text: qsTr("POPUP X")
+                text: qsTr("POPUP")
                 anchors.centerIn: parent
-                color: "gray"
+                color: "white"
             }
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    QmlNgin.sendEvent(EVT.E_POPUP_Z_EVT_OPEN_POPUP_X)
-                }
-            }
-        }
-        Rectangle {
-            width: 100
-            height: 50
-            color: "white"
-            Text {
-                text: qsTr("POPUP Y")
-                anchors.centerIn: parent
-                color: "orange"
-            }
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    QmlNgin.sendEvent(EVT.E_POPUP_Z_EVT_OPEN_POPUP_Y)
-                }
-            }
-        }
-    }
-
-    Row {
-        spacing: 10
-        anchors {
-            bottom: parent.bottom
-            right: parent.right
-        }
-
-        Rectangle {
-            width: 100
-            height: 50
-            color: "white"
-            Text {
-                text: qsTr("YES")
-                anchors.centerIn: parent
-                color: "black"
-            }
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-
+                    QmlNgin.sendEvent(EVT.E_POPUP_Y_EVT_SHOW)
                 }
             }
         }
@@ -73,18 +30,52 @@ Qml.QmlContainer {
         Rectangle {
             width: 100
             height: 50
-            color: "white"
+            color: "black"
 
             Text {
-                text: qsTr("NO")
+                text: qsTr("SCREEN A")
                 anchors.centerIn: parent
-                color: "black"
+                color: "white"
             }
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    //                    QmlNgin.sendEvent(EVT.E_POPUP_Z_EVT_NAV_SCREEN_C)
-                    QmlNgin.previousView()
+                    QmlNgin.sendEvent(EVT.E_SCREEN_B_EVT_NAV_SCREEN_A)
+                }
+            }
+        }
+
+        Rectangle {
+            width: 100
+            height: 50
+            color: "black"
+
+            Text {
+                text: qsTr("SCREEN C")
+                anchors.centerIn: parent
+                color: "white"
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    QmlNgin.sendEvent(EVT.E_SCREEN_B_EVT_NAV_SCREEN_C)
+                }
+            }
+        }
+        Rectangle {
+            width: 100
+            height: 50
+            color: "black"
+
+            Text {
+                text: qsTr("Back")
+                anchors.centerIn: parent
+                color: "white"
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    QmlNgin.sendEvent(EVT.E_SCREEN_B_EVT_BACK)
                 }
             }
         }

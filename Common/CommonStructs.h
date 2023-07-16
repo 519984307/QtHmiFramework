@@ -11,6 +11,7 @@
 /**
  * @brief The S_VIEW_EVENT class
  *
+ *  uint32_t                    view;
  *  uchar                       event;
  *  void                        (*fn)();
  *  uint32_t                    dest_screen;
@@ -26,9 +27,8 @@ struct S_VIEW_EVENT
 /**
  * @brief The S_VIEW_INFORMATION class
  *
- *  uint32_t                    id;
+ *  uint32_t                    id{0};
  *  void                        (*fnEntry)();
- *  std::vector<S_VIEW_EVENT>   events;
  *  void                        (*fnExit)();
  *  E_DURATION                  duration{E_DURATION::NONE};
  *  E_VIEW_TYPE                 type{E_VIEW_TYPE::SCREEN_TYPE};
@@ -36,7 +36,7 @@ struct S_VIEW_EVENT
  */
 struct S_VIEW_INFORMATION
 {
-    uint32_t                    id;
+    uint32_t                    id{0};
     void                        (*fnEntry)();
     void                        (*fnExit)();
     E_DURATION                  duration{E_DURATION::NONE};
