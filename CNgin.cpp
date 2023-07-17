@@ -1,6 +1,5 @@
 #include "CNgin.h"
 #include "Utils/Utils.h"
-#include "QmlTypes.h"
 #include "CViewEnums.h"
 #include "CommonDefine.h"
 
@@ -44,8 +43,6 @@ void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t scree
 
             m_rootObject = m_qmlNgin->rootObjects().at(0);
 
-            m_viewManager->setRootObject(m_rootObject);
-
             CNgin::instance()->sendEvent(event);
         }
     }, Qt::QueuedConnection);
@@ -61,7 +58,9 @@ void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t scree
     setCtxProperty("QmlViewManager", QVariant::fromValue(m_viewManager));
 
     // register QML types
-    qmlRegisterType<CQmlStackView>("Common.Qml", 1, 0, "QmlStackView");
+
+
+    // do other things
 }
 
 void CNgin::completed()

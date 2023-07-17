@@ -45,8 +45,3 @@ void CViewManager::popExit()
     --m_depth;
     emit depthChanged();
 }
-
-void CViewManager::setRootObject(const QObject *root)
-{
-    m_root = root;
-}

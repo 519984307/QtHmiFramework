@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <QStack>
 #include <QQuickItem>
+#include <QQuickView>
 #include "CommonStructs.h"
 
 class CViewManager : public QObject
@@ -19,17 +20,16 @@ public:
     uint8_t depth() const;
     void pushEnter(const S_VIEW_INFORMATION*);
     void popExit();
-    void setRootObject(const QObject*);
 
 signals:
     void depthChanged();
 
 private:
     QQmlApplicationEngine                              *m_ngin = nullptr;
-    const QObject                                      *m_root = nullptr;
     QStack<const S_VIEW_INFORMATION*>                   m_stack;
     QHash<uint32_t, bool>                               m_stack_history;
     uint8_t                                             m_depth{0};
+
 };
 
 #endif // CVIEWMANAGER_H

@@ -9,7 +9,6 @@ CONFIG += c++11
 
 SOURCES += \
         CNgin.cpp \
-        QmlTypes/CQmlStackView.cpp \
         Utils/Memory/LFUCache/CLFUCache.cpp \
         Utils/Memory/LRUCache/CLRUCache.cpp \
         ViewManager/CViewManager.cpp \
