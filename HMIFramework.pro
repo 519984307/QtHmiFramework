@@ -1,4 +1,5 @@
 QT += quick
+CONFIG += c++11
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -8,12 +9,47 @@ QT += quick
 
 SOURCES += \
         CNgin.cpp \
-        ViewManager/CPopupObject.cpp \
-        ViewManager/CScreenObject.cpp \
+        QmlTypes/CQmlStackView.cpp \
+        Utils/Memory/LFUCache/CLFUCache.cpp \
+        Utils/Memory/LRUCache/CLRUCache.cpp \
         ViewManager/CViewManager.cpp \
         main.cpp
 
-RESOURCES += $$PWD/Resources/QML/qml_resources.qrc
+HEADERS += \
+    $$PWD/CNgin.h \
+    $$PWD/Common/Common.h \
+    $$PWD/Common/CommonDefine.h \
+    $$PWD/Common/CommonEnums.h \
+    $$PWD/Common/CommonStructs.h \
+    $$PWD/QmlTypes/CQmlStackView.h \
+    $$PWD/QmlTypes/QmlTypes.h \
+    $$PWD/Utils/Utils.h \
+    $$PWD/Utils/Memory/LFUCache/CLFUCache.h \
+    $$PWD/Utils/Memory/LRUCache/CLRUCache.h \
+    $$PWD/View/CViewEnums.h \
+    $$PWD/View/States/POPUP_X_STATE.h \
+    $$PWD/View/States/POPUP_Y_STATE.h \
+    $$PWD/View/States/POPUP_Z_STATE.h \
+    $$PWD/View/States/SCREEN_A_STATE.h \
+    $$PWD/View/States/SCREEN_B_STATE.h \
+    $$PWD/View/States/SCREEN_C_STATE.h \
+    $$PWD/View/States/ViewStates.h \
+    $$PWD/View/ViewData.h \
+    $$PWD/View/ViewDefines.h \
+    $$PWD/ViewManager/CViewManager.h
+
+INCLUDEPATH += \
+    $$PWD/QmlTypes \
+    $$PWD/ViewManager \
+    $$PWD/View/States \
+    $$PWD/View \
+    $$PWD/Common \
+    $$PWD/Utils \
+    $$PWD
+
+RESOURCES += \
+    $$PWD/Resources/QML/qml_resources.qrc \
+    $$PWD/Resources/Images/image_resources.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -25,33 +61,3 @@ QML_DESIGNER_IMPORT_PATH =
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-
-HEADERS += \
-    CNgin.h \
-    Common/Common.h \
-    Common/CommonDefine.h \
-    Common/CommonEnums.h \
-    Common/CommonStructs.h \
-    Utils/Utils.h \
-    View/CViewEnums.h \
-    View/States/POPUP_X_STATE.h \
-    View/States/POPUP_Y_STATE.h \
-    View/States/POPUP_Z_STATE.h \
-    View/States/SCREEN_A_STATE.h \
-    View/States/SCREEN_B_STATE.h \
-    View/States/SCREEN_C_STATE.h \
-    View/States/ViewStates.h \
-    View/ViewData.h \
-    View/ViewDefines.h \
-    ViewManager/CPopupObject.h \
-    ViewManager/CScreenObject.h \
-    ViewManager/CViewManager.h \
-    ViewManager/IViewObject.h
-
-INCLUDEPATH += \
-    $$PWD/ViewManager \
-    $$PWD/View/States \
-    $$PWD/View \
-    $$PWD/Common \
-    $$PWD/Utils \
-    $$PWD/

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QQmlEngine>
 #include <QGuiApplication>
 #include <QTimer>
 #include <vector>

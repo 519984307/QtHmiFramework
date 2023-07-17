@@ -1,6 +1,8 @@
 #include "CNgin.h"
 #include "Utils/Utils.h"
+#include "QmlTypes.h"
 #include "CViewEnums.h"
+#include "CommonDefine.h"
 
 #define QML_BASE "qrc:/QML_RESOURCE//main.qml"
 
@@ -41,6 +43,9 @@ void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t scree
             emit initCompleted();
 
             m_rootObject = m_qmlNgin->rootObjects().at(0);
+
+            m_viewManager->setRootObject(m_rootObject);
+
             CNgin::instance()->sendEvent(event);
         }
     }, Qt::QueuedConnection);
@@ -54,6 +59,9 @@ void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t scree
 
     setCtxProperty("QmlNgin", QVariant::fromValue(this));
     setCtxProperty("QmlViewManager", QVariant::fromValue(m_viewManager));
+
+    // register QML types
+    qmlRegisterType<CQmlStackView>("Common.Qml", 1, 0, "QmlStackView");
 }
 
 void CNgin::completed()
@@ -93,16 +101,17 @@ void CNgin::sendEvent(uchar event)
     // the lambda function capture current object and the sent event
     auto _findInfoByEvent = [this, event](QList<const S_VIEW_EVENT*>::iterator evtIt)
     {
-        // [1.1.2.1.1] Loop: iterate over the list [m_viewInfos]
+        // [1.1.2.1] Loop: iterate over the list [m_viewInfos]
         for (QList<const S_VIEW_INFORMATION*>::Iterator it = m_viewInfos.begin();  it != m_viewInfos.end(); it++) {
-            // [1.1.2.2] Check: if [destination] property of the current event iterator is not same as the current view iterator's [id]
+            // [1.1.2.1.1] Check: if [destination] property of the current event iterator is not same as the current view iterator's [id]
             if((*evtIt)->destination != (*it)->id)
             {
                 continue;
             }
 
-            // [1.1.2.3] Log event sent
+            // [1.1.2.1.2] Log event sent
             m_events_history[event] = (*it);
+
             break;
         }
     };
@@ -133,13 +142,14 @@ void CNgin::sendEvent(uchar event)
 
             break;
         }
-        // [2.2] continue
+        // [1.2] continue
         else
         {
             continue;
         }
     }
 
+    // [2] load qml
     loadView();
 }
 

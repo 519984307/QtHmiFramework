@@ -1,5 +1,4 @@
 <RCC>
-    <qresource prefix="/MEDIA_RESOURCE"/>
     <qresource prefix="/QML_RESOURCE">
         <file>POPUPS/POPUP_X.qml</file>
         <file>POPUPS/POPUP_Y.qml</file>

@@ -7,9 +7,13 @@ Qml.QmlContainer {
     color: "yellow"
     title: "SCREEN B"
 
-    Column {
+    Row {
         spacing: 10
-        anchors.centerIn: parent
+        anchors {
+            bottom: parent.bottom
+            bottomMargin: 10
+            horizontalCenter: parent.horizontalCenter
+        }
         Rectangle {
             width: 100
             height: 50

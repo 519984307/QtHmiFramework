@@ -3,6 +3,12 @@
 
 #include <cstdint>
 
+enum E_CACHE_STATUS: bool
+{
+    HIT = true,
+    MISS = false
+};
+
 enum E_DURATION: uint32_t
 {
     NONE                    = 0,
@@ -16,7 +22,9 @@ enum E_VIEW_TYPE
 {
     SCREEN_TYPE,
     POPUP_TYPE,
-    TOAST_TYPE
+    TOAST_TYPE,
+    NOTIFY_TYPE
 };
+
 
 #endif // COMMONENUMS_H
