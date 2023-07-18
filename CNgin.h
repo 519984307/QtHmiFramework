@@ -33,7 +33,6 @@ private:
     explicit CNgin(QObject *parent = nullptr);
     ~CNgin();
 
-    void loadView();
     void loadQML(QString, const QString&);
 
 private:

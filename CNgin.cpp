@@ -147,24 +147,8 @@ void CNgin::sendEvent(uchar event)
             continue;
         }
     }
-
-    // [2] load qml
-    loadView();
 }
 
-void CNgin::loadView()
-{
-    if(m_viewManager->currentView() == nullptr) return;
-    if(m_viewManager->currentView()->type == E_VIEW_TYPE::POPUP_TYPE)
-    {
-        loadQML("qml_root_popup_loader", m_viewManager->currentView()->path);
-    }
-    else if(m_viewManager->currentView()->type == E_VIEW_TYPE::SCREEN_TYPE)
-    {
-        loadQML("qml_root_popup_loader", "");
-        loadQML("qml_root_screen_loader", m_viewManager->currentView()->path);
-    }
-}
 
 void CNgin::loadQML(QString objName, const QString& path)
 {

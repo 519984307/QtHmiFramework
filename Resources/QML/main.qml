@@ -16,16 +16,10 @@ Window {
         }
     }
 
-    Qml.QmlLoader {
-//        visible: false
-        id: idQmlScreenLoader
-        objectName: "qml_root_screen_loader"
+    Rectangle {
+        objectName: "qml_root_rect"
         anchors.fill: parent
-    }
+        color: "transparent"
 
-    Qml.QmlLoader {
-//        visible: false
-        objectName: "qml_root_popup_loader"
-        anchors.centerIn: idQmlScreenLoader
     }
 }
