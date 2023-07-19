@@ -42,6 +42,9 @@ void CViewManager::popExit(const S_VIEW_INFORMATION* view)
 
 void CViewManager::initView(const S_VIEW_INFORMATION *view)
 {
+    m_rootObj = m_ngin->rootObjects().at(0);
+    if (m_rootObj == nullptr)
+      return;
     m_currentView = view;
 
     if(m_depth > 1)
@@ -49,11 +52,10 @@ void CViewManager::initView(const S_VIEW_INFORMATION *view)
         if(m_stack.top() != nullptr) m_stack.top()->setProperty("visible", false);
     }
 
-    QObject *rootObj = m_ngin->rootObjects().at(0);
-    QQmlContext *rootCtx = m_ngin->rootContext();
-    QQuickItem *container = rootObj->findChild<QQuickItem*>("qml_root_rect");
+    m_rootCtx = m_ngin->rootContext();
+    QQuickItem *container = m_rootObj->findChild<QQuickItem*>("qml_root_rect");
     QQmlComponent *comp = new QQmlComponent(m_ngin, QUrl(view->path), this);
-    QObject *obj = comp->create(rootCtx);
+    QObject *obj = comp->create(m_rootCtx);
     obj->setParent(container);
     obj->setProperty("anchors.centerIn", QVariant::fromValue(obj->parent()));
 

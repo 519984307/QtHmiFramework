@@ -36,6 +36,8 @@ private:
     QHash<uint32_t, bool>                               m_stack_history;
     uint8_t                                             m_depth{0};
 
+    QObject                                            *m_rootObj                       = nullptr;
+    QQmlContext                                        *m_rootCtx                       = nullptr;
 };
 
 #endif // CVIEWMANAGER_H
