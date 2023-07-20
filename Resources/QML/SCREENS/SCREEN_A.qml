@@ -7,6 +7,9 @@ Qml.QmlContainer {
     color: "red"
     title: "SCREEN A"
 
+    onEntry: {
+    }
+
     Row {
         spacing: 10
         anchors {

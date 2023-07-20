@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <QStack>
 #include <QQuickItem>
+#include <QQuickWindow>
 #include <QQmlComponent>
 #include "CommonStructs.h"
 
@@ -32,11 +33,10 @@ private:
 private:
     QQmlApplicationEngine                              *m_ngin                          = nullptr;
     const S_VIEW_INFORMATION                           *m_currentView                   = nullptr;
-    QStack<QObject*>                                    m_stack;
+    QStack<QQuickItem*>                                    m_stack;
     QHash<uint32_t, bool>                               m_stack_history;
     uint8_t                                             m_depth{0};
-
-    QObject                                            *m_rootObj                       = nullptr;
+    QQuickWindow                                       *m_window                       = nullptr;
     QQmlContext                                        *m_rootCtx                       = nullptr;
 };
 

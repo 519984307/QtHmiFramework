@@ -1,7 +1,6 @@
 #include "CNgin.h"
 #include "Utils/Utils.h"
 #include "CViewEnums.h"
-#include "CommonDefine.h"
 
 #define QML_BASE "qrc:/QML_RESOURCE//main.qml"
 
