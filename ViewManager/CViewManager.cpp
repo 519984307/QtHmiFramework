@@ -28,8 +28,8 @@ uint8_t CViewManager::depth() const
 
 void CViewManager::pushEnter(const S_VIEW_INFORMATION* view)
 {
-    // Log item to history
-    if(!m_stack_history.key(view->id)) m_stack_history.insert(view->id, true);
+    // Log item is pushed to history
+    increaseStackHistoryCnt(view->id);
 
     m_currentView = view;
 
@@ -40,8 +40,11 @@ void CViewManager::popExit()
 {
     // Check: if stack's depth less than 2 view
     if(m_depth < 2) return;
-    // Remove item pushed
-    if(m_stack_history.key(m_currentView->id)) m_stack_history.remove(m_currentView->id);
+    // Log item is pop to history
+    decreaseStackHistoryCnt(m_currentView->id);;
+
+    // Remove item is cached
+    if(m_viewCached[m_currentView->id] != nullptr) m_viewCached.remove(m_currentView->id);
 
     destroyComponent();
 }
@@ -63,6 +66,8 @@ void CViewManager::onStatusChanged(QQmlComponent::Status status)
                                                                                       QVariant::fromValue(m_window->contentItem()));
 
         m_currentView->fnEntry();
+
+        m_viewCached[m_currentView->id] = &m_stack.top();
         break;
     }
     case QQmlComponent::Loading:
@@ -88,20 +93,31 @@ void CViewManager::initConnections()
 
 void CViewManager::initComponent()
 {
-    m_window = qobject_cast<QQuickWindow*>(m_ngin->rootObjects().at(0));
-    if (m_window == nullptr)
-      return;
-
+    // Check: if stack's depth greater than 1 then hide last item and push new item
     if(m_depth > 1)
     {
         if(m_stack.top().item != nullptr)
         {
-          m_stack.top().item->setProperty("enabled", false);
-          m_stack.top().item->setProperty("visible", false);
+          m_stack.top().hide();
         }
     }
 
-    m_base->loadUrl(QUrl(m_currentView->path), QQmlComponent::PreferSynchronous);
+    // Check: if view is cacked then push new item to stack and show without call loadUrl() function
+    if(m_viewCached[m_currentView->id] != nullptr)
+    {
+        qInfo() << QString("[VIEW] %1 is CACHED").arg(m_currentView->path);
+        m_stack.push({m_currentView, m_viewCached[m_currentView->id]->item});
+        m_stack.top().show();
+    }
+    else
+    {
+        m_window = qobject_cast<QQuickWindow*>(m_ngin->rootObjects().at(0));
+        if (m_window == nullptr)
+          return;
+        m_base->loadUrl(QUrl(m_currentView->path), QQmlComponent::PreferSynchronous);
+    }
+
+    qInfo() << m_stackHistory;
 
     ++m_depth;
     emit depthChanged();
@@ -109,14 +125,31 @@ void CViewManager::initComponent()
 
 void CViewManager::destroyComponent()
 {
-    m_stack.top().info->fnExit();
-    m_stack.pop().item->deleteLater();
+    if(m_stackHistory[m_currentView->id] > 0)
+    {
+        m_stack.pop().destroy();
+    }
 
-    m_currentView = m_stack.top().info;
-    m_stack.top().item->setProperty("enabled", true);
-    m_stack.top().item->setProperty("visible", true);
-
+    if(m_depth > 0)
+    {
+        m_currentView = m_stack.top().info;
+        m_stack.top().show();
+    }
 
     --m_depth;
     emit depthChanged();
+}
+
+void CViewManager::increaseStackHistoryCnt(const uint32_t &id)
+{
+    ++m_stackHistory[id];
+}
+
+void CViewManager::decreaseStackHistoryCnt(const uint32_t &id)
+{
+    --m_stackHistory[id];
+    if(m_stackHistory[id] < 0)
+    {
+        m_stackHistory[id] = 0;
+    }
 }

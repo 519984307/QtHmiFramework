@@ -9,11 +9,19 @@
 #include <QQuickWindow>
 #include <QQmlComponent>
 #include "CommonStructs.h"
-
+#include "Utils.h"
 struct S_COMPONENT
 {
     const S_VIEW_INFORMATION    *info;
     QQuickItem                  *item;
+
+    inline void destroy()
+    {
+        info->fnExit();
+        item->deleteLater();
+    }
+    inline void show(){item->setProperty("visible", true);}
+    inline void hide(){item->setProperty("visible", false);}
 };
 class CViewManager : public QObject
 {
@@ -38,6 +46,8 @@ private:
     void initConnections();
     void initComponent();
     void destroyComponent();
+    void increaseStackHistoryCnt(const uint32_t&);
+    void decreaseStackHistoryCnt(const uint32_t&);
 private:
     QQmlApplicationEngine                              *m_ngin                          = nullptr;
     const S_VIEW_INFORMATION                           *m_currentView                   = nullptr;
@@ -46,7 +56,8 @@ private:
     QQmlContext                                        *m_rootCtx                       = nullptr;
     QUrl                                                m_url;
     QStack<S_COMPONENT>                                 m_stack;
-    QHash<uint32_t, bool>                               m_stack_history;
+    QHash<uint32_t, S_COMPONENT*>                       m_viewCached;
+    QHash<uint32_t, int>                                m_stackHistory;
     uint8_t                                             m_depth{0};
 };
 
