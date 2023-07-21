@@ -31,38 +31,46 @@ void CViewManager::pushEnter(const S_VIEW_INFORMATION* view)
     // Log item to history
     if(!m_stack_history.key(view->id)) m_stack_history.insert(view->id, true);
 
-    initView(view);
+    m_currentView = view;
+
+    initComponent();
 }
 
-void CViewManager::popExit(const S_VIEW_INFORMATION* view)
+void CViewManager::popExit()
 {
-    if(view == nullptr)
-    {
-        view = currentView();
-    }
-
     // Check: if stack's depth less than 2 view
     if(m_depth < 2) return;
     // Remove item pushed
-    if(m_stack_history.key(view->id)) m_stack_history.remove(view->id);
+    if(m_stack_history.key(m_currentView->id)) m_stack_history.remove(m_currentView->id);
 
-    destroyView(view);
+    destroyComponent();
 }
 
 void CViewManager::onStatusChanged(QQmlComponent::Status status)
 {
     switch (status) {
+    case QQmlComponent::Null:
+        qInfo() << "This QQmlComponent has no data. Call loadUrl() or setData() to add QML content.";
+        break;
     case QQmlComponent::Ready:
     {
-        m_stack.push({currentView(), new QQuickItem}); m_stack.top().item = qobject_cast<QQuickItem*>(m_base->create(m_rootCtx));
+        m_stack.push({currentView(), new QQuickItem()});
+
+        m_stack.top().item = qobject_cast<QQuickItem*>(m_base->create(m_rootCtx));
         m_stack.top().item->setParentItem(m_window->contentItem());
 
-        qvariant_cast<QObject*>(m_stack.top().item->property("anchors"))->setProperty(currentView()->type == E_VIEW_TYPE::SCREEN_TYPE? "fill":"centerIn",
+        qvariant_cast<QObject*>(m_stack.top().item->property("anchors"))->setProperty(m_currentView->type == E_VIEW_TYPE::SCREEN_TYPE? "fill":"centerIn",
                                                                                       QVariant::fromValue(m_window->contentItem()));
 
-        currentView()->fnEntry();
+        m_currentView->fnEntry();
         break;
     }
+    case QQmlComponent::Loading:
+        qInfo() << "This QQmlComponent is loading network data.";
+        break;
+    case QQmlComponent::Error:
+        qInfo() << "An error has occurred. Call errors() to retrieve a list of errors.";
+        break;
     default:
         break;
     }
@@ -78,10 +86,8 @@ void CViewManager::initConnections()
     connect(m_base, &QQmlComponent::statusChanged, this, &CViewManager::onStatusChanged);
 }
 
-void CViewManager::initView(const S_VIEW_INFORMATION *view)
+void CViewManager::initComponent()
 {
-    m_currentView = view;
-
     m_window = qobject_cast<QQuickWindow*>(m_ngin->rootObjects().at(0));
     if (m_window == nullptr)
       return;
@@ -95,16 +101,16 @@ void CViewManager::initView(const S_VIEW_INFORMATION *view)
         }
     }
 
-    m_base->loadUrl(QUrl(view->path));
+    m_base->loadUrl(QUrl(m_currentView->path), QQmlComponent::PreferSynchronous);
 
     ++m_depth;
     emit depthChanged();
 }
 
-void CViewManager::destroyView(const S_VIEW_INFORMATION *view)
+void CViewManager::destroyComponent()
 {
-    safeRelease(m_stack.pop().item);
-    view->fnExit();
+    m_stack.top().info->fnExit();
+    m_stack.pop().item->deleteLater();
 
     m_currentView = m_stack.top().info;
     m_stack.top().item->setProperty("enabled", true);

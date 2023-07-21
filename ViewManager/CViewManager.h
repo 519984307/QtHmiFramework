@@ -25,7 +25,7 @@ public:
     const S_VIEW_INFORMATION *currentView() const;
     uint8_t depth() const;
     void pushEnter(const S_VIEW_INFORMATION*);
-    void popExit(const S_VIEW_INFORMATION *view = nullptr);
+    void popExit();
 
 public slots:
     void onStatusChanged(QQmlComponent::Status);
@@ -36,8 +36,8 @@ signals:
 
 private:
     void initConnections();
-    void initView(const S_VIEW_INFORMATION*);
-    void destroyView(const S_VIEW_INFORMATION*);
+    void initComponent();
+    void destroyComponent();
 private:
     QQmlApplicationEngine                              *m_ngin                          = nullptr;
     const S_VIEW_INFORMATION                           *m_currentView                   = nullptr;
