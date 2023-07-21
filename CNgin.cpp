@@ -26,6 +26,10 @@ CNgin::~CNgin()
     safeRelease(m_qmlNgin);
 }
 
+void CNgin::initConnections()
+{
+}
+
 void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t screenHeight, uchar event)
 {
     const QUrl url(QStringLiteral(QML_BASE));
@@ -109,8 +113,7 @@ void CNgin::sendEvent(uchar event)
 
             // [1.1.2.1.2] Log event sent
             m_events_history[event] = (*it);
-
-            break;
+            return;
         }
     };
 
@@ -125,7 +128,7 @@ void CNgin::sendEvent(uchar event)
             {
                 // [1.1.1.1] pop view on top of the stack
                 m_viewManager->popExit();
-                break;
+                return;
             }
 
             // [1.1.2] Check: if event was ever sent
@@ -136,9 +139,7 @@ void CNgin::sendEvent(uchar event)
             }
             // [1.1.3] push view to the stack
             m_viewManager->pushEnter(m_events_history[event]);
-
-
-            break;
+            return;
         }
         // [1.2] continue
         else

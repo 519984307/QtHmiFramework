@@ -6,10 +6,14 @@ CViewManager::CViewManager(QQmlApplicationEngine *ngin, QObject *parent)
     : QObject{parent}
 {
     m_ngin = ngin;
+    m_base = new QQmlComponent(m_ngin, this);
+
+    initConnections();
 }
 
 CViewManager::~CViewManager()
 {
+    safeRelease(m_base);
 }
 
 const S_VIEW_INFORMATION *CViewManager::currentView() const
@@ -32,6 +36,11 @@ void CViewManager::pushEnter(const S_VIEW_INFORMATION* view)
 
 void CViewManager::popExit(const S_VIEW_INFORMATION* view)
 {
+    if(view == nullptr)
+    {
+        view = currentView();
+    }
+
     // Check: if stack's depth less than 2 view
     if(m_depth < 2) return;
     // Remove item pushed
@@ -40,36 +49,53 @@ void CViewManager::popExit(const S_VIEW_INFORMATION* view)
     destroyView(view);
 }
 
+void CViewManager::onStatusChanged(QQmlComponent::Status status)
+{
+    switch (status) {
+    case QQmlComponent::Ready:
+    {
+        m_stack.push({currentView(), new QQuickItem}); m_stack.top().item = qobject_cast<QQuickItem*>(m_base->create(m_rootCtx));
+        m_stack.top().item->setParentItem(m_window->contentItem());
+
+        qvariant_cast<QObject*>(m_stack.top().item->property("anchors"))->setProperty(currentView()->type == E_VIEW_TYPE::SCREEN_TYPE? "fill":"centerIn",
+                                                                                      QVariant::fromValue(m_window->contentItem()));
+
+        currentView()->fnEntry();
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+void CViewManager::onProgressChanged(qreal progress)
+{
+    qInfo() << progress;
+}
+
+void CViewManager::initConnections()
+{
+    connect(m_base, &QQmlComponent::statusChanged, this, &CViewManager::onStatusChanged);
+}
+
 void CViewManager::initView(const S_VIEW_INFORMATION *view)
 {
+    m_currentView = view;
+
     m_window = qobject_cast<QQuickWindow*>(m_ngin->rootObjects().at(0));
     if (m_window == nullptr)
       return;
 
-
-    m_currentView = view;
-
     if(m_depth > 1)
     {
-        if(m_stack.top() != nullptr) m_stack.top()->setProperty("visible", false);
+        if(m_stack.top().item != nullptr)
+        {
+          m_stack.top().item->setProperty("enabled", false);
+          m_stack.top().item->setProperty("visible", false);
+        }
     }
 
-    m_rootCtx = m_ngin->rootContext();
-    QQmlComponent comp(m_ngin, QUrl(view->path), QQmlComponent::PreferSynchronous, this);
-    if(comp.status() != QQmlComponent::Ready)
-    {
-        return;
-    }
-
-    QQuickItem *obj = qobject_cast<QQuickItem*>(comp.create());
-    obj->setParentItem(m_window->contentItem());
-    obj->setParent(m_window);
-    obj->setProperty("anchors.centerIn", QVariant::fromValue(m_window->contentItem()));
-
-
-    qInfo() << m_window << " | " << m_window->contentItem() << " | " <<  obj;
-    m_stack.push(obj);
-    view->fnEntry();
+    m_base->loadUrl(QUrl(view->path));
 
     ++m_depth;
     emit depthChanged();
@@ -77,16 +103,13 @@ void CViewManager::initView(const S_VIEW_INFORMATION *view)
 
 void CViewManager::destroyView(const S_VIEW_INFORMATION *view)
 {
-    m_stack.top()->setProperty("visible", false);
-    if(view == nullptr)
-    {
-        view = currentView();
-    }
-
-    safeRelease(m_stack.pop());
+    safeRelease(m_stack.pop().item);
     view->fnExit();
 
-    m_currentView = nullptr;
+    m_currentView = m_stack.top().info;
+    m_stack.top().item->setProperty("enabled", true);
+    m_stack.top().item->setProperty("visible", true);
+
 
     --m_depth;
     emit depthChanged();

@@ -1,4 +1,4 @@
-QT += quick
+QT +=  core gui qml quick
 CONFIG += c++11
 
 # You can make your code fail to compile if it uses deprecated APIs.
@@ -20,7 +20,6 @@ HEADERS += \
     $$PWD/Common/CommonDefine.h \
     $$PWD/Common/CommonEnums.h \
     $$PWD/Common/CommonStructs.h \
-    $$PWD/QmlTypes/CQmlStackView.h \
     $$PWD/QmlTypes/QmlTypes.h \
     $$PWD/Utils/Utils.h \
     $$PWD/Utils/Memory/LFUCache/CLFUCache.h \

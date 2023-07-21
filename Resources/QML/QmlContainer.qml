@@ -2,11 +2,11 @@ import QtQuick 2.15
 
 Rectangle {
     property string title: ""
-    color: "gray"
 
     signal entry();
     signal exit();
 
+    color: "gray"
     Text {
         id: idScreenTitle
         text: title

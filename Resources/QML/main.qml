@@ -14,6 +14,7 @@ Window {
         target: QmlNgin
         function onInitCompleted() {
             console.log("Root Initialize Completed!!!")
+
         }
     }
 
