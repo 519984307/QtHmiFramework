@@ -103,45 +103,49 @@ void CNgin::sendEvent(uchar event)
     // the lambda function capture current object and the sent event
     auto _findInfoByEvent = [this, event](QList<const S_VIEW_EVENT*>::iterator evtIt)
     {
-        // [1.1.2.1] Loop: iterate over the list [m_viewInfos]
+        // [2.1.2] Loop: iterate over the list [m_viewInfos]
         for (QList<const S_VIEW_INFORMATION*>::Iterator it = m_viewInfos.begin();  it != m_viewInfos.end(); it++) {
-            // [1.1.2.1.1] Check: if [destination] property of the current event iterator is not same as the current view iterator's [id]
+            // [2.1.2.1] Check: if [destination] property of the current event iterator is not same as the current view iterator's [id]
             if((*evtIt)->destination != (*it)->id)
             {
                 continue;
             }
 
-            // [1.1.2.1.2] Log event sent
+            // [2.1.2.2] Log event sent
             m_events_history[event] = (*it);
             return;
         }
     };
 
-    // [1] Loop: iterate over the list [m_event]
+    // [1] Check: if event was ever sent
+    if(m_events_history[event] != nullptr)
+    {
+        // [1.1] push view to the stack
+        m_viewManager->pushEnter(m_events_history[event]);
+        return;
+    }
+    // [2] Loop: iterate over the list [m_event]
     for(QList<const S_VIEW_EVENT*>::iterator it = m_events.begin(); it != m_events.end(); it++)
     {
-        // [1.1] Check: if the sent event is the same as the current iterator's [event]
+        // [2.1] Check: if the sent event is the same as the current iterator's [event]
         if(event == (*it)->event)
         {
-            // [1.1.1] Check: if [destination] property of the current event iterator is [E_SCREEN_ANY_ID] OR [E_POPUP_ANY_ID]
+            // [2.1.1] Check: if [destination] property of the current event iterator is [E_SCREEN_ANY_ID] OR [E_POPUP_ANY_ID]
             if((*it)->destination == E_SCREEN_ID::E_SCREEN_ANY_ID || (*it)->destination == E_POPUP_ID::E_POPUP_ANY_ID)
             {
-                // [1.1.1.1] pop view on top of the stack
-                m_viewManager->popExit();
+                //  pop view on top of the stack
+//                m_viewManager->popExit();
                 return;
             }
 
-            // [1.1.2] Check: if event was ever sent
-            if(m_events_history[event] == nullptr)
-            {
-                // [1.1.2.1] find View Info by the sent event
-                _findInfoByEvent(it);
-            }
-            // [1.1.3] push view to the stack
+            // [2.1.2] find View Info by the sent event
+            _findInfoByEvent(it);
+
+            // [2.1.3] push view to the stack
             m_viewManager->pushEnter(m_events_history[event]);
             return;
         }
-        // [1.2] continue
+        // [2.2] continue
         else
         {
             continue;

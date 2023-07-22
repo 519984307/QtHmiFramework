@@ -128,7 +128,7 @@ void CViewManager::destroyComponent()
         qInfo() <<m_currentView->path << m_stackHistory[m_currentView->id];
         if(m_stackHistory[m_currentView->id] == 1)
         {
-          m_stack.pop().destroy();
+          m_viewCached[m_currentView->id]->destroy();
         }
         else if(m_stackHistory[m_currentView->id] > 1)
         {
