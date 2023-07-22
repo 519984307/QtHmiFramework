@@ -57,8 +57,9 @@ void CViewManager::onStatusChanged(QQmlComponent::Status status)
         break;
     case QQmlComponent::Ready:
     {
-        m_stack.push({currentView(), new QQuickItem()});
-
+        qInfo() << "This QQmlComponent is ready and create() may be called.";
+        m_stack.push({currentView(), new QQuickItem});
+        qInfo() << m_stack.top().item;
         m_stack.top().item = qobject_cast<QQuickItem*>(m_base->create(m_rootCtx));
         m_stack.top().item->setParentItem(m_window->contentItem());
 
@@ -105,7 +106,6 @@ void CViewManager::initComponent()
     // Check: if view is cacked then push new item to stack and show without call loadUrl() function
     if(m_viewCached[m_currentView->id] != nullptr)
     {
-        qInfo() << QString("[VIEW] %1 is CACHED").arg(m_currentView->path);
         m_stack.push({m_currentView, m_viewCached[m_currentView->id]->item});
         m_stack.top().show();
     }
@@ -114,10 +114,8 @@ void CViewManager::initComponent()
         m_window = qobject_cast<QQuickWindow*>(m_ngin->rootObjects().at(0));
         if (m_window == nullptr)
           return;
-        m_base->loadUrl(QUrl(m_currentView->path), QQmlComponent::PreferSynchronous);
+        m_base->loadUrl(QUrl(m_currentView->path), QQmlComponent::Asynchronous);
     }
-
-    qInfo() << m_stackHistory;
 
     ++m_depth;
     emit depthChanged();
@@ -125,19 +123,24 @@ void CViewManager::initComponent()
 
 void CViewManager::destroyComponent()
 {
-    if(m_stackHistory[m_currentView->id] > 0)
+    if(m_depth > 1)
     {
-        m_stack.pop().destroy();
-    }
+        qInfo() <<m_currentView->path << m_stackHistory[m_currentView->id];
+        if(m_stackHistory[m_currentView->id] == 1)
+        {
+          m_stack.pop().destroy();
+        }
+        else if(m_stackHistory[m_currentView->id] > 1)
+        {
+          m_stack.pop().info->fnExit();
+        }
 
-    if(m_depth > 0)
-    {
         m_currentView = m_stack.top().info;
         m_stack.top().show();
-    }
 
-    --m_depth;
-    emit depthChanged();
+        --m_depth;
+        emit depthChanged();
+    }
 }
 
 void CViewManager::increaseStackHistoryCnt(const uint32_t &id)
@@ -148,8 +151,8 @@ void CViewManager::increaseStackHistoryCnt(const uint32_t &id)
 void CViewManager::decreaseStackHistoryCnt(const uint32_t &id)
 {
     --m_stackHistory[id];
-    if(m_stackHistory[id] < 0)
+    if(m_stackHistory[id] < 1)
     {
-        m_stackHistory[id] = 0;
+        m_stackHistory[id] = 1;
     }
 }

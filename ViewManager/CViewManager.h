@@ -9,7 +9,7 @@
 #include <QQuickWindow>
 #include <QQmlComponent>
 #include "CommonStructs.h"
-#include "Utils.h"
+
 struct S_COMPONENT
 {
     const S_VIEW_INFORMATION    *info;
