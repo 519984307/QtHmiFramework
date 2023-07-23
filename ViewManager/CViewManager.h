@@ -19,6 +19,7 @@ struct S_COMPONENT
     {
         info->fnExit();
         item->deleteLater();
+        qInfo() << __FUNCTION__;
     }
     inline void show(){item->setProperty("visible", true);}
     inline void hide(){item->setProperty("visible", false);}
@@ -50,14 +51,14 @@ private:
     void decreaseStackHistoryCnt(const uint32_t&);
 private:
     QQmlApplicationEngine                              *m_ngin                          = nullptr;
-    const S_VIEW_INFORMATION                           *m_currentView                   = nullptr;
+    const S_VIEW_INFORMATION                           *m_current_view                   = nullptr;
     QQuickWindow                                       *m_window                        = nullptr;
     QQmlComponent                                      *m_base                          = nullptr;
-    QQmlContext                                        *m_rootCtx                       = nullptr;
+    QQmlContext                                        *m_root_ctx                       = nullptr;
     QUrl                                                m_url;
     QStack<S_COMPONENT>                                 m_stack;
-    QHash<uint32_t, S_COMPONENT*>                       m_viewCached;
-    QHash<uint32_t, int>                                m_stackHistory;
+    QHash<uint32_t, S_COMPONENT*>                       m_view_cached;
+    QHash<uint32_t, int>                                m_stack_history;
     uint8_t                                             m_depth{0};
 };
 
