@@ -33,19 +33,21 @@ private:
     explicit CNgin(QObject *parent = nullptr);
     ~CNgin();
 
+    const S_VIEW_INFORMATION* findViewByID(const uint32_t&);
+    const S_VIEW_EVENT* findEventByID(const uchar&);
     void initConnections();
     void loadQML(QString, const QString&);
 
 private:
-    static CNgin                           *s_instance;
-    QQmlApplicationEngine                  *m_qmlNgin           = nullptr;
-    QQmlContext                            *m_qmlCtx            = nullptr;
-    QObject                                *m_rootObject        = nullptr;
-    QTimer                                 *m_popupTimer        = nullptr;
-    CViewManager                           *m_viewManager       = nullptr;
-    QHash<uchar, const S_VIEW_INFORMATION*> m_events_history;
-    QList<const S_VIEW_INFORMATION*>        m_viewInfos{};
-    QList<const S_VIEW_EVENT*>              m_events{};
+    static CNgin                                            *s_instance;
+    QQmlApplicationEngine                                   *m_qml_ngin           = nullptr;
+    QQmlContext                                             *m_qml_ctx            = nullptr;
+    QObject                                                 *m_root_object        = nullptr;
+    CViewManager                                            *m_view_manager       = nullptr;
+    QHash<uchar, const S_VIEW_EVENT*>                        m_event_cached;
+    QHash<uint32_t, const S_VIEW_INFORMATION*>               m_info_cached;
+    QList<const S_VIEW_INFORMATION*>                         m_infos{};
+    QList<const S_VIEW_EVENT*>                               m_events{};
 
 };
 

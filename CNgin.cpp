@@ -13,17 +13,56 @@ CNgin *CNgin::instance()
 CNgin::CNgin(QObject *parent)
     : QObject{parent}
 {
-    m_qmlNgin           = new QQmlApplicationEngine(this);
-    m_qmlCtx            = m_qmlNgin->rootContext();
+    m_qml_ngin           = new QQmlApplicationEngine(this);
+    m_qml_ctx            = m_qml_ngin->rootContext();
 
-    m_viewManager       = new CViewManager(m_qmlNgin, this);
+    m_view_manager       = new CViewManager(m_qml_ngin, this);
 }
 
 CNgin::~CNgin()
 {
-    safeRelease(m_viewManager);
-    safeRelease(m_popupTimer);
-    safeRelease(m_qmlNgin);
+    safeRelease(m_view_manager);
+    safeRelease(m_qml_ngin);
+}
+
+const S_VIEW_INFORMATION *CNgin::findViewByID(const uint32_t &id)
+{
+    if(m_info_cached[id] != nullptr)
+    {
+        return m_info_cached[id];
+    }
+
+    QList<const S_VIEW_INFORMATION*>::iterator it = m_infos.begin();
+    while(it != m_infos.end())
+    {
+        if(id == (*it)->id)
+        {
+            m_info_cached[id] =  (*it);
+            return (*it);
+        }
+        ++it;
+    }
+    return nullptr;
+}
+
+const S_VIEW_EVENT *CNgin::findEventByID(const uchar &id)
+{
+    if(m_event_cached[id] != nullptr)
+    {
+        return m_event_cached[id];
+    }
+
+    QList<const S_VIEW_EVENT*>::iterator it = m_events.begin();
+    while(it != m_events.end())
+    {
+        if(id == (*it)->event)
+        {
+            m_event_cached[id] =  (*it);
+            return (*it);
+        }
+        ++it;
+    }
+    return nullptr;
 }
 
 void CNgin::initConnections()
@@ -34,7 +73,7 @@ void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t scree
 {
     const QUrl url(QStringLiteral(QML_BASE));
 
-    QObject::connect(m_qmlNgin, &QQmlApplicationEngine::objectCreated,
+    QObject::connect(m_qml_ngin, &QQmlApplicationEngine::objectCreated,
                      &app, [event, url, this](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)
         {
@@ -44,7 +83,7 @@ void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t scree
         {
             emit initCompleted();
 
-            m_rootObject = m_qmlNgin->rootObjects().at(0);
+            m_root_object = m_qml_ngin->rootObjects().at(0);
 
             CNgin::instance()->sendEvent(event);
         }
@@ -58,7 +97,7 @@ void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t scree
     }
 
     setCtxProperty("QmlNgin", QVariant::fromValue(this));
-    setCtxProperty("QmlViewManager", QVariant::fromValue(m_viewManager));
+    setCtxProperty("QmlViewManager", QVariant::fromValue(m_view_manager));
 
     // register QML types
 
@@ -68,17 +107,17 @@ void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t scree
 
 void CNgin::completed()
 {
-    if(m_qmlNgin != nullptr)
+    if(m_qml_ngin != nullptr)
     {
-        m_qmlNgin->load(QML_BASE);
+        m_qml_ngin->load(QML_BASE);
     }
 }
 
 void CNgin::setCtxProperty(QString label, QVariant value)
 {
-    if(m_qmlCtx != nullptr)
+    if(m_qml_ctx != nullptr)
     {
-        m_qmlCtx->setContextProperty(label, value);
+        m_qml_ctx->setContextProperty(label, value);
     }
 }
 
@@ -86,7 +125,7 @@ void CNgin::registerViews(const S_VIEW_INFORMATION *views, uint32_t len)
 {
     for(uint32_t i = 0; i < len; i++)
     {
-        m_viewInfos.append(&views[i]);
+        m_infos.append(&views[i]);
     }
 }
 
@@ -98,68 +137,27 @@ void CNgin::registerEvents(const S_VIEW_EVENT *events, uint32_t len)
     }
 }
 
-void CNgin::sendEvent(uchar event)
+void CNgin::sendEvent(uchar evtId)
 {
-    // the lambda function capture current object and the sent event
-    auto _findInfoByEvent = [this, event](const uint32_t &viewId)
+    const QList<uint32_t> anyId = {E_SCREEN_ID::E_SCREEN_ANY_ID, E_POPUP_ID::E_POPUP_ANY_ID};
+    const S_VIEW_EVENT* evt = findEventByID(evtId);
+    if(anyId.contains(evt->destination))
     {
-        // [2.1.2] Loop: iterate over the list [m_viewInfos]
-        for (QList<const S_VIEW_INFORMATION*>::Iterator it = m_viewInfos.begin();  it != m_viewInfos.end(); it++) {
-            // [2.1.2.1] Check: if [destination] property of the current event iterator is not same as the current view iterator's [id]
-            if(viewId != (*it)->id)
-            {
-                continue;
-            }
-
-            // [2.1.2.2] Log event sent
-            m_events_history[event] = (*it);
-            return;
-        }
-    };
-
-    // [1] Check: if event was ever sent
-    if(m_events_history[event] != nullptr)
-    {
-        // [1.1] push view to the stack
-        m_viewManager->pushEnter(m_events_history[event]);
-        return;
+        m_view_manager->popExit();
     }
-    // [2] Loop: iterate over the list [m_event]
-    for(QList<const S_VIEW_EVENT*>::iterator it = m_events.begin(); it != m_events.end(); it++)
+    else
     {
-        // [2.1] Check: if the sent event is the same as the current iterator's [event]
-        if(event == (*it)->event)
-        {
-            // [2.1.1] Check: if [destination] property of the current event iterator is [E_SCREEN_ANY_ID] OR [E_POPUP_ANY_ID]
-            if((*it)->destination == E_SCREEN_ID::E_SCREEN_ANY_ID || (*it)->destination == E_POPUP_ID::E_POPUP_ANY_ID)
-            {
-                //  pop view on top of the stack
-                _findInfoByEvent((*it)->view);
-
-                m_viewManager->popExit();
-                return;
-            }
-
-            // [2.1.2] find View Info by the sent event
-            _findInfoByEvent((*it)->destination);
-
-            // [2.1.3] push view to the stack
-            m_viewManager->pushEnter(m_events_history[event]);
-            return;
-        }
-        // [2.2] continue
-        else
-        {
-            continue;
-        }
+        const S_VIEW_INFORMATION* info = findViewByID(evt->destination);
+        m_view_manager->pushEnter(info);
     }
+    return;
 }
 
 
 void CNgin::loadQML(QString objName, const QString& path)
 {
     QObject* _loader = nullptr;
-    _loader = m_rootObject->findChild<QObject*>(objName);
+    _loader = m_root_object->findChild<QObject*>(objName);
 
     if(_loader != nullptr)
     {
