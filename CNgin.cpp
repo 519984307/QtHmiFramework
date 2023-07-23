@@ -101,12 +101,12 @@ void CNgin::registerEvents(const S_VIEW_EVENT *events, uint32_t len)
 void CNgin::sendEvent(uchar event)
 {
     // the lambda function capture current object and the sent event
-    auto _findInfoByEvent = [this, event](QList<const S_VIEW_EVENT*>::iterator evtIt)
+    auto _findInfoByEvent = [this, event](const uint32_t &viewId)
     {
         // [2.1.2] Loop: iterate over the list [m_viewInfos]
         for (QList<const S_VIEW_INFORMATION*>::Iterator it = m_viewInfos.begin();  it != m_viewInfos.end(); it++) {
             // [2.1.2.1] Check: if [destination] property of the current event iterator is not same as the current view iterator's [id]
-            if((*evtIt)->destination != (*it)->id)
+            if(viewId != (*it)->id)
             {
                 continue;
             }
@@ -134,12 +134,14 @@ void CNgin::sendEvent(uchar event)
             if((*it)->destination == E_SCREEN_ID::E_SCREEN_ANY_ID || (*it)->destination == E_POPUP_ID::E_POPUP_ANY_ID)
             {
                 //  pop view on top of the stack
-//                m_viewManager->popExit();
+                _findInfoByEvent((*it)->view);
+
+                m_viewManager->popExit();
                 return;
             }
 
             // [2.1.2] find View Info by the sent event
-            _findInfoByEvent(it);
+            _findInfoByEvent((*it)->destination);
 
             // [2.1.3] push view to the stack
             m_viewManager->pushEnter(m_events_history[event]);
