@@ -17,6 +17,8 @@ CNgin::CNgin(QObject *parent)
     m_qml_ctx            = m_qml_ngin->rootContext();
 
     m_view_manager       = new CViewManager(m_qml_ngin, this);
+
+    initConnections();
 }
 
 CNgin::~CNgin()
@@ -67,6 +69,7 @@ const S_VIEW_EVENT *CNgin::findEventByID(const uchar &id)
 
 void CNgin::initConnections()
 {
+    connect(this, &CNgin::initCompleted, m_view_manager, &CViewManager::onCompleted);
 }
 
 void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t screenHeight, uchar event)
@@ -84,8 +87,8 @@ void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t scree
             emit initCompleted();
 
             m_root_object = m_qml_ngin->rootObjects().at(0);
-
             CNgin::instance()->sendEvent(event);
+
         }
     }, Qt::QueuedConnection);
 

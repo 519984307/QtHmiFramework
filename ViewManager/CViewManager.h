@@ -19,8 +19,8 @@ struct S_COMPONENT
     {
         info->fnExit();
         item->deleteLater();
-        qInfo() << __FUNCTION__;
     }
+
     inline void show(){item->setProperty("visible", true);}
     inline void hide(){item->setProperty("visible", false);}
 };
@@ -37,6 +37,7 @@ public:
     void popExit();
 
 public slots:
+    void onCompleted();
     void onStatusChanged(QQmlComponent::Status);
     void onProgressChanged(qreal);
 

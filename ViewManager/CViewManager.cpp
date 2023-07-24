@@ -1,6 +1,5 @@
 #include "CViewManager.h"
 #include "Utils.h"
-#include <QGuiApplication>
 
 CViewManager::CViewManager(QQmlApplicationEngine *ngin, QObject *parent)
     : QObject{parent}
@@ -28,25 +27,29 @@ uint8_t CViewManager::depth() const
 
 void CViewManager::pushEnter(const S_VIEW_INFORMATION* view)
 {
+    if(view == nullptr) return;
+    m_current_view = view;
+    initComponent();
     // Log item is pushed to history
     increaseStackHistoryCnt(view->id);
-
-    m_current_view = view;
-
-    initComponent();
 }
 
 void CViewManager::popExit()
 {
+    if(m_current_view == nullptr) return;
     // Check: if stack's depth less than 2 view
     if(m_depth < 2) return;
+    destroyComponent();
     // Log item is pop to history
     decreaseStackHistoryCnt(m_current_view->id);;
+}
 
-    // Remove item is cached
-    if(m_view_cached[m_current_view->id] != nullptr) m_view_cached.remove(m_current_view->id);
-
-    destroyComponent();
+void CViewManager::onCompleted()
+{
+    if (m_window == nullptr)
+    {
+        m_window = qobject_cast<QQuickWindow*>(m_ngin->rootObjects().at(0));
+    }
 }
 
 void CViewManager::onStatusChanged(QQmlComponent::Status status)
@@ -58,16 +61,15 @@ void CViewManager::onStatusChanged(QQmlComponent::Status status)
     case QQmlComponent::Ready:
     {
         qInfo() << "This QQmlComponent is ready and create() may be called.";
-        m_stack.push({currentView(), new QQuickItem});
-        m_stack.top().item = qobject_cast<QQuickItem*>(m_base->create(m_root_ctx));
-        m_stack.top().item->setParentItem(m_window->contentItem());
 
-        qvariant_cast<QObject*>(m_stack.top().item->property("anchors"))->setProperty(m_current_view->type == E_VIEW_TYPE::SCREEN_TYPE? "fill":"centerIn",
-                                                                                      QVariant::fromValue(m_window->contentItem()));
+        m_stack.push({m_current_view, new QQuickItem()});
+        m_stack.top().item = qobject_cast<QQuickItem*>(m_base->create());
+        m_stack.top().item->setParentItem(m_window->contentItem());
+        qvariant_cast<QObject*>(m_stack.top().item->property("anchors"))->setProperty(m_current_view->type == E_VIEW_TYPE::SCREEN_TYPE? "fill":"centerIn", QVariant::fromValue(m_window->contentItem()));
+
 
         m_current_view->fnEntry();
-
-        m_view_cached[m_current_view->id] = &m_stack.top();
+        m_view_cached[m_current_view->id] = new S_COMPONENT{m_current_view, m_stack.top().item};
         break;
     }
     case QQmlComponent::Loading:
@@ -96,23 +98,22 @@ void CViewManager::initComponent()
     // Check: if stack's depth greater than 1 then hide last item and push new item
     if(m_depth > 1)
     {
-        if(m_stack.top().item != nullptr)
+        if(m_current_view->type == E_VIEW_TYPE::SCREEN_TYPE)
         {
-          m_stack.top().hide();
+            m_stack.top().hide();
         }
     }
 
+
     // Check: if view is cacked then push new item to stack and show without call loadUrl() function
-    if(m_view_cached[m_current_view->id] != nullptr)
+    if(m_view_cached.contains(m_current_view->id) && m_view_cached[m_current_view->id] != nullptr)
     {
-        m_stack.push({m_current_view, m_view_cached[m_current_view->id]->item});
+        qInfo() << "Load from cache memory";
+        m_stack.push(*m_view_cached[m_current_view->id]);
         m_stack.top().show();
     }
     else
     {
-        m_window = qobject_cast<QQuickWindow*>(m_ngin->rootObjects().at(0));
-        if (m_window == nullptr)
-          return;
         m_base->loadUrl(QUrl(m_current_view->path), QQmlComponent::Asynchronous);
     }
 
@@ -122,17 +123,19 @@ void CViewManager::initComponent()
 
 void CViewManager::destroyComponent()
 {
+    // Remove item is cached
     if(m_depth > 1)
     {
-        qInfo() <<m_current_view->path << m_stack_history[m_current_view->id];
-        if(m_stack_history[m_current_view->id] == 1)
+        if(m_stack_history[m_current_view->id] < 2)
         {
           m_view_cached[m_current_view->id]->destroy();
         }
         else if(m_stack_history[m_current_view->id] > 1)
         {
-          m_stack.pop().info->fnExit();
+          m_stack.top().info->fnExit();
         }
+
+        m_stack.pop();
 
         m_current_view = m_stack.top().info;
         m_stack.top().show();
