@@ -13,17 +13,20 @@
 struct S_COMPONENT
 {
     const S_VIEW_INFORMATION    *info;
-    QQuickItem                  *item;
+    QObject                     *item = new QQuickItem;
 
     inline void destroy()
     {
+        hide();
         info->fnExit();
-        item->deleteLater();
+        delete item;
+        item = nullptr;
     }
 
     inline void show(){item->setProperty("visible", true);}
     inline void hide(){item->setProperty("visible", false);}
 };
+
 class CViewManager : public QObject
 {
     Q_OBJECT
@@ -48,8 +51,8 @@ private:
     void initConnections();
     void initComponent();
     void destroyComponent();
-    void increaseStackHistoryCnt(const uint32_t&);
-    void decreaseStackHistoryCnt(const uint32_t&);
+    void increaseStackHistoryCnt();
+    void decreaseStackHistoryCnt();
 private:
     QQmlApplicationEngine                              *m_ngin                          = nullptr;
     const S_VIEW_INFORMATION                           *m_current_view                   = nullptr;
@@ -57,7 +60,7 @@ private:
     QQmlComponent                                      *m_base                          = nullptr;
     QQmlContext                                        *m_root_ctx                       = nullptr;
     QUrl                                                m_url;
-    QStack<S_COMPONENT>                                 m_stack;
+    QStack<S_COMPONENT*>                                m_stack;
     QHash<uint32_t, S_COMPONENT*>                       m_view_cached;
     QHash<uint32_t, int>                                m_stack_history;
     uint8_t                                             m_depth{0};

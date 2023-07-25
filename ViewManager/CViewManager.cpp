@@ -30,8 +30,6 @@ void CViewManager::pushEnter(const S_VIEW_INFORMATION* view)
     if(view == nullptr) return;
     m_current_view = view;
     initComponent();
-    // Log item is pushed to history
-    increaseStackHistoryCnt(view->id);
 }
 
 void CViewManager::popExit()
@@ -40,8 +38,6 @@ void CViewManager::popExit()
     // Check: if stack's depth less than 2 view
     if(m_depth < 2) return;
     destroyComponent();
-    // Log item is pop to history
-    decreaseStackHistoryCnt(m_current_view->id);;
 }
 
 void CViewManager::onCompleted()
@@ -62,14 +58,16 @@ void CViewManager::onStatusChanged(QQmlComponent::Status status)
     {
         qInfo() << "This QQmlComponent is ready and create() may be called.";
 
-        m_stack.push({m_current_view, new QQuickItem()});
-        m_stack.top().item = qobject_cast<QQuickItem*>(m_base->create());
-        m_stack.top().item->setParentItem(m_window->contentItem());
-        qvariant_cast<QObject*>(m_stack.top().item->property("anchors"))->setProperty(m_current_view->type == E_VIEW_TYPE::SCREEN_TYPE? "fill":"centerIn", QVariant::fromValue(m_window->contentItem()));
+        m_stack.push(new S_COMPONENT{m_current_view});
+        QQuickItem* item = qobject_cast<QQuickItem*>(m_base->create());
+        item->setParentItem(m_window->contentItem());
+        qvariant_cast<QObject*>(item->property("anchors"))->setProperty(m_current_view->type == E_VIEW_TYPE::SCREEN_TYPE? "fill":"centerIn", QVariant::fromValue(m_window->contentItem()));
 
+        m_stack.top()->item = item;
 
         m_current_view->fnEntry();
-        m_view_cached[m_current_view->id] = new S_COMPONENT{m_current_view, m_stack.top().item};
+        m_view_cached[m_current_view->id] = new S_COMPONENT{m_current_view, m_stack.top()->item};
+
         break;
     }
     case QQmlComponent::Loading:
@@ -100,7 +98,7 @@ void CViewManager::initComponent()
     {
         if(m_current_view->type == E_VIEW_TYPE::SCREEN_TYPE)
         {
-            m_stack.top().hide();
+            m_stack.top()->hide();
         }
     }
 
@@ -108,14 +106,16 @@ void CViewManager::initComponent()
     // Check: if view is cacked then push new item to stack and show without call loadUrl() function
     if(m_view_cached.contains(m_current_view->id) && m_view_cached[m_current_view->id] != nullptr)
     {
-        qInfo() << "Load from cache memory";
-        m_stack.push(*m_view_cached[m_current_view->id]);
-        m_stack.top().show();
+        qInfo() << QString("Load [%1] from cache memory").arg(m_current_view->path);
+        m_stack.push(m_view_cached[m_current_view->id]);
+        m_stack.top()->show();
     }
     else
     {
         m_base->loadUrl(QUrl(m_current_view->path), QQmlComponent::Asynchronous);
     }
+
+    increaseStackHistoryCnt();
 
     ++m_depth;
     emit depthChanged();
@@ -123,38 +123,37 @@ void CViewManager::initComponent()
 
 void CViewManager::destroyComponent()
 {
-    // Remove item is cached
-    if(m_depth > 1)
+    decreaseStackHistoryCnt();
+
+    if(m_stack_history[m_current_view->id] == 1)
     {
-        if(m_stack_history[m_current_view->id] < 2)
-        {
-          m_view_cached[m_current_view->id]->destroy();
-        }
-        else if(m_stack_history[m_current_view->id] > 1)
-        {
-          m_stack.top().info->fnExit();
-        }
-
-        m_stack.pop();
-
-        m_current_view = m_stack.top().info;
-        m_stack.top().show();
-
-        --m_depth;
-        emit depthChanged();
+        m_stack.top()->destroy();
     }
-}
-
-void CViewManager::increaseStackHistoryCnt(const uint32_t &id)
-{
-    ++m_stack_history[id];
-}
-
-void CViewManager::decreaseStackHistoryCnt(const uint32_t &id)
-{
-    --m_stack_history[id];
-    if(m_stack_history[id] < 1)
+    else
     {
-        m_stack_history[id] = 1;
+        m_stack.top()->info->fnExit();
+    }
+    m_stack.pop();
+
+    m_current_view = m_stack.top()->info;
+    m_stack.top()->show();
+
+
+
+    --m_depth;
+    emit depthChanged();
+}
+
+void CViewManager::increaseStackHistoryCnt()
+{
+    ++m_stack_history[m_current_view->id];
+}
+
+void CViewManager::decreaseStackHistoryCnt()
+{
+    --m_stack_history[m_current_view->id];
+    if(m_stack_history[m_current_view->id] < 1)
+    {
+        m_stack_history[m_current_view->id] = 1;
     }
 }
