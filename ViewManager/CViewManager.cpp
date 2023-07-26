@@ -35,8 +35,6 @@ void CViewManager::pushEnter(const S_VIEW_INFORMATION* view)
 void CViewManager::popExit()
 {
     if(m_current_view == nullptr) return;
-    // Check: if stack's depth less than 2 view
-    if(m_depth < 2) return;
     destroyComponent();
 }
 
@@ -102,7 +100,6 @@ void CViewManager::initComponent()
         }
     }
 
-
     // Check: if view is cacked then push new item to stack and show without call loadUrl() function
     if(m_view_cached.contains(m_current_view->id) && m_view_cached[m_current_view->id] != nullptr)
     {
@@ -124,6 +121,8 @@ void CViewManager::initComponent()
 
 void CViewManager::destroyComponent()
 {
+    // Check: if stack's depth less than 2 view
+    if(m_depth < 2) return;
     if(m_stack_history[m_current_view->id] == 1)
     {
         m_stack.top()->destroy();
