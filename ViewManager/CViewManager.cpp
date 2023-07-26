@@ -106,16 +106,17 @@ void CViewManager::initComponent()
     // Check: if view is cacked then push new item to stack and show without call loadUrl() function
     if(m_view_cached.contains(m_current_view->id) && m_view_cached[m_current_view->id] != nullptr)
     {
-        qInfo() << QString("Load [%1] from cache memory").arg(m_current_view->path);
+        qInfo() << QString("Load [%1] from cache memory").arg(m_view_cached[m_current_view->id]->info->path);
         m_stack.push(m_view_cached[m_current_view->id]);
         m_stack.top()->show();
+        qInfo() << QString("View [%1] has visible [%2]").arg(m_stack.top()->info->path).arg(m_stack.top()->item->property("visible").toBool());
     }
     else
     {
         m_base->loadUrl(QUrl(m_current_view->path), QQmlComponent::Asynchronous);
     }
 
-    increaseStackHistoryCnt();
+    increaseImpressions();
 
     ++m_depth;
     emit depthChanged();
@@ -123,33 +124,32 @@ void CViewManager::initComponent()
 
 void CViewManager::destroyComponent()
 {
-    decreaseStackHistoryCnt();
-
     if(m_stack_history[m_current_view->id] == 1)
     {
         m_stack.top()->destroy();
     }
     else
     {
-        m_stack.top()->info->fnExit();
+        m_stack.top()->hide();
     }
+
     m_stack.pop();
+
+    decreaseImpressions();
 
     m_current_view = m_stack.top()->info;
     m_stack.top()->show();
-
-
 
     --m_depth;
     emit depthChanged();
 }
 
-void CViewManager::increaseStackHistoryCnt()
+void CViewManager::increaseImpressions()
 {
     ++m_stack_history[m_current_view->id];
 }
 
-void CViewManager::decreaseStackHistoryCnt()
+void CViewManager::decreaseImpressions()
 {
     --m_stack_history[m_current_view->id];
     if(m_stack_history[m_current_view->id] < 1)

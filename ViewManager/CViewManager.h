@@ -13,13 +13,12 @@
 struct S_COMPONENT
 {
     const S_VIEW_INFORMATION    *info;
-    QObject                     *item = new QQuickItem;
+    QObject                     *item;
 
     inline void destroy()
     {
         hide();
         info->fnExit();
-        delete item;
         item = nullptr;
     }
 
@@ -51,8 +50,9 @@ private:
     void initConnections();
     void initComponent();
     void destroyComponent();
-    void increaseStackHistoryCnt();
-    void decreaseStackHistoryCnt();
+    void increaseImpressions();
+    void decreaseImpressions();
+
 private:
     QQmlApplicationEngine                              *m_ngin                          = nullptr;
     const S_VIEW_INFORMATION                           *m_current_view                   = nullptr;
