@@ -3,6 +3,7 @@
 
 #include <QQmlApplicationEngine>
 #include <QObject>
+#include <QHash>
 #include <QTimer>
 #include <QStack>
 #include <QQuickItem>
@@ -13,7 +14,8 @@
 struct S_COMPONENT
 {
     const S_VIEW_INFORMATION    *info;
-    QObject                     *item;
+    QObject                     *item = nullptr;
+    QHash<QString, QObject*>    properties = {{"anchors", nullptr}};
 
     inline void destroy()
     {
@@ -55,10 +57,10 @@ private:
 
 private:
     QQmlApplicationEngine                              *m_ngin                          = nullptr;
-    const S_VIEW_INFORMATION                           *m_current_view                   = nullptr;
+    const S_VIEW_INFORMATION                           *m_current_view                  = nullptr;
     QQuickWindow                                       *m_window                        = nullptr;
     QQmlComponent                                      *m_base                          = nullptr;
-    QQmlContext                                        *m_root_ctx                       = nullptr;
+    QQmlContext                                        *m_root_ctx                      = nullptr;
     QUrl                                                m_url;
     QStack<S_COMPONENT*>                                m_stack;
     QHash<uint32_t, S_COMPONENT*>                       m_view_cached;

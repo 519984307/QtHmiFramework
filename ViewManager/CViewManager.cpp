@@ -56,11 +56,15 @@ void CViewManager::onStatusChanged(QQmlComponent::Status status)
     {
         qInfo() << "This QQmlComponent is ready and create() may be called.";
 
-        m_stack.push(new S_COMPONENT{m_current_view});
-        QQuickItem* item = qobject_cast<QQuickItem*>(m_base->create());
-        item->setParentItem(m_window->contentItem());
-        qvariant_cast<QObject*>(item->property("anchors"))->setProperty(m_current_view->type == E_VIEW_TYPE::SCREEN_TYPE? "fill":"centerIn", QVariant::fromValue(m_window->contentItem()));
+        S_COMPONENT *comp = new S_COMPONENT{m_current_view};
+        QQuickItem *item = qobject_cast<QQuickItem*>(m_base->create());
+        QQuickItem *parent = m_window->contentItem();
+        item->setParentItem(parent);
 
+        comp->properties.insert("anchors", qvariant_cast<QObject*>(item->property("anchors")));
+        comp->properties.value("anchors")->setProperty("fill", QVariant::fromValue(parent));
+
+        m_stack.push(comp);
         m_stack.top()->item = item;
 
         m_current_view->fnEntry();
