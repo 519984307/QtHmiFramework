@@ -34,7 +34,8 @@ HEADERS += \
     $$PWD/View/States/ViewStates.h \
     $$PWD/View/ViewData.h \
     $$PWD/View/ViewDefines.h \
-    $$PWD/ViewManager/CViewManager.h
+    $$PWD/ViewManager/CViewManager.h \
+    ViewManager/ViewManagerDefines.h
 
 INCLUDEPATH += \
     $$PWD/QmlTypes \

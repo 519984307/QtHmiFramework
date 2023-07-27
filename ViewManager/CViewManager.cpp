@@ -1,5 +1,6 @@
 #include "CViewManager.h"
 #include "Utils.h"
+#include "ViewManagerDefines.h"
 
 CViewManager::CViewManager(QQmlApplicationEngine *ngin, QObject *parent)
     : QObject{parent}
@@ -126,14 +127,16 @@ void CViewManager::initComponent()
 void CViewManager::destroyComponent()
 {
     // Check: if stack's depth less than 2 view
-    if(m_depth < 2) return;
-    if(m_stack_history[m_current_view->id] == 1)
+    if(m_depth == MINIMUM_VIEW) return;
+    if(m_stack_history[m_current_view->id] > MINIMUM_VIEW)
     {
-        m_stack.top()->destroy();
+        m_stack.top()->hide();
     }
     else
     {
-        m_stack.top()->hide();
+        m_stack.top()->destroy();
+        safeRelease(m_stack.top());
+        m_view_cached[m_current_view->id] = nullptr;
     }
 
     m_stack.pop();
@@ -155,8 +158,8 @@ void CViewManager::increaseImpressions()
 void CViewManager::decreaseImpressions()
 {
     --m_stack_history[m_current_view->id];
-    if(m_stack_history[m_current_view->id] < 1)
+    if(m_stack_history[m_current_view->id] < MINIMUM_VIEW)
     {
-        m_stack_history[m_current_view->id] = 1;
+        m_stack_history[m_current_view->id] = 0;
     }
 }
