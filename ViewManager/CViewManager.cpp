@@ -127,8 +127,8 @@ void CViewManager::initComponent()
 void CViewManager::destroyComponent()
 {
     // Check: if stack's depth less than 2 view
-    if(m_depth == MINIMUM_VIEW) return;
-    if(m_stack_history[m_current_view->id] > MINIMUM_VIEW)
+    if(m_depth == MINIMUM_NUM_OF_VIEWS) return;
+    if(m_stack_history[m_current_view->id] > MINIMUM_NUM_OF_VIEWS)
     {
         m_stack.top()->hide();
     }
@@ -158,7 +158,7 @@ void CViewManager::increaseImpressions()
 void CViewManager::decreaseImpressions()
 {
     --m_stack_history[m_current_view->id];
-    if(m_stack_history[m_current_view->id] < MINIMUM_VIEW)
+    if(m_stack_history[m_current_view->id] < MINIMUM_NUM_OF_VIEWS)
     {
         m_stack_history[m_current_view->id] = 0;
     }
