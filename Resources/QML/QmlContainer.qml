@@ -20,12 +20,12 @@ Rectangle {
     }
 
     Component.onCompleted: {
-//        console.log(`[Entry][${title}]`)
+        console.log(`[Entry][${title}]`)
         entry()
     }
 
     Component.onDestruction: {
-//        console.log(`[Exit][${title}]`)
+        console.log(`[Exit][${title}]`)
         exit()
     }
 }

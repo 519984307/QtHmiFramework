@@ -111,7 +111,6 @@ void CViewManager::initComponent()
         qInfo() << QString("Load [%1] from cache memory").arg(m_view_cached[m_current_view->id]->info->path);
         m_stack.push(m_view_cached[m_current_view->id]);
         m_stack.top()->show();
-        qInfo() << QString("View [%1] has visible [%2]").arg(m_stack.top()->info->path).arg(m_stack.top()->item->property("visible").toBool());
     }
     else
     {

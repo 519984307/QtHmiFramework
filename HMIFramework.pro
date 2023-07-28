@@ -9,6 +9,7 @@ CONFIG += c++11
 
 SOURCES += \
         CNgin.cpp \
+        Utils/Logger/CLogger.cpp \
         Utils/Memory/LFUCache/CLFUCache.cpp \
         Utils/Memory/LRUCache/CLRUCache.cpp \
         ViewManager/CViewManager.cpp \
@@ -35,6 +36,7 @@ HEADERS += \
     $$PWD/View/ViewData.h \
     $$PWD/View/ViewDefines.h \
     $$PWD/ViewManager/CViewManager.h \
+    Utils/Logger/CLogger.h \
     ViewManager/ViewManagerDefines.h
 
 INCLUDEPATH += \

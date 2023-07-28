@@ -26,5 +26,11 @@ enum E_VIEW_TYPE
     NOTIFY_TYPE
 };
 
+enum E_LOGGER_FLAG: bool
+{
+    QML = true,
+    CPP = false
+};
+
 
 #endif // COMMONENUMS_H

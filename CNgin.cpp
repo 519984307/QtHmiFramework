@@ -1,5 +1,6 @@
 #include "CNgin.h"
-#include "Utils/Utils.h"
+#include "Utils.h"
+#include "Logger/CLogger.h"
 #include "CViewEnums.h"
 
 #define QML_BASE "qrc:/QML_RESOURCE//main.qml"
@@ -99,8 +100,10 @@ void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t scree
         setCtxProperty("QmlRootScreenHeight", screenHeight);
     }
 
+    // set context
     setCtxProperty("QmlNgin", QVariant::fromValue(this));
     setCtxProperty("QmlViewManager", QVariant::fromValue(m_view_manager));
+    setCtxProperty("QmlLogger", QVariant::fromValue(CLogger::instance(E_LOGGER_FLAG::QML)));
 
     // register QML types
 
