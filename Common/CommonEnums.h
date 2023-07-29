@@ -12,9 +12,10 @@ enum E_CACHE_STATUS: bool
 enum E_DURATION: uint8_t
 {
     NONE                    = 0x0,
+    IN_2_SECS               = 0x2,
     IN_5_SECS               = 0x5,
     IN_10_SECS              = 0xA,
-    IN_15_SEC               = 0xE,
+    IN_15_SEC               = 0xF,
     IN_30_SEC               = 0x1E
 };
 

@@ -77,13 +77,13 @@ void CViewManager::onStatusChanged(QQmlComponent::Status status)
         {
             comp->properties.value("anchors")->setProperty("horizontalCenter", QVariant::fromValue(parent->property("horizontalCenter")));
             comp->properties.value("anchors")->setProperty("bottom", QVariant::fromValue(parent->property("bottom")));
-            comp->properties.value("anchors")->setProperty("bottomMargin", 50);
+            comp->properties.value("anchors")->setProperty("bottomMargin", TOAST_MARGIN_BOTTOM);
         }
         else if(m_current_view->type == E_VIEW_TYPE::NOTIFY_TYPE)
         {
             comp->properties.value("anchors")->setProperty("horizontalCenter", QVariant::fromValue(parent->property("horizontalCenter")));
             comp->properties.value("anchors")->setProperty("top", QVariant::fromValue(parent->property("top")));
-            comp->properties.value("anchors")->setProperty("topMargin", 50);
+            comp->properties.value("anchors")->setProperty("topMargin", NOTIFY_MARGIN_TOP);
         }
 
         m_stack.push(comp);
@@ -123,6 +123,10 @@ void CViewManager::initComponent()
         if(m_current_view->type == E_VIEW_TYPE::SCREEN_TYPE)
         {
             m_stack.top()->hide();
+        }
+        else
+        {
+
         }
     }
 

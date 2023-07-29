@@ -12,6 +12,7 @@ SOURCES += \
         Utils/Logger/CLogger.cpp \
         Utils/Memory/LFUCache/CLFUCache.cpp \
         Utils/Memory/LRUCache/CLRUCache.cpp \
+        View/ViewStates.cpp \
         ViewManager/CViewManager.cpp \
         main.cpp
 
@@ -26,13 +27,7 @@ HEADERS += \
     $$PWD/Utils/Memory/LFUCache/CLFUCache.h \
     $$PWD/Utils/Memory/LRUCache/CLRUCache.h \
     $$PWD/View/CViewEnums.h \
-    $$PWD/View/States/POPUP_X_STATE.h \
-    $$PWD/View/States/POPUP_Y_STATE.h \
-    $$PWD/View/States/POPUP_Z_STATE.h \
-    $$PWD/View/States/SCREEN_A_STATE.h \
-    $$PWD/View/States/SCREEN_B_STATE.h \
-    $$PWD/View/States/SCREEN_C_STATE.h \
-    $$PWD/View/States/ViewStates.h \
+    $$PWD/View/ViewStates.h \
     $$PWD/View/ViewData.h \
     $$PWD/View/ViewDefines.h \
     $$PWD/ViewManager/CViewManager.h \

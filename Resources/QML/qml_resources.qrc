@@ -9,5 +9,10 @@
         <file>main.qml</file>
         <file>QmlContainer.qml</file>
         <file>QmlLoader.qml</file>
+        <file>NOTIFYS/NOTIFY_INFO.qml</file>
+        <file>TOASTS/TOAST_SUCCESS.qml</file>
+        <file>TOASTS/TOAST_FAIL.qml</file>
+        <file>NOTIFYS/NOTIFY_WARN.qml</file>
+        <file>NOTIFYS/NOTIFY_ERROR.qml</file>
     </qresource>
 </RCC>
