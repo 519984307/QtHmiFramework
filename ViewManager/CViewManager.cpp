@@ -64,7 +64,27 @@ void CViewManager::onStatusChanged(QQmlComponent::Status status)
         item->setParentItem(parent);
 
         comp->properties.insert("anchors", qvariant_cast<QObject*>(item->property("anchors")));
-        comp->properties.value("anchors")->setProperty("fill", QVariant::fromValue(parent));
+
+        if(m_current_view->type == E_VIEW_TYPE::SCREEN_TYPE)
+        {
+            comp->properties.value("anchors")->setProperty("fill", QVariant::fromValue(parent));
+        }
+        else if(m_current_view->type == E_VIEW_TYPE::POPUP_TYPE)
+        {
+            comp->properties.value("anchors")->setProperty("centerIn", QVariant::fromValue(parent));
+        }
+        else if(m_current_view->type == E_VIEW_TYPE::TOAST_TYPE)
+        {
+            comp->properties.value("anchors")->setProperty("horizontalCenter", QVariant::fromValue(parent->property("horizontalCenter")));
+            comp->properties.value("anchors")->setProperty("bottom", QVariant::fromValue(parent->property("bottom")));
+            comp->properties.value("anchors")->setProperty("bottomMargin", 50);
+        }
+        else if(m_current_view->type == E_VIEW_TYPE::NOTIFY_TYPE)
+        {
+            comp->properties.value("anchors")->setProperty("horizontalCenter", QVariant::fromValue(parent->property("horizontalCenter")));
+            comp->properties.value("anchors")->setProperty("top", QVariant::fromValue(parent->property("top")));
+            comp->properties.value("anchors")->setProperty("topMargin", 50);
+        }
 
         m_stack.push(comp);
         m_stack.top()->item = item;

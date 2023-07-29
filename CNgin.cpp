@@ -159,7 +159,6 @@ void CNgin::sendEvent(uchar evtId)
         const S_VIEW_INFORMATION* info = findViewByID(evt->destination);
         m_view_manager->pushEnter(info);
     }
-    return;
 }
 
 
