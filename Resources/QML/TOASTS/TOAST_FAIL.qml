@@ -4,5 +4,8 @@ import VIEWENUMS 1.0
 import "../" as Qml
 
 Qml.QmlContainer{
-
+    title: "TOAST FAIL"
+    color: "blue"
+    width: 250
+    height: 80
 }

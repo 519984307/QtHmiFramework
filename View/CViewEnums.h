@@ -118,7 +118,7 @@ public:
     {
         E_TOAST_SUCCESS_EVT_MIN = E_POPUP_Z_EVT_MAX + 1   ,
         E_TOAST_SUCCESS_EVT_SHOW                          ,
-        E_TOAST_SUCCESS_EVT_BACK                          ,
+        E_TOAST_SUCCESS_EVT_HIDE                          ,
         E_TOAST_SUCCESS_EVT_MAX
     };
 
@@ -126,7 +126,7 @@ public:
     {
         E_TOAST_FAIL_EVT_MIN = E_TOAST_SUCCESS_EVT_MAX + 1      ,
         E_TOAST_FAIL_EVT_SHOW                                   ,
-        E_TOAST_FAIL_EVT_BACK                                   ,
+        E_TOAST_FAIL_EVT_HIDE                                   ,
         E_TOAST_FAIL_EVT_MAX
     };
 
@@ -134,7 +134,7 @@ public:
     {
         E_NOTIFY_INFO_EVT_MIN = E_TOAST_FAIL_EVT_MAX + 1    ,
         E_NOTIFY_INFO_EVT_SHOW                              ,
-        E_NOTIFY_INFO_EVT_BACK                              ,
+        E_NOTIFY_INFO_EVT_REMOVE                              ,
         E_NOTIFY_INFO_EVT_MAX
     };
 
@@ -142,7 +142,7 @@ public:
     {
         E_NOTIFY_WARN_EVT_MIN = E_NOTIFY_INFO_EVT_MAX + 1   ,
         E_NOTIFY_WARN_EVT_SHOW                              ,
-        E_NOTIFY_WARN_EVT_BACK                              ,
+        E_NOTIFY_WARN_EVT_REMOVE                              ,
         E_NOTIFY_WARN_EVT_MAX
     };
 
@@ -150,7 +150,7 @@ public:
     {
         E_NOTIFY_ERROR_EVT_MIN = E_NOTIFY_WARN_EVT_MAX + 1      ,
         E_NOTIFY_ERROR_EVT_SHOW                                 ,
-        E_NOTIFY_ERROR_EVT_BACK                                 ,
+        E_NOTIFY_ERROR_EVT_REMOVE                                 ,
         E_NOTIFY_ERROR_EVT_MAX
     };
 
