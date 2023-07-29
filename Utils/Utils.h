@@ -1,6 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <QString>
 #include <string>
 #include <algorithm>
 
@@ -77,5 +78,10 @@ inline std::string dec64ToASCII(uint64_t dec)
     std::string hex = decToHexa<uint64_t>(dec);
     std::string str = hexToASCII(hex);
     return str;
+}
+
+inline const char* qstrTochars(const QString &str)
+{
+    return str.toStdString().c_str();
 }
 #endif // UTILS_H

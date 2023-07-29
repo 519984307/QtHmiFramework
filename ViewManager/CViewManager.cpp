@@ -1,6 +1,7 @@
 #include "CViewManager.h"
 #include "Utils.h"
 #include "ViewManagerDefines.h"
+#include "Logger/LoggerDefines.h"
 
 CViewManager::CViewManager(QQmlApplicationEngine *ngin, QObject *parent)
     : QObject{parent}
@@ -51,11 +52,11 @@ void CViewManager::onStatusChanged(QQmlComponent::Status status)
 {
     switch (status) {
     case QQmlComponent::Null:
-        qInfo() << "This QQmlComponent has no data. Call loadUrl() or setData() to add QML content.";
+        CPP_LOG_INFO("This QQmlComponent has no data. Call loadUrl() or setData() to add QML content.");
         break;
     case QQmlComponent::Ready:
     {
-        qInfo() << "This QQmlComponent is ready and create() may be called.";
+        CPP_LOG_INFO("This QQmlComponent is ready and create() may be called.");
 
         S_COMPONENT *comp = new S_COMPONENT{m_current_view};
         QQuickItem *item = qobject_cast<QQuickItem*>(m_base->create());
@@ -74,10 +75,10 @@ void CViewManager::onStatusChanged(QQmlComponent::Status status)
         break;
     }
     case QQmlComponent::Loading:
-        qInfo() << "This QQmlComponent is loading network data.";
+        CPP_LOG_INFO("This QQmlComponent is loading network data.");
         break;
     case QQmlComponent::Error:
-        qInfo() << "An error has occurred. Call errors() to retrieve a list of errors.";
+        CPP_LOG_INFO("An error has occurred. Call errors() to retrieve a list of errors.");
         break;
     default:
         break;
@@ -86,7 +87,7 @@ void CViewManager::onStatusChanged(QQmlComponent::Status status)
 
 void CViewManager::onProgressChanged(qreal progress)
 {
-    qInfo() << progress;
+    CPP_LOG_INFO("%d", progress);
 }
 
 void CViewManager::initConnections()
@@ -108,7 +109,7 @@ void CViewManager::initComponent()
     // Check: if view is cacked then push new item to stack and show without call loadUrl() function
     if(m_view_cached.contains(m_current_view->id) && m_view_cached[m_current_view->id] != nullptr)
     {
-        qInfo() << QString("Load [%1] from cache memory").arg(m_view_cached[m_current_view->id]->info->path);
+        CPP_LOG_INFO("Load [%s] from cache memory", m_view_cached[m_current_view->id]->info->path.toStdString().c_str());
         m_stack.push(m_view_cached[m_current_view->id]);
         m_stack.top()->show();
     }

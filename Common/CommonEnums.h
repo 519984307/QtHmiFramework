@@ -9,27 +9,33 @@ enum E_CACHE_STATUS: bool
     MISS = false
 };
 
-enum E_DURATION: uint32_t
+enum E_DURATION: uint8_t
 {
-    NONE                    = 0,
-    IN_5_SECS               = 5,
-    IN_10_SECS              = 10,
-    IN_15_SEC               = 15,
-    IN_30_SEC               = 30
+    NONE                    = 0x0,
+    IN_5_SECS               = 0x5,
+    IN_10_SECS              = 0xA,
+    IN_15_SEC               = 0xE,
+    IN_30_SEC               = 0x1E
 };
 
 enum E_VIEW_TYPE: uint8_t
 {
-    SCREEN_TYPE = 0,
-    POPUP_TYPE,
-    TOAST_TYPE,
-    NOTIFY_TYPE
+    SCREEN_TYPE = 0x0,
+    POPUP_TYPE  = 0x1,
+    TOAST_TYPE  = 0x2,
+    NOTIFY_TYPE = 0x3
 };
 
-enum E_LOGGER_FLAG: uint32_t
+enum E_LOGGER_FLAG: uint64_t
 {
-    QML = 0x514D4C,
-    CPP = 0x435050
+    NOFLAG                  = 0x4E4F464C4147,
+    QML                     = 0x514D4C,
+    CPP                     = 0x435050
+};
+
+enum E_LOGGER_FLAG_COLOR: uint64_t
+{
+
 };
 
 enum E_LOGGER_LEVEL: uint64_t
@@ -40,6 +46,11 @@ enum E_LOGGER_LEVEL: uint64_t
     DEBUG   = 0x4445425547,
     TRACE   = 0x5452414345,
     ERROR   = 0x4552524F52
+};
+
+enum E_LOGGER_LEVEL_COLOR: uint64_t
+{
+
 };
 
 

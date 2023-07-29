@@ -13,8 +13,7 @@ Window {
     Connections {
         target: QmlNgin
         function onInitCompleted() {
-            console.log("Root Initialize Completed!!!")
-
+            QmlLogger.qmlLogInfo("Root Initialize Completed!!!")
         }
     }
 

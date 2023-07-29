@@ -20,12 +20,12 @@ Rectangle {
     }
 
     Component.onCompleted: {
-        console.log(`[Entry][${title}]`)
+        QmlLogger.qmlLogInfo(`[Entry][${title}]`)
         entry()
     }
 
     Component.onDestruction: {
-        console.log(`[Exit][${title}]`)
+        QmlLogger.qmlLogInfo(`[Exit][${title}]`)
         exit()
     }
 }

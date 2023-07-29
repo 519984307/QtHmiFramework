@@ -14,10 +14,6 @@ CNgin *CNgin::instance()
 CNgin::CNgin(QObject *parent)
     : QObject{parent}
 {
-    LOG_INFO("%s", "Yeu Thu");
-    LOG_WARN("%s", "Yeu Thu");
-    LOG_DEBUG("%s", "Yeu Thu");
-    LOG_FATAL("%s", "Yeu Thu");
     m_qml_ngin           = new QQmlApplicationEngine(this);
     m_qml_ctx            = m_qml_ngin->rootContext();
 
@@ -151,6 +147,9 @@ void CNgin::sendEvent(uchar evtId)
 {
     const QList<uint32_t> anyId = {E_SCREEN_ID::E_SCREEN_ANY_ID, E_POPUP_ID::E_POPUP_ANY_ID};
     const S_VIEW_EVENT* evt = findEventByID(evtId);
+
+    evt->fn();
+
     if(anyId.contains(evt->destination))
     {
         m_view_manager->popExit();

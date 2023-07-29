@@ -3,15 +3,20 @@
 
 
 #include <QDebug>
+#include "Logger/LoggerDefines.h"
 
 void SCREEN_A_ENTRY()
 {
-    qInfo() << __FUNCTION__;
+    CPP_LOG_INFO(__FUNCTION__);
 }
 
 void SCREEN_A_EXIT()
 {
-    qInfo() << __FUNCTION__;
+    CPP_LOG_INFO(__FUNCTION__);
 }
 
+void SCREEN_A_BACK()
+{
+    CPP_LOG_INFO(__FUNCTION__);
+}
 #endif // SCREEN_A_STATE_H

@@ -2,16 +2,22 @@
 #define POPUP_X_STATE_H
 
 #include <QDebug>
+#include "Logger/LoggerDefines.h"
 
 
 void POPUP_X_ENTRY()
 {
-    qInfo() << __FUNCTION__;
+    CPP_LOG_INFO(__FUNCTION__);
 }
 
 void POPUP_X_EXIT()
 {
-    qInfo() << __FUNCTION__;
+    CPP_LOG_INFO(__FUNCTION__);
+}
+
+void POPUP_X_BACK()
+{
+    CPP_LOG_INFO(__FUNCTION__);
 }
 
 #endif // POPUP_X_STATE_H
