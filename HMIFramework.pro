@@ -37,6 +37,7 @@ HEADERS += \
     $$PWD/View/ViewDefines.h \
     $$PWD/ViewManager/CViewManager.h \
     Utils/Logger/CLogger.h \
+    Utils/Logger/LoggerDefines.h \
     ViewManager/ViewManagerDefines.h
 
 INCLUDEPATH += \

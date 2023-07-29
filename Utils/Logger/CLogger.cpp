@@ -8,6 +8,26 @@ CLogger *CLogger::instance(const E_LOGGER_FLAG &flag)
     return s_instance;
 }
 
+void CLogger::selectQtLog(const uint64_t &fn, const char *msg)
+{
+    switch (fn) {
+    case E_LOGGER_LEVEL::FATAL:
+        qFatal() << msg;
+        break;
+    case E_LOGGER_LEVEL::INFO:
+        qInfo() << msg;
+        break;
+    case E_LOGGER_LEVEL::WARN:
+        qWarning() << msg;
+        break;
+    case E_LOGGER_LEVEL::DEBUG:
+        qDebug() << msg;
+        break;
+    default:
+        break;
+    }
+}
+
 CLogger::CLogger(QObject *parent)
     : QObject{parent}
 {

@@ -1,6 +1,6 @@
 #include "CNgin.h"
 #include "Utils.h"
-#include "Logger/CLogger.h"
+#include "Logger/LoggerDefines.h"
 #include "CViewEnums.h"
 
 #define QML_BASE "qrc:/QML_RESOURCE//main.qml"
@@ -14,6 +14,10 @@ CNgin *CNgin::instance()
 CNgin::CNgin(QObject *parent)
     : QObject{parent}
 {
+    LOG_INFO("%s", "Yeu Thu");
+    LOG_WARN("%s", "Yeu Thu");
+    LOG_DEBUG("%s", "Yeu Thu");
+    LOG_FATAL("%s", "Yeu Thu");
     m_qml_ngin           = new QQmlApplicationEngine(this);
     m_qml_ctx            = m_qml_ngin->rootContext();
 

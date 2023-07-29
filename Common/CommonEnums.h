@@ -18,18 +18,28 @@ enum E_DURATION: uint32_t
     IN_30_SEC               = 30
 };
 
-enum E_VIEW_TYPE
+enum E_VIEW_TYPE: uint8_t
 {
-    SCREEN_TYPE,
+    SCREEN_TYPE = 0,
     POPUP_TYPE,
     TOAST_TYPE,
     NOTIFY_TYPE
 };
 
-enum E_LOGGER_FLAG: bool
+enum E_LOGGER_FLAG: uint32_t
 {
-    QML = true,
-    CPP = false
+    QML = 0x514D4C,
+    CPP = 0x435050
+};
+
+enum E_LOGGER_LEVEL: uint64_t
+{
+    FATAL   = 0X464154414C,
+    INFO    = 0x494E464F,
+    WARN    = 0x5741524E,
+    DEBUG   = 0x4445425547,
+    TRACE   = 0x5452414345,
+    ERROR   = 0x4552524F52
 };
 
 
