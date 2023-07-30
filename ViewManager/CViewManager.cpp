@@ -120,11 +120,21 @@ void CViewManager::initComponent()
     // Check: if stack's depth greater than 1 then hide last item and push new item
     if(m_depth > 1)
     {
-        if(m_current_view->type == E_VIEW_TYPE::SCREEN_TYPE)
+        E_VIEW_TYPE lastType = m_stack.top()->info->type;
+        E_VIEW_TYPE nextType = m_current_view->type;
+        if(lastType == E_VIEW_TYPE::SCREEN_TYPE && nextType == E_VIEW_TYPE::SCREEN_TYPE)
         {
             m_stack.top()->hide();
         }
-        else
+        else if(lastType == E_VIEW_TYPE::SCREEN_TYPE && (nextType == E_VIEW_TYPE::TOAST_TYPE || nextType == E_VIEW_TYPE::NOTIFY_TYPE))
+        {
+
+        }
+        else if(lastType == E_VIEW_TYPE::POPUP_TYPE && nextType == E_VIEW_TYPE::POPUP_TYPE)
+        {
+            m_stack.top()->hide();
+        }
+        else if(lastType == E_VIEW_TYPE::POPUP_TYPE && (nextType == E_VIEW_TYPE::TOAST_TYPE || nextType == E_VIEW_TYPE::NOTIFY_TYPE))
         {
 
         }

@@ -145,6 +145,19 @@ void CNgin::registerEvents(const S_VIEW_EVENT *events, uint32_t len)
 
 void CNgin::sendEvent(uchar evtId)
 {
+    if(m_last_event != 0 && m_last_event == evtId)
+    {
+        CPP_LOG_WARN("The current Event [%u] the last Event", evtId);
+        return;
+    }
+
+    CPP_LOG_WARN("The Event [%u] [%s] processing", evtId, m_event_is_processing? "is":"is not");
+    if(m_event_is_processing)
+    {
+        m_events_queue.enqueue(evtId);
+        return;
+    }
+
     const QList<uint32_t> anyId = {E_SCREEN_ID::E_SCREEN_ANY_ID, E_POPUP_ID::E_POPUP_ANY_ID};
     const S_VIEW_EVENT* evt = findEventByID(evtId);
 
@@ -153,6 +166,8 @@ void CNgin::sendEvent(uchar evtId)
         CPP_LOG_WARN("Event with ID [%u] has not been defined!!!", evtId);
         return;
     }
+
+    m_last_event = evt->event; // event id
     evt->fn();
 
     if(anyId.contains(evt->destination))

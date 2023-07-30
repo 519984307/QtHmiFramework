@@ -5,10 +5,14 @@ CONFIG += c++11
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-#QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-function
+QMAKE_CXXFLAGS_WARN_ON += \
+    -Wno-unused-function \
+    -Wunused-parameter
 
 SOURCES += \
         CNgin.cpp \
+        Common/CallBackManager/CCallbackManager.cpp \
+        Common/ObserverManager/CObserverManager.cpp \
         Utils/Logger/CLogger.cpp \
         Utils/Memory/LFUCache/CLFUCache.cpp \
         Utils/Memory/LRUCache/CLRUCache.cpp \
@@ -31,6 +35,8 @@ HEADERS += \
     $$PWD/View/ViewData.h \
     $$PWD/View/ViewDefines.h \
     $$PWD/ViewManager/CViewManager.h \
+    Common/CallBackManager/CCallbackManager.h \
+    Common/ObserverManager/CObserverManager.h \
     Utils/Logger/CLogger.h \
     Utils/Logger/LoggerDefines.h \
     ViewManager/ViewManagerDefines.h

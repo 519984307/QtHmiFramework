@@ -56,11 +56,13 @@ void CLogger::qmlLogDebug(QString msg)
 
 void CLogger::qmlLogError(QString msg)
 {
+    Q_UNUSED(msg)
 //    QML_LOG_ERROR(msg.toStdString().c_str());
 }
 
 void CLogger::qmlLogTrace(QString msg)
 {
+    Q_UNUSED(msg)
 //    QML_LOG_TRACE(msg.toStdString().c_str());
 }
 CLogger::CLogger(QObject *parent)

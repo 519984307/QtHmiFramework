@@ -19,6 +19,7 @@ public:
     template<typename ...TArgs>
     void log(const E_LOGGER_LEVEL& level, const char* file, const char* fn, const uint32_t& line, const char* fm, TArgs... args)
     {
+        Q_UNUSED(file)
         std::string flag = dec64ToASCII(m_flag);
         std::string lv  = dec64ToASCII(level);
         std::string func = "on" + lv + "Invoked";

@@ -7,6 +7,7 @@
 #include <QQmlEngine>
 #include <QGuiApplication>
 #include <QTimer>
+#include <QQueue>
 #include <vector>
 #include "CViewManager.h"
 
@@ -48,6 +49,9 @@ private:
     QHash<uint32_t, const S_VIEW_INFORMATION*>               m_info_cached;
     QList<const S_VIEW_INFORMATION*>                         m_infos{};
     QList<const S_VIEW_EVENT*>                               m_events{};
+    QQueue<uchar>                                            m_events_queue;
+    uchar                                                    m_last_event{0};
+    bool                                                     m_event_is_processing{false};
 
 };
 
