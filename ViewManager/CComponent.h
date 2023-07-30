@@ -13,34 +13,40 @@ class CComponent: public QObject
     Q_OBJECT
 public:
     explicit CComponent(const S_VIEW_INFORMATION *info, QQuickItem *item, QObject *parent = nullptr);
-
-    inline void destroy()
-    {
-        hide();
-        m_info->fnExit();
-        m_item = nullptr;
-    }
+    ~CComponent();
 
     inline bool hasTimeOut() {return m_info->duration > 0; }
 
     inline void setTimeOut()
     {
-        if(hasTimeOut() && !m_timer.isActive())
+        if(hasTimeOut() && !m_timer->isActive())
         {
-            m_timer.setSingleShot(true);
-            m_timer.start(m_info->duration * ONE_SEC);
-            connect(&m_timer, &QTimer::timeout, this, &CComponent::onVisibleTimeout);
+            m_timer->setSingleShot(true);
+            m_timer->start(m_info->duration * ONE_SEC);
+            return;
+        }
+        m_timer->stop();
+    }
+
+    inline void unsetTimeOut()
+    {
+        if(hasTimeOut() && m_timer->isActive())
+        {
+            m_timer->stop();
         }
     }
 
     inline void show()
     {
-        setTimeOut();
+        if(m_item == nullptr) return;
         m_item->setProperty("visible", true);
+        setTimeOut();
     }
     inline void hide()
     {
+        if(m_item == nullptr) return;
         m_item->setProperty("visible", false);
+        unsetTimeOut();
     }
 
     const S_VIEW_INFORMATION *info() const;
@@ -61,9 +67,9 @@ signals:
 
 private:
     const S_VIEW_INFORMATION    *m_info;
-    QQuickItem                  *m_item = nullptr;
-    QHash<QString, QObject*>     m_properties = {{"anchors", nullptr}};
-    QTimer                       m_timer;
+    QQuickItem                  *m_item         = nullptr;
+    QTimer                      *m_timer        = nullptr;
+    QHash<QString, QObject*>     m_properties   = {{"anchors", nullptr}};
 };
 
 

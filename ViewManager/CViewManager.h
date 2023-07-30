@@ -35,10 +35,13 @@ signals:
 
 private:
     void initConnections();
-    void initComponent();
-    void destroyComponent();
-    void increaseImpressions();
-    void decreaseImpressions();
+    void initComponent(const S_VIEW_INFORMATION *view = nullptr);
+    void destroyComponent(const S_VIEW_INFORMATION *view = nullptr);
+    void increaseImpressions(const S_VIEW_INFORMATION *view = nullptr);
+    void decreaseImpressions(const S_VIEW_INFORMATION *view = nullptr);
+    void increaseDepth();
+    void decreaseDepth();
+    void removeInValidView();
 
 private:
     QQmlApplicationEngine                              *m_ngin                          = nullptr;

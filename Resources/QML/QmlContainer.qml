@@ -33,12 +33,12 @@ Rectangle {
     }
 
     Component.onCompleted: {
-        QmlLogger.qmlLogInfo(`[Entry][${title}]`)
+//        QmlLogger.qmlLogInfo(`[Entry][${title}]`)
         entry()
     }
 
     Component.onDestruction: {
-        QmlLogger.qmlLogInfo(`[Exit][${title}]`)
+//        QmlLogger.qmlLogInfo(`[Exit][${title}]`)
         exit()
     }
 }

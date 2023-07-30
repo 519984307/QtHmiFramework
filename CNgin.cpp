@@ -145,11 +145,11 @@ void CNgin::registerEvents(const S_VIEW_EVENT *events, uint32_t len)
 
 void CNgin::sendEvent(uchar evtId)
 {
-    if(m_last_event != 0 && m_last_event == evtId)
-    {
-        CPP_LOG_WARN("The current Event [%u] the last Event", evtId);
-        return;
-    }
+//    if(m_last_event != 0 && m_last_event == evtId)
+//    {
+//        CPP_LOG_WARN("The current Event [%u] the last Event", evtId);
+//        return;
+//    }
 
     CPP_LOG_WARN("The Event [%u] [%s] processing", evtId, m_event_is_processing? "is":"is not");
     if(m_event_is_processing)
