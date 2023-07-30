@@ -58,39 +58,44 @@ void CViewManager::onStatusChanged(QQmlComponent::Status status)
     {
         CPP_LOG_INFO("This QQmlComponent is ready and create() may be called.");
 
-        S_COMPONENT *comp = new S_COMPONENT{m_current_view};
+        CComponent *comp = new CComponent(m_current_view, nullptr);
         QQuickItem *item = qobject_cast<QQuickItem*>(m_base->create());
         QQuickItem *parent = m_window->contentItem();
         item->setParentItem(parent);
 
-        comp->properties.insert("anchors", qvariant_cast<QObject*>(item->property("anchors")));
+        comp->setProperty("anchors", qvariant_cast<QObject*>(item->property("anchors")));
 
         if(m_current_view->type == E_VIEW_TYPE::SCREEN_TYPE)
         {
-            comp->properties.value("anchors")->setProperty("fill", QVariant::fromValue(parent));
+            comp->properties().value("anchors")->setProperty("fill", QVariant::fromValue(parent));
         }
         else if(m_current_view->type == E_VIEW_TYPE::POPUP_TYPE)
         {
-            comp->properties.value("anchors")->setProperty("centerIn", QVariant::fromValue(parent));
+            comp->properties().value("anchors")->setProperty("centerIn", QVariant::fromValue(parent));
         }
         else if(m_current_view->type == E_VIEW_TYPE::TOAST_TYPE)
         {
-            comp->properties.value("anchors")->setProperty("horizontalCenter", QVariant::fromValue(parent->property("horizontalCenter")));
-            comp->properties.value("anchors")->setProperty("bottom", QVariant::fromValue(parent->property("bottom")));
-            comp->properties.value("anchors")->setProperty("bottomMargin", TOAST_MARGIN_BOTTOM);
+            comp->properties().value("anchors")->setProperty("horizontalCenter", QVariant::fromValue(parent->property("horizontalCenter")));
+            comp->properties().value("anchors")->setProperty("bottom", QVariant::fromValue(parent->property("bottom")));
+            comp->properties().value("anchors")->setProperty("bottomMargin", TOAST_MARGIN_BOTTOM);
         }
         else if(m_current_view->type == E_VIEW_TYPE::NOTIFY_TYPE)
         {
-            comp->properties.value("anchors")->setProperty("horizontalCenter", QVariant::fromValue(parent->property("horizontalCenter")));
-            comp->properties.value("anchors")->setProperty("top", QVariant::fromValue(parent->property("top")));
-            comp->properties.value("anchors")->setProperty("topMargin", NOTIFY_MARGIN_TOP);
+            comp->properties().value("anchors")->setProperty("horizontalCenter", QVariant::fromValue(parent->property("horizontalCenter")));
+            comp->properties().value("anchors")->setProperty("top", QVariant::fromValue(parent->property("top")));
+            comp->properties().value("anchors")->setProperty("topMargin", NOTIFY_MARGIN_TOP);
         }
 
+
+        connect(comp, &CComponent::visibleTimeout, this, &CViewManager::onVisibleTimeout);
+
         m_stack.push(comp);
-        m_stack.top()->item = item;
+        m_stack.top()->setItem(item);
 
         m_current_view->fnEntry();
-        m_view_cached[m_current_view->id] = new S_COMPONENT{m_current_view, m_stack.top()->item};
+
+        // cache view
+        m_view_cached[m_current_view->id] = new CComponent(m_current_view, m_stack.top()->item());
 
         break;
     }
@@ -110,6 +115,12 @@ void CViewManager::onProgressChanged(qreal progress)
     CPP_LOG_INFO("%d", progress);
 }
 
+void CViewManager::onVisibleTimeout()
+{
+    CComponent *comp = reinterpret_cast<CComponent*>(sender());
+    comp->destroy();
+}
+
 void CViewManager::initConnections()
 {
     connect(m_base, &QQmlComponent::statusChanged, this, &CViewManager::onStatusChanged);
@@ -120,7 +131,7 @@ void CViewManager::initComponent()
     // Check: if stack's depth greater than 1 then hide last item and push new item
     if(m_depth > 1)
     {
-        E_VIEW_TYPE lastType = m_stack.top()->info->type;
+        E_VIEW_TYPE lastType = m_stack.top()->info()->type;
         E_VIEW_TYPE nextType = m_current_view->type;
         if(lastType == E_VIEW_TYPE::SCREEN_TYPE && nextType == E_VIEW_TYPE::SCREEN_TYPE)
         {
@@ -140,7 +151,7 @@ void CViewManager::initComponent()
     // Check: if view is cacked then push new item to stack and show without call loadUrl() function
     if(m_view_cached.contains(m_current_view->id) && m_view_cached[m_current_view->id] != nullptr)
     {
-        CPP_LOG_INFO("Load [%s] from cache memory", m_view_cached[m_current_view->id]->info->path.toStdString().c_str());
+        CPP_LOG_INFO("Load [%s] from cache memory", m_view_cached[m_current_view->id]->info()->path.toStdString().c_str());
         m_stack.push(m_view_cached[m_current_view->id]);
         m_stack.top()->show();
     }
@@ -174,7 +185,7 @@ void CViewManager::destroyComponent()
 
     decreaseImpressions();
 
-    m_current_view = m_stack.top()->info;
+    m_current_view = m_stack.top()->info();
     m_stack.top()->show();
 
     --m_depth;

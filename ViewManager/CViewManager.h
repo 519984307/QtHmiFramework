@@ -9,24 +9,8 @@
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QQmlComponent>
+#include "CComponent.h"
 #include "CommonStructs.h"
-
-struct S_COMPONENT
-{
-    const S_VIEW_INFORMATION    *info;
-    QObject                     *item = nullptr;
-    QHash<QString, QObject*>    properties = {{"anchors", nullptr}};
-
-    inline void destroy()
-    {
-        hide();
-        info->fnExit();
-        item = nullptr;
-    }
-
-    inline void show(){item->setProperty("visible", true);}
-    inline void hide(){item->setProperty("visible", false);}
-};
 
 class CViewManager : public QObject
 {
@@ -44,6 +28,7 @@ public slots:
     void onCompleted();
     void onStatusChanged(QQmlComponent::Status);
     void onProgressChanged(qreal);
+    void onVisibleTimeout();
 
 signals:
     void depthChanged();
@@ -62,8 +47,8 @@ private:
     QQmlComponent                                      *m_base                          = nullptr;
     QQmlContext                                        *m_root_ctx                      = nullptr;
     QUrl                                                m_url;
-    QStack<S_COMPONENT*>                                m_stack;
-    QHash<uint32_t, S_COMPONENT*>                       m_view_cached;
+    QStack<CComponent*>                                 m_stack;
+    QHash<uint32_t, CComponent*>                        m_view_cached;
     QHash<uint32_t, int>                                m_stack_history;
     uint8_t                                             m_depth{0};
 };

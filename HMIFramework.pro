@@ -17,6 +17,7 @@ SOURCES += \
         Utils/Memory/LFUCache/CLFUCache.cpp \
         Utils/Memory/LRUCache/CLRUCache.cpp \
         View/ViewStates.cpp \
+        ViewManager/CComponent.cpp \
         ViewManager/CViewManager.cpp \
         main.cpp
 
@@ -39,6 +40,7 @@ HEADERS += \
     Common/ObserverManager/CObserverManager.h \
     Utils/Logger/CLogger.h \
     Utils/Logger/LoggerDefines.h \
+    ViewManager/CComponent.h \
     ViewManager/ViewManagerDefines.h
 
 INCLUDEPATH += \
