@@ -126,17 +126,14 @@ void CViewManager::initComponent()
         {
             m_stack.top()->hide();
         }
-        else if(lastType == E_VIEW_TYPE::SCREEN_TYPE && (nextType == E_VIEW_TYPE::TOAST_TYPE || nextType == E_VIEW_TYPE::NOTIFY_TYPE))
-        {
-
-        }
         else if(lastType == E_VIEW_TYPE::POPUP_TYPE && nextType == E_VIEW_TYPE::POPUP_TYPE)
         {
             m_stack.top()->hide();
         }
-        else if(lastType == E_VIEW_TYPE::POPUP_TYPE && (nextType == E_VIEW_TYPE::TOAST_TYPE || nextType == E_VIEW_TYPE::NOTIFY_TYPE))
+        else if((lastType == E_VIEW_TYPE::TOAST_TYPE || lastType == E_VIEW_TYPE::NOTIFY_TYPE)
+                 && (nextType == E_VIEW_TYPE::TOAST_TYPE || nextType == E_VIEW_TYPE::NOTIFY_TYPE))
         {
-
+            m_stack.top()->hide();
         }
     }
 
