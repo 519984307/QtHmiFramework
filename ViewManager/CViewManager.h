@@ -12,6 +12,11 @@
 #include "CComponent.h"
 #include "CommonStructs.h"
 
+#include "CScreenManager.h"
+#include "CPopupManager.h"
+#include "CToastManager.h"
+#include "CNotifyManager.h"
+
 class CViewManager : public QObject
 {
     Q_OBJECT
@@ -24,35 +29,31 @@ public:
     void pushEnter(const S_VIEW_INFORMATION*);
     void popExit();
 
+private:
+    void initConnections();
+
 public slots:
     void onCompleted();
     void onStatusChanged(QQmlComponent::Status);
     void onProgressChanged(qreal);
-    void onVisibleTimeout();
 
 signals:
     void depthChanged();
 
 private:
-    void initConnections();
-    void initComponent(const S_VIEW_INFORMATION *view = nullptr);
-    void destroyComponent(const S_VIEW_INFORMATION *view = nullptr);
-    void increaseImpressions(const S_VIEW_INFORMATION *view = nullptr);
-    void decreaseImpressions(const S_VIEW_INFORMATION *view = nullptr);
-    void increaseDepth();
-    void decreaseDepth();
-    void removeInValidView();
-
-private:
     QQmlApplicationEngine                              *m_ngin                          = nullptr;
-    const S_VIEW_INFORMATION                           *m_current_view                  = nullptr;
-    QQuickWindow                                       *m_window                        = nullptr;
     QQmlComponent                                      *m_base                          = nullptr;
+    QQuickWindow                                       *m_window                        = nullptr;
     QQmlContext                                        *m_root_ctx                      = nullptr;
-    QUrl                                                m_url;
-    QStack<CComponent*>                                 m_stack;
-    QHash<uint32_t, CComponent*>                        m_view_cached;
+    const S_VIEW_INFORMATION                           *m_current_view                  = nullptr;
+    CScreenManager                                      m_screen_manager;
+    CPopupManager                                       m_popup_manager;
+    CToastManager                                       m_toast_manager;
+    CNotifyManager                                      m_notify_manager;
     QHash<uint32_t, int>                                m_stack_history;
+    QHash<uint8_t, IViewManager*>                       m_view_managers;
+    QHash<uint32_t, CComponent*>                        m_view_cached;
+    uint8_t                                             m_last_view_type{E_VIEW_TYPE::NONE_TYPE};
     uint8_t                                             m_depth{0};
 };
 

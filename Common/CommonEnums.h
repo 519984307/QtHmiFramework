@@ -21,10 +21,11 @@ enum E_DURATION: uint8_t
 
 enum E_VIEW_TYPE: uint8_t
 {
-    SCREEN_TYPE = 0x0,
-    POPUP_TYPE  = 0x1,
-    TOAST_TYPE  = 0x2,
-    NOTIFY_TYPE = 0x3
+    NONE_TYPE   = 0x0,
+    SCREEN_TYPE = 0x1,
+    POPUP_TYPE  = 0x2,
+    TOAST_TYPE  = 0x3,
+    NOTIFY_TYPE = 0x4
 };
 
 enum E_LOGGER_FLAG: uint64_t

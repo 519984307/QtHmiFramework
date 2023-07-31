@@ -18,6 +18,14 @@ SOURCES += \
         Utils/Memory/LRUCache/CLRUCache.cpp \
         View/ViewStates.cpp \
         ViewManager/CComponent.cpp \
+        ViewManager/CNotify.cpp \
+        ViewManager/CNotifyManager.cpp \
+        ViewManager/CPopup.cpp \
+        ViewManager/CPopupManager.cpp \
+        ViewManager/CScreen.cpp \
+        ViewManager/CScreenManager.cpp \
+        ViewManager/CToast.cpp \
+        ViewManager/CToastManager.cpp \
         ViewManager/CViewManager.cpp \
         main.cpp
 
@@ -41,6 +49,15 @@ HEADERS += \
     Utils/Logger/CLogger.h \
     Utils/Logger/LoggerDefines.h \
     ViewManager/CComponent.h \
+    ViewManager/CNotify.h \
+    ViewManager/CNotifyManager.h \
+    ViewManager/CPopup.h \
+    ViewManager/CPopupManager.h \
+    ViewManager/CScreen.h \
+    ViewManager/CScreenManager.h \
+    ViewManager/CToast.h \
+    ViewManager/CToastManager.h \
+    ViewManager/IViewManager.h \
     ViewManager/ViewManagerDefines.h
 
 INCLUDEPATH += \
