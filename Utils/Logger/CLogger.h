@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <string>
+#include <sstream>
 #include <QDebug>
 #include <mutex>
 #include <thread>
@@ -20,6 +21,7 @@ public:
     void log(const E_LOGGER_LEVEL& level, const char* file, const char* fn, const uint32_t& line, const char* fm, TArgs... args)
     {
         Q_UNUSED(file)
+
         std::string flag = dec64ToASCII(m_flag);
         std::string lv  = dec64ToASCII(level);
         std::string func = "on" + lv + "Invoked";
@@ -29,10 +31,11 @@ public:
         char time_str[100];
         strftime(time_str, sizeof(time_str), "%Y-%m-%d %H:%M:%S", localTime);
 
-        QString info = QString("[%1][%2][%3][fn: %4, line: %5] >>>>> ")
+        QString info = QString("[%1][%2][%3][%4][fn: %5, line: %6] >>>>> ")
                            .arg(time_str)
                            .arg(flag.c_str())
                            .arg(lv.c_str())
+                           .arg(file)
                            .arg(fn)
                            .arg(line);
 

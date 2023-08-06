@@ -1,4 +1,5 @@
 import QtQuick 2.15
+import Api.Common 1.0
 
 Rectangle {
     property string title: ""
@@ -33,12 +34,12 @@ Rectangle {
     }
 
     Component.onCompleted: {
-//        QmlLogger.qmlLogInfo(`[Entry][${title}]`)
+//        Logger.qmlLogInfo(`[Entry][${title}]`)
         entry()
     }
 
     Component.onDestruction: {
-//        QmlLogger.qmlLogInfo(`[Exit][${title}]`)
+//        Logger.qmlLogInfo(`[Exit][${title}]`)
         exit()
     }
 }

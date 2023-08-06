@@ -1,5 +1,6 @@
 #include "CLogger.h"
 #include "LoggerDefines.h"
+#include <QJSEngine>
 
 CLogger *CLogger::s_instance = nullptr;
 CLogger *CLogger::instance(const E_LOGGER_FLAG &flag)
@@ -8,6 +9,10 @@ CLogger *CLogger::instance(const E_LOGGER_FLAG &flag)
 
     if(flag != NOFLAG)
     {
+        if(flag == E_LOGGER_FLAG::QML)
+        {
+            QJSEngine::setObjectOwnership(s_instance, QJSEngine::JavaScriptOwnership);
+        }
         s_instance->m_flag = flag;
     }
 

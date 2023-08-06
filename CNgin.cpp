@@ -103,9 +103,9 @@ void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t scree
     // set context
     setCtxProperty("QmlNgin", QVariant::fromValue(this));
     setCtxProperty("QmlViewManager", QVariant::fromValue(m_view_manager));
-    setCtxProperty("QmlLogger", QVariant::fromValue(CLogger::instance(E_LOGGER_FLAG::QML)));
 
     // register QML types
+    qmlRegisterSingletonInstance("Api.Common", 1, 0, "Logger", CLogger::instance(E_LOGGER_FLAG::QML));
 
 
     // do other things
@@ -151,12 +151,12 @@ void CNgin::sendEvent(uchar evtId)
 //        return;
 //    }
 
-    CPP_LOG_WARN("The Event [%u] [%s] processing", evtId, m_event_is_processing? "is":"is not");
-    if(m_event_is_processing)
-    {
-        m_events_queue.enqueue(evtId);
-        return;
-    }
+//    CPP_LOG_WARN("The Event [%u] [%s] processing", evtId, m_event_is_processing? "is":"is not");
+//    if(m_event_is_processing)
+//    {
+//        m_events_queue.enqueue(evtId);
+//        return;
+//    }
 
     const QList<uint32_t> anyId = {E_SCREEN_ID::E_SCREEN_ANY_ID, E_POPUP_ID::E_POPUP_ANY_ID};
     const S_VIEW_EVENT* evt = findEventByID(evtId);

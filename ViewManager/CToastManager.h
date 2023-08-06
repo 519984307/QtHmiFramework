@@ -11,6 +11,7 @@ public:
     explicit CToastManager(QObject *parent = nullptr);
 
     // IViewManager interface
+    CComponent *lastView() {return m_views[m_last_view_id];};
     void pushEnter(const S_VIEW_INFORMATION *nextView);
     void popExit();
 

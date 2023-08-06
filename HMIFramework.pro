@@ -11,8 +11,6 @@ QMAKE_CXXFLAGS_WARN_ON += \
 
 SOURCES += \
         CNgin.cpp \
-        Common/CallBackManager/CCallbackManager.cpp \
-        Common/ObserverManager/CObserverManager.cpp \
         Utils/Logger/CLogger.cpp \
         Utils/Memory/LFUCache/CLFUCache.cpp \
         Utils/Memory/LRUCache/CLRUCache.cpp \
@@ -44,21 +42,19 @@ HEADERS += \
     $$PWD/View/ViewData.h \
     $$PWD/View/ViewDefines.h \
     $$PWD/ViewManager/CViewManager.h \
-    Common/CallBackManager/CCallbackManager.h \
-    Common/ObserverManager/CObserverManager.h \
-    Utils/Logger/CLogger.h \
-    Utils/Logger/LoggerDefines.h \
-    ViewManager/CComponent.h \
-    ViewManager/CNotify.h \
-    ViewManager/CNotifyManager.h \
-    ViewManager/CPopup.h \
-    ViewManager/CPopupManager.h \
-    ViewManager/CScreen.h \
-    ViewManager/CScreenManager.h \
-    ViewManager/CToast.h \
-    ViewManager/CToastManager.h \
-    ViewManager/IViewManager.h \
-    ViewManager/ViewManagerDefines.h
+    $$PWD/Utils/Logger/CLogger.h \
+    $$PWD/Utils/Logger/LoggerDefines.h \
+    $$PWD/ViewManager/CComponent.h \
+    $$PWD/ViewManager/CNotify.h \
+    $$PWD/ViewManager/CNotifyManager.h \
+    $$PWD/ViewManager/CPopup.h \
+    $$PWD/ViewManager/CPopupManager.h \
+    $$PWD/ViewManager/CScreen.h \
+    $$PWD/ViewManager/CScreenManager.h \
+    $$PWD/ViewManager/CToast.h \
+    $$PWD/ViewManager/CToastManager.h \
+    $$PWD/ViewManager/IViewManager.h \
+    $$PWD/ViewManager/ViewManagerDefines.h
 
 INCLUDEPATH += \
     $$PWD/QmlTypes \
@@ -67,6 +63,7 @@ INCLUDEPATH += \
     $$PWD/View \
     $$PWD/Common \
     $$PWD/Utils \
+    $$PWD/ObserverManager \
     $$PWD
 
 RESOURCES += \

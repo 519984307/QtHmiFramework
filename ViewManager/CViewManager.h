@@ -9,9 +9,8 @@
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QQmlComponent>
+#include "IViewManager.h"
 #include "CComponent.h"
-#include "CommonStructs.h"
-
 #include "CScreenManager.h"
 #include "CPopupManager.h"
 #include "CToastManager.h"
@@ -24,18 +23,21 @@ class CViewManager : public QObject
 public:
     explicit CViewManager(QQmlApplicationEngine *ngin, QObject *parent = nullptr);
     ~CViewManager();
-    const S_VIEW_INFORMATION *currentView() const;
+    CComponent *currentView();
     uint8_t depth() const;
+    void updateDepth();
+    void resetDepth();
     void pushEnter(const S_VIEW_INFORMATION*);
     void popExit();
 
+    void listenViewChangeEventCallBack(CComponent*);
 private:
     void initConnections();
 
 public slots:
     void onCompleted();
-    void onStatusChanged(QQmlComponent::Status);
     void onProgressChanged(qreal);
+    void onStatusChanged(QQmlComponent::Status);
 
 signals:
     void depthChanged();
@@ -44,17 +46,16 @@ private:
     QQmlApplicationEngine                              *m_ngin                          = nullptr;
     QQmlComponent                                      *m_base                          = nullptr;
     QQuickWindow                                       *m_window                        = nullptr;
+    QQuickItem                                         *m_qml_parent                    = nullptr;
     QQmlContext                                        *m_root_ctx                      = nullptr;
-    const S_VIEW_INFORMATION                           *m_current_view                  = nullptr;
     CScreenManager                                      m_screen_manager;
     CPopupManager                                       m_popup_manager;
     CToastManager                                       m_toast_manager;
     CNotifyManager                                      m_notify_manager;
-    QHash<uint32_t, int>                                m_stack_history;
-    QHash<uint8_t, IViewManager*>                       m_view_managers;
-    QHash<uint32_t, CComponent*>                        m_view_cached;
-    uint8_t                                             m_last_view_type{E_VIEW_TYPE::NONE_TYPE};
+    QHash<E_VIEW_TYPE, IViewManager*>                   m_view_managers;
+    E_VIEW_TYPE                                         m_last_view_type{E_VIEW_TYPE::NONE_TYPE};
     uint8_t                                             m_depth{0};
+
 };
 
 #endif // CVIEWMANAGER_H
