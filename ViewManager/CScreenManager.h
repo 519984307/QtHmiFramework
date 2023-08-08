@@ -17,16 +17,17 @@ public:
     void pushEnter(const S_VIEW_INFORMATION *nextView);
     void popExit();
 
+    inline bool isValidDepth() { return depth() > 1; }
+
     inline E_CACHE_STATUS cacheStatus(const uint32_t &key)
     {
-        return (E_CACHE_STATUS)(m_view_cached.contains(key) && m_view_cached[key] != nullptr);
+        return (m_view_cached.contains(key) && m_view_cached.value(key) != nullptr)
+                   ? E_CACHE_STATUS::HIT:E_CACHE_STATUS::MISS;
     }
 private:
     QStack<CScreen*>                    m_views;
     QHash<uint32_t, CScreen*>           m_view_cached;
-
-
-
+    QHash<uint32_t, int>                m_view_history;
 };
 
 #endif // CSCREENMANAGER_H

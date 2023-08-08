@@ -29,7 +29,6 @@ public:
         m_event_view_change_cb = cb;
     }
 
-    inline bool isValidDepth() { return depth() > 0; }
     inline int history(uint32_t &key) { return m_history[key]; }
 
     inline void setHistory(uint32_t &key, int value) { m_history[key] = value; }

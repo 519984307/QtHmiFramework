@@ -21,9 +21,10 @@ void CPopupManager::popExit()
     m_views.top()->hide();
     safeRelease(m_views.top());
     m_views.pop();
-
-    if(m_views.empty()) return;
-    m_views.top()->show();
+    if(!m_views.empty())
+    {
+        m_views.top()->show();
+    }
 
     decreaseDepth();
 }
