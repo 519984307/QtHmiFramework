@@ -36,10 +36,7 @@ CComponent *CViewManager::currentView()
     return m_view_managers[m_last_view_type]->lastView();
 }
 
-uint8_t CViewManager::depth() const
-{
-    return m_depth;
-}
+int CViewManager::depth() const { return m_depth; }
 
 void CViewManager::pushEnter(const S_VIEW_INFORMATION* view)
 {

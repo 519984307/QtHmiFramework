@@ -19,12 +19,12 @@
 class CViewManager : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(uint8_t depth READ depth NOTIFY depthChanged)
+    Q_PROPERTY(int depth READ depth NOTIFY depthChanged)
 public:
     explicit CViewManager(QQmlApplicationEngine *ngin, QObject *parent = nullptr);
     ~CViewManager();
     CComponent *currentView();
-    uint8_t depth() const;
+    int depth() const;
     void updateDepth();
     void resetDepth();
     void pushEnter(const S_VIEW_INFORMATION*);
@@ -54,7 +54,7 @@ private:
     CNotifyManager                                      m_notify_manager;
     QHash<E_VIEW_TYPE, IViewManager*>                   m_view_managers;
     E_VIEW_TYPE                                         m_last_view_type{E_VIEW_TYPE::NONE_TYPE};
-    uint8_t                                             m_depth{0};
+    int                                                 m_depth{0};
 
 };
 

@@ -7,6 +7,7 @@
 #include <QHash>
 #include "CommonStructs.h"
 #include "CommonDefine.h"
+#include "Logger/LoggerDefines.h"
 
 class CComponent: public QObject
 {
@@ -17,11 +18,13 @@ public:
 
     inline void show()
     {
+        CPP_LOG_INFO("%d", m_info->id);
         if(m_item == nullptr) return;
         m_item->setProperty("visible", true);
     }
     inline void hide()
     {
+        CPP_LOG_INFO("%d", m_info->id);
         if(m_item == nullptr) return;
         m_item->setProperty("visible", false);
     }
