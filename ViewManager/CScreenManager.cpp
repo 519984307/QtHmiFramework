@@ -15,10 +15,8 @@ void CScreenManager::pushEnter(const S_VIEW_INFORMATION *nextView)
     E_CACHE_STATUS cached = cacheStatus(nextView->id);
     if(cached == E_CACHE_STATUS::HIT)
     {
-        CPP_LOG_INFO("Load LAST SCREEN [%s] from cache memory", m_view_cached[m_last_view_id]->info()->path.toStdString().c_str());
         CPP_LOG_INFO("Load SCREEN [%s] from cache memory", m_view_cached[nextView->id]->info()->path.toStdString().c_str());
         if(isValidDepth() && isValidLastId()) {m_view_cached[m_last_view_id]->hide(); }
-
         m_views.push(m_view_cached[nextView->id]);
         m_views.top()->show();
     }
@@ -26,9 +24,9 @@ void CScreenManager::pushEnter(const S_VIEW_INFORMATION *nextView)
     {
         CScreen *comp = new CScreen;
         comp->setInfo(nextView);
-        m_event_view_change_cb(comp);
-        m_view_cached[nextView->id] = comp;
         m_views.push(comp);
+        m_view_cached[nextView->id] = comp;
+        m_event_view_change_cb();
     }
 
     if(m_last_view_id != nextView->id)

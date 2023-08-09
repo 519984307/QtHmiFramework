@@ -19,7 +19,7 @@ CViewManager::CViewManager(QQmlApplicationEngine *ngin, QObject *parent)
     while (it != m_view_managers.end())
     {
         (*it)->registerViewChangeEventCallBack(
-            std::bind(&CViewManager::listenViewChangeEventCallBack, this, std::placeholders::_1));
+            std::bind(&CViewManager::listenViewChangeEventCallBack, this));
         ++it;
     }
 
@@ -122,10 +122,11 @@ void CViewManager::onStatusChanged(QQmlComponent::Status status)
     }
 }
 
-void CViewManager::listenViewChangeEventCallBack(CComponent* comp)
+void CViewManager::listenViewChangeEventCallBack()
 {
-    CPP_LOG_DEBUG("Path %s", comp->info()->path.toStdString().c_str());
-    m_base->loadUrl(QUrl(comp->info()->path), QQmlComponent::Asynchronous);
+    if(currentView() == nullptr) return;
+    CPP_LOG_DEBUG("Path %s", currentView()->info()->path.toStdString().c_str());
+    m_base->loadUrl(QUrl(currentView()->info()->path), QQmlComponent::Asynchronous);
 }
 
 void CViewManager::updateDepth()

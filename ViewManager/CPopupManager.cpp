@@ -11,7 +11,7 @@ void CPopupManager::pushEnter(const S_VIEW_INFORMATION *nextView)
     if(nextView == nullptr) return;
     CPopup *comp = new CPopup;
     comp->setInfo(nextView);
-    m_event_view_change_cb(comp);
+    m_event_view_change_cb();
     m_views.push(comp);
     increaseDepth();
 }

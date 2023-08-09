@@ -13,7 +13,11 @@ public:
     explicit CScreenManager(QObject *parent = nullptr);
 
     // IViewManager interface
-    CComponent *lastView() {return m_views.top();};
+    CComponent *lastView()
+    {
+        if(m_views.isEmpty()) return nullptr;
+        return m_views.top();
+    };
     void pushEnter(const S_VIEW_INFORMATION *nextView);
     void popExit();
 

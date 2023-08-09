@@ -22,7 +22,7 @@ public:
     virtual void pushEnter(const S_VIEW_INFORMATION* nextView) = 0;
     virtual void popExit()                                     = 0;
 
-    typedef std::function<void(CComponent*)> ViewChangeEventCallBack;
+    typedef std::function<void()> ViewChangeEventCallBack;
 
     void registerViewChangeEventCallBack(ViewChangeEventCallBack cb)
     {

@@ -30,7 +30,7 @@ public:
     void pushEnter(const S_VIEW_INFORMATION*);
     void popExit();
 
-    void listenViewChangeEventCallBack(CComponent*);
+    void listenViewChangeEventCallBack();
 private:
     void initConnections();
 
