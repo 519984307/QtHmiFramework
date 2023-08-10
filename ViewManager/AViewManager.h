@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QQmlComponent>
+#include <QQuickItem>
 #include <QHash>
 #include <functional>
 #include "CComponent.h"
@@ -41,7 +42,8 @@ public:
     template<class T>
     inline T *readCache(uint32_t key) { return (T*)m_view_cached[key];}
 
-    inline void writeCache(uint32_t key, CComponent *comp) { m_view_cached[key] = comp; }
+    template<class T>
+    inline void writeCache(uint32_t key, CComponent *comp) { m_view_cached[key] = (T*)comp; }
 
     inline int depth() const { return m_depth; }
 

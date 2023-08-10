@@ -25,6 +25,7 @@ public:
 
 private:
     QStack<CScreen*>                    m_views;
+
 };
 
 #endif // CSCREENMANAGER_H

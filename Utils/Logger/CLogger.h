@@ -31,7 +31,7 @@ public:
         char time_str[100];
         strftime(time_str, sizeof(time_str), "%Y-%m-%d %H:%M:%S", localTime);
 
-        QString info = QString("[%1][%2][%3][%4][fn: %5, line: %6] >>>>> ")
+        QString info = QString("[%1][%2][%3][%4][fn: %5, line: %6]\t")
                            .arg(time_str)
                            .arg(flag.c_str())
                            .arg(lv.c_str())

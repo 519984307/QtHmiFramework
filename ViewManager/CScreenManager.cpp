@@ -22,7 +22,7 @@ void CScreenManager::pushEnter(const S_VIEW_INFORMATION *nextView)
         CScreen *comp = new CScreen;
         comp->setInfo(nextView);
         m_views.push(comp);
-        writeCache(nextView->id, comp);
+        writeCache<CScreen>(nextView->id, comp);
         m_event_view_change_cb();
         CPP_LOG_INFO("Load SCREEN [%s]", comp->info()->path.toStdString().c_str());
     }
@@ -39,11 +39,14 @@ void CScreenManager::pushEnter(const S_VIEW_INFORMATION *nextView)
 void CScreenManager::popExit()
 {
     readCache<CScreen>(m_last_view_id)->hide();
-    if(history(m_last_view_id) < 1)
+    if(history(m_last_view_id) <= 1)
     {
+        writeCache<CScreen>(m_last_view_id, nullptr);
         safeRelease(readCache<CScreen>(m_last_view_id));
     }
+
     m_views.pop();
+
     decreaseHistory(m_last_view_id);
     decreaseDepth();
 

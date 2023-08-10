@@ -39,7 +39,9 @@ public:
 
     QHash<QString, QObject *> properties() const;
 
-    void setProperty(QString, QObject*);
+    CComponent *setProperty(QString, QObject*);
+
+    virtual void setPositionByAnchors(QQuickItem*);
 
 private:
     const S_VIEW_INFORMATION    *m_info;
