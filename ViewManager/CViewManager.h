@@ -28,7 +28,7 @@ public:
     void updateDepth();
     void resetDepth();
     void pushEnter(const S_VIEW_INFORMATION*);
-    void popExit();
+    void popExit(const S_VIEW_INFORMATION*);
 
     void listenViewChangeEventCallBack();
 private:

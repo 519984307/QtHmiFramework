@@ -40,21 +40,17 @@ int CViewManager::depth() const { return m_depth; }
 
 void CViewManager::pushEnter(const S_VIEW_INFORMATION* view)
 {
+    if(view->type == E_VIEW_TYPE::NONE_TYPE) return;
+    m_view_managers[view->type]->pushEnter(view);
     m_last_view_type = view->type;
-    m_view_managers[m_last_view_type]->pushEnter(view);
     updateDepth();
 }
 
-void CViewManager::popExit()
+void CViewManager::popExit(const S_VIEW_INFORMATION* view)
 {
-    if(m_last_view_type == E_VIEW_TYPE::NONE_TYPE) return;
-
-    m_last_view_type = E_VIEW_TYPE::SCREEN_TYPE;
-    if(m_view_managers[E_VIEW_TYPE::POPUP_TYPE]->isValidDepth())
-    {
-        m_last_view_type = E_VIEW_TYPE::POPUP_TYPE;
-    }
-    m_view_managers[m_last_view_type]->popExit();
+    if(view->type == E_VIEW_TYPE::NONE_TYPE) return;
+    m_view_managers[view->type]->popExit();
+    m_last_view_type = view->type;
     updateDepth();
 }
 

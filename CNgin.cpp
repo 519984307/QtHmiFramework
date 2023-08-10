@@ -172,7 +172,8 @@ void CNgin::sendEvent(uchar evtId)
 
     if(anyId.contains(evt->destination))
     {
-        m_view_manager->popExit();
+        const S_VIEW_INFORMATION* info = findViewByID(evt->view);
+        m_view_manager->popExit(info);
     }
     else
     {
