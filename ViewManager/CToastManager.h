@@ -1,10 +1,10 @@
 #ifndef CTOASTMANAGER_H
 #define CTOASTMANAGER_H
 
-#include "IViewManager.h"
+#include "AViewManager.h"
 #include "CToast.h"
 
-class CToastManager : public QObject, public IViewManager
+class CToastManager : public QObject, public AViewManager
 {
     Q_OBJECT
 public:

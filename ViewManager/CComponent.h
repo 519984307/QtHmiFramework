@@ -18,13 +18,13 @@ public:
 
     inline void show()
     {
-        CPP_LOG_INFO("%d", m_info->id);
+        CPP_LOG_INFO("%s", m_info->path.toStdString().c_str());
         if(m_item == nullptr) return;
         m_item->setProperty("visible", true);
     }
     inline void hide()
     {
-        CPP_LOG_INFO("%d", m_info->id);
+        CPP_LOG_INFO("%s", m_info->path.toStdString().c_str());
         if(m_item == nullptr) return;
         m_item->setProperty("visible", false);
     }

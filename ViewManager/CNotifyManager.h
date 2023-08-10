@@ -1,11 +1,11 @@
 #ifndef CNOTIFYMANAGER_H
 #define CNOTIFYMANAGER_H
 
-#include "IViewManager.h"
+#include "AViewManager.h"
 #include "CNotify.h"
 
 
-class CNotifyManager : public QObject, public IViewManager
+class CNotifyManager : public QObject, public AViewManager
 {
     Q_OBJECT
 public:

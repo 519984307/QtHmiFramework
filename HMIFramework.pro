@@ -53,7 +53,7 @@ HEADERS += \
     $$PWD/ViewManager/CScreenManager.h \
     $$PWD/ViewManager/CToast.h \
     $$PWD/ViewManager/CToastManager.h \
-    $$PWD/ViewManager/IViewManager.h \
+    $$PWD/ViewManager/AViewManager.h \
     $$PWD/ViewManager/ViewManagerDefines.h
 
 INCLUDEPATH += \

@@ -15,7 +15,7 @@ CViewManager::CViewManager(QQmlApplicationEngine *ngin, QObject *parent)
     m_view_managers[E_VIEW_TYPE::NOTIFY_TYPE]   = &m_notify_manager;
 
 
-    QHash<E_VIEW_TYPE, IViewManager*>::iterator it = m_view_managers.begin();
+    QHash<E_VIEW_TYPE, AViewManager*>::iterator it = m_view_managers.begin();
     while (it != m_view_managers.end())
     {
         (*it)->registerViewChangeEventCallBack(
@@ -48,6 +48,12 @@ void CViewManager::pushEnter(const S_VIEW_INFORMATION* view)
 void CViewManager::popExit()
 {
     if(m_last_view_type == E_VIEW_TYPE::NONE_TYPE) return;
+
+    m_last_view_type = E_VIEW_TYPE::SCREEN_TYPE;
+    if(m_view_managers[E_VIEW_TYPE::POPUP_TYPE]->isValidDepth())
+    {
+        m_last_view_type = E_VIEW_TYPE::POPUP_TYPE;
+    }
     m_view_managers[m_last_view_type]->popExit();
     updateDepth();
 }
@@ -132,7 +138,7 @@ void CViewManager::listenViewChangeEventCallBack()
 void CViewManager::updateDepth()
 {
     resetDepth();
-    QHash<E_VIEW_TYPE, IViewManager*>::iterator it = m_view_managers.begin();
+    QHash<E_VIEW_TYPE, AViewManager*>::iterator it = m_view_managers.begin();
     while(it != m_view_managers.end())
     {
         m_depth += (*it)->depth();

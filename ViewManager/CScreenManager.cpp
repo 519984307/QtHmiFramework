@@ -9,15 +9,12 @@ CScreenManager::CScreenManager(QObject *parent)
 void CScreenManager::pushEnter(const S_VIEW_INFORMATION *nextView)
 {
     if(nextView == nullptr) return;
-
-    ++m_view_history[nextView->id];
-
     E_CACHE_STATUS cached = cacheStatus(nextView->id);
     if(cached == E_CACHE_STATUS::HIT)
     {
-        CPP_LOG_INFO("Load SCREEN [%s] from cache memory", m_view_cached[nextView->id]->info()->path.toStdString().c_str());
-        if(isValidDepth() && isValidLastId()) {m_view_cached[m_last_view_id]->hide(); }
-        m_views.push(m_view_cached[nextView->id]);
+        CPP_LOG_INFO("Load SCREEN [%s] from cache memory", readCache<CScreen>(m_last_view_id)->info()->path.toStdString().c_str());
+        if(isValidDepth() && isValidLastId()) {readCache<CScreen>(m_last_view_id)->hide(); }
+        m_views.push(readCache<CScreen>(nextView->id));
         m_views.top()->show();
     }
     else if(cached == E_CACHE_STATUS::MISS)
@@ -25,8 +22,9 @@ void CScreenManager::pushEnter(const S_VIEW_INFORMATION *nextView)
         CScreen *comp = new CScreen;
         comp->setInfo(nextView);
         m_views.push(comp);
-        m_view_cached[nextView->id] = comp;
+        writeCache(nextView->id, comp);
         m_event_view_change_cb();
+        CPP_LOG_INFO("Load SCREEN [%s]", comp->info()->path.toStdString().c_str());
     }
 
     if(m_last_view_id != nextView->id)
@@ -34,23 +32,22 @@ void CScreenManager::pushEnter(const S_VIEW_INFORMATION *nextView)
         m_last_view_id = nextView->id;
     }
 
+    increaseHistory(m_last_view_id);
     increaseDepth();
 }
 
 void CScreenManager::popExit()
 {
-    CPP_LOG_INFO("");
-    m_view_cached[m_last_view_id]->hide();
-    --m_view_history[m_last_view_id];
-    if(m_view_history[m_last_view_id] < 1)
+    readCache<CScreen>(m_last_view_id)->hide();
+    if(history(m_last_view_id) < 1)
     {
-        m_view_history[m_last_view_id] = 0;
-        safeRelease(m_view_cached[m_last_view_id]);
+        safeRelease(readCache<CScreen>(m_last_view_id));
     }
     m_views.pop();
+    decreaseHistory(m_last_view_id);
+    decreaseDepth();
 
     if(!isValidDepth()) return;
     m_views.top()->show();
     m_last_view_id = m_views.top()->info()->id;
-    decreaseDepth();
 }

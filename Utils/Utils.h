@@ -5,9 +5,8 @@
 #include <string>
 #include <algorithm>
 
-
 template<class T>
-inline void safeRelease(T* &ptr)
+inline void safeRelease(T* ptr)
 {
     if(ptr == nullptr) return;
     delete ptr;

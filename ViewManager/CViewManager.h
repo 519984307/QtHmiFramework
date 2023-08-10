@@ -9,7 +9,7 @@
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QQmlComponent>
-#include "IViewManager.h"
+#include "AViewManager.h"
 #include "CComponent.h"
 #include "CScreenManager.h"
 #include "CPopupManager.h"
@@ -52,7 +52,7 @@ private:
     CPopupManager                                       m_popup_manager;
     CToastManager                                       m_toast_manager;
     CNotifyManager                                      m_notify_manager;
-    QHash<E_VIEW_TYPE, IViewManager*>                   m_view_managers;
+    QHash<E_VIEW_TYPE, AViewManager*>                   m_view_managers;
     E_VIEW_TYPE                                         m_last_view_type{E_VIEW_TYPE::NONE_TYPE};
     int                                                 m_depth{0};
 
