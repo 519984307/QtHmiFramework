@@ -44,7 +44,7 @@ public:
     inline int decreaseDepth(uint8_t step = 1)
     {
         m_depth -= step;
-        if(m_depth < 0) m_depth = 0;
+        if(m_depth < 1) m_depth = 0;
         return m_depth;
     }
 

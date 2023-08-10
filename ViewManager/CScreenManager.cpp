@@ -39,6 +39,7 @@ void CScreenManager::pushEnter(const S_VIEW_INFORMATION *nextView)
 
 void CScreenManager::popExit()
 {
+    CPP_LOG_INFO("");
     m_view_cached[m_last_view_id]->hide();
     --m_view_history[m_last_view_id];
     if(m_view_history[m_last_view_id] < 1)
