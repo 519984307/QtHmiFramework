@@ -3,13 +3,17 @@
 
 #include <QObject>
 #include <QQmlApplicationEngine>
+#include <QGuiApplication>
+#include <QQmlComponent>
+#include <QQuickWindow>
 #include <QQmlContext>
 #include <QQmlEngine>
-#include <QGuiApplication>
+#include <QQuickItem>
 #include <QTimer>
 #include <QQueue>
 #include <vector>
-#include "CViewManager.h"
+#include "AViewManager.h"
+#include "Common.h"
 
 class CNgin : public QObject
 {
@@ -25,8 +29,6 @@ public:
 
     Q_INVOKABLE void sendEvent(uchar);
 
-public slots:
-
 signals:
     void initCompleted();
 
@@ -34,17 +36,29 @@ private:
     explicit CNgin(QObject *parent = nullptr);
     ~CNgin();
 
+    void initConnections();
+
+public slots:
+    void onCompleted();
+    void onProgressChanged(qreal);
+    void onStatusChanged(QQmlComponent::Status);
+    void onSignalPushEnter(AView*);
+
+private:
     const S_VIEW_INFORMATION* findViewByID(const uint32_t&);
     const S_VIEW_EVENT* findEventByID(const uchar&);
-    void initConnections();
-    void loadQML(QString, const QString&);
+    void pushEnter(const S_VIEW_INFORMATION*);
+    void popExit();
 
 private:
     static CNgin                                            *s_instance;
     QQmlApplicationEngine                                   *m_qml_ngin           = nullptr;
     QQmlContext                                             *m_qml_ctx            = nullptr;
     QObject                                                 *m_root_object        = nullptr;
-    CViewManager                                            *m_view_manager       = nullptr;
+    QQmlComponent                                           *m_base               = nullptr;
+    QQuickWindow                                            *m_window             = nullptr;
+    QQuickItem                                              *m_qml_parent         = nullptr;
+    QQmlContext                                             *m_root_ctx           = nullptr;
     QHash<uchar, const S_VIEW_EVENT*>                        m_event_cached;
     QHash<uint32_t, const S_VIEW_INFORMATION*>               m_info_cached;
     QList<const S_VIEW_INFORMATION*>                         m_infos{};
@@ -52,7 +66,8 @@ private:
     QQueue<uchar>                                            m_events_queue;
     uchar                                                    m_last_event{0};
     bool                                                     m_event_is_processing{false};
-
+    QHash<E_VIEW_TYPE, AViewManager*>                        m_view_managers;
+    E_VIEW_TYPE                                              m_last_view_type{E_VIEW_TYPE::NONE_TYPE};
 };
 
 #endif // CNGIN_H

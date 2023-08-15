@@ -20,19 +20,6 @@ Rectangle {
         }
     }
 
-    Text {
-        id: idStackDepth
-        text: `StackView Depth: ${QmlViewManager.depth}`
-        color: "black"
-        font.bold: true
-        anchors {
-            top: parent.top
-            topMargin: 50
-            left: parent.left
-            leftMargin: 50
-        }
-    }
-
     Component.onCompleted: {
 //        Logger.qmlLogInfo(`[Entry][${title}]`)
         entry()

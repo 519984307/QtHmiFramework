@@ -1,6 +1,7 @@
 #include "CNgin.h"
 #include "Utils.h"
 #include "Logger/LoggerDefines.h"
+#include "CScreenManager.h"
 #include "CViewEnums.h"
 
 #define QML_BASE "qrc:/QML_RESOURCE//main.qml"
@@ -16,61 +17,39 @@ CNgin::CNgin(QObject *parent)
 {
     m_qml_ngin           = new QQmlApplicationEngine(this);
     m_qml_ctx            = m_qml_ngin->rootContext();
+    m_base               = new QQmlComponent(m_qml_ngin, this);
 
-    m_view_manager       = new CViewManager(m_qml_ngin, this);
-
+    m_view_managers[E_VIEW_TYPE::SCREEN_TYPE] = new CScreenManager(this);
     initConnections();
 }
 
 CNgin::~CNgin()
 {
-    safeRelease(m_view_manager);
     safeRelease(m_qml_ngin);
-}
+    safeRelease(m_base);
 
-const S_VIEW_INFORMATION *CNgin::findViewByID(const uint32_t &id)
-{
-    if(m_info_cached[id] != nullptr)
+    QHash<E_VIEW_TYPE, AViewManager*>::iterator it = m_view_managers.begin();
+    while(it != m_view_managers.end())
     {
-        return m_info_cached[id];
-    }
-
-    QList<const S_VIEW_INFORMATION*>::iterator it = m_infos.begin();
-    while(it != m_infos.end())
-    {
-        if(id == (*it)->id)
-        {
-            m_info_cached[id] =  (*it);
-            return (*it);
-        }
+        safeRelease(it.value());
         ++it;
     }
-    return nullptr;
-}
-
-const S_VIEW_EVENT *CNgin::findEventByID(const uchar &id)
-{
-    if(m_event_cached[id] != nullptr)
-    {
-        return m_event_cached[id];
-    }
-
-    QList<const S_VIEW_EVENT*>::iterator it = m_events.begin();
-    while(it != m_events.end())
-    {
-        if(id == (*it)->event)
-        {
-            m_event_cached[id] =  (*it);
-            return (*it);
-        }
-        ++it;
-    }
-    return nullptr;
 }
 
 void CNgin::initConnections()
 {
-    connect(this, &CNgin::initCompleted, m_view_manager, &CViewManager::onCompleted);
+    connect(this, &CNgin::initCompleted, this, &CNgin::onCompleted);
+    connect(m_base, &QQmlComponent::statusChanged, this, &CNgin::onStatusChanged);
+
+    QHash<E_VIEW_TYPE, AViewManager*>::iterator it = m_view_managers.begin();
+    while(it != m_view_managers.end())
+    {
+        connect(it.value(),
+                &AViewManager::signalPushEnter,
+                this,
+                &CNgin::onSignalPushEnter);
+        ++it;
+    }
 }
 
 void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t screenHeight, uchar event)
@@ -87,7 +66,6 @@ void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t scree
         {
             emit initCompleted();
 
-            m_root_object = m_qml_ngin->rootObjects().at(0);
             CNgin::instance()->sendEvent(event);
 
         }
@@ -102,7 +80,8 @@ void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t scree
 
     // set context
     setCtxProperty("QmlNgin", QVariant::fromValue(this));
-    setCtxProperty("QmlViewManager", QVariant::fromValue(m_view_manager));
+    setCtxProperty("QmlScreens", QVariant::fromValue(m_view_managers[E_VIEW_TYPE::SCREEN_TYPE]));
+
 
     // register QML types
     qmlRegisterSingletonInstance("Api.Common", 1, 0, "Logger", CLogger::instance(E_LOGGER_FLAG::QML));
@@ -163,7 +142,7 @@ void CNgin::sendEvent(uchar evtId)
 
     if(evt == nullptr)
     {
-        CPP_LOG_WARN("Event with ID [%u] has not been defined!!!", evtId);
+        CPP_LOG_WARN("Event with ID [%u] has not been defined!!!", evtId)
         return;
     }
 
@@ -172,29 +151,119 @@ void CNgin::sendEvent(uchar evtId)
 
     if(anyId.contains(evt->destination))
     {
-        const S_VIEW_INFORMATION* info = findViewByID(evt->view);
-        m_view_manager->popExit(info);
+        this->popExit();
     }
     else
     {
         const S_VIEW_INFORMATION* info = findViewByID(evt->destination);
         if(info == nullptr)
         {
-            CPP_LOG_WARN("Screen with ID [%u] not found!!!", evt->destination);
+            CPP_LOG_WARN("Screen with ID [%u] not found!!!", evt->destination)
             return;
         }
-        m_view_manager->pushEnter(info);
+        m_last_view_type = info->type;
+        this->pushEnter(info);
     }
 }
 
-
-void CNgin::loadQML(QString objName, const QString& path)
+void CNgin::onCompleted()
 {
-    QObject* _loader = nullptr;
-    _loader = m_root_object->findChild<QObject*>(objName);
+    m_root_object = m_qml_ngin->rootObjects().at(0);
 
-    if(_loader != nullptr)
+    if (m_window == nullptr)
     {
-        _loader->setProperty("source", path);
+        m_window = qobject_cast<QQuickWindow*>(m_root_object);
+        m_qml_parent = m_window->contentItem();
     }
+}
+
+void CNgin::onProgressChanged(qreal progress)
+{
+    Q_UNUSED(progress)
+}
+
+void CNgin::onStatusChanged(QQmlComponent::Status status)
+{
+    switch (status) {
+    case QQmlComponent::Null:
+        CPP_LOG_INFO("This QQmlComponent has no data. Call loadUrl() or setData() to add QML content.")
+        break;
+    case QQmlComponent::Ready:
+    {
+        CPP_LOG_INFO("This QQmlComponent is ready and create() may be called.")
+
+        QQuickItem *item = qobject_cast<QQuickItem*>(m_base->create());
+        item->setParentItem(m_qml_parent);
+        m_view_managers[m_last_view_type]->last_view()
+            ->initialize(item)
+            ->customizeProperties();
+
+        break;
+    }
+    case QQmlComponent::Loading:
+        CPP_LOG_INFO("This QQmlComponent is loading network data.")
+        break;
+    case QQmlComponent::Error:
+        CPP_LOG_INFO("An error has occurred. Call errors() to retrieve a list of errors.")
+        break;
+    default:
+        break;
+    }
+}
+
+void CNgin::onSignalPushEnter(AView *newView)
+{
+    if(newView == nullptr) return;
+    CPP_LOG_DEBUG("Path %s", newView->info()->path);
+    m_base->loadUrl(QUrl(newView->info()->path), QQmlComponent::Asynchronous);
+}
+
+const S_VIEW_INFORMATION *CNgin::findViewByID(const uint32_t &id)
+{
+    if(m_info_cached[id] != nullptr)
+    {
+        return m_info_cached[id];
+    }
+
+    QList<const S_VIEW_INFORMATION*>::iterator it = m_infos.begin();
+    while(it != m_infos.end())
+    {
+        if(id == (*it)->id)
+        {
+            m_info_cached[id] =  (*it);
+            return (*it);
+        }
+        ++it;
+    }
+    return nullptr;
+}
+
+const S_VIEW_EVENT *CNgin::findEventByID(const uchar &id)
+{
+    if(m_event_cached[id] != nullptr)
+    {
+        return m_event_cached[id];
+    }
+
+    QList<const S_VIEW_EVENT*>::iterator it = m_events.begin();
+    while(it != m_events.end())
+    {
+        if(id == (*it)->event)
+        {
+            m_event_cached[id] =  (*it);
+            return (*it);
+        }
+        ++it;
+    }
+    return nullptr;
+}
+
+void CNgin::pushEnter(const S_VIEW_INFORMATION *view)
+{
+    m_view_managers[m_last_view_type]->pushEnter(view);
+}
+
+void CNgin::popExit()
+{
+    m_view_managers[m_last_view_type]->popExit();
 }

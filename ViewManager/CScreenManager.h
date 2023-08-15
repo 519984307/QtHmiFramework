@@ -1,31 +1,48 @@
 #ifndef CSCREENMANAGER_H
 #define CSCREENMANAGER_H
 
-#include <QStack>
 #include "AViewManager.h"
-#include "CScreen.h"
 
-
-class CScreenManager : public QObject, public AViewManager
+class CScreenManager : public AViewManager
 {
     Q_OBJECT
+    Q_PROPERTY(int depth READ depth NOTIFY depthChanged)
 public:
-    explicit CScreenManager(QObject *parent = nullptr);
-
-    // IViewManager interface
-    CComponent *lastView()
+    CScreenManager(QObject *parent = nullptr);
+    inline int increaseDepth(uint8_t step = 1)
     {
-        if(m_views.isEmpty()) return nullptr;
-        return m_views.top();
-    };
-    void pushEnter(const S_VIEW_INFORMATION *nextView);
-    void popExit();
+        m_depth += step;
+        emit depthChanged();
+        return m_depth;
+    }
+
+    inline int decreaseDepth(uint8_t step = 1)
+    {
+        m_depth -= step;
+        if(m_depth < 1) m_depth = 0;
+        emit depthChanged();
+        return m_depth;
+    }
+
+    inline bool isValidDepth() { return m_depth > 1; }
+
+signals:
+    void depthChanged();
 
 
+
+    // AViewManager interface
+public:
+    virtual AView *createView(const S_VIEW_INFORMATION *view) override;
+    virtual void pushEnter(const S_VIEW_INFORMATION *view) override;
+    virtual void popExit() override;
+
+
+    int depth() const;
 
 private:
-    QStack<CScreen*>                    m_views;
-
+    QStack<AView*>                  m_view;
+    int                             m_depth{0};
 };
 
 #endif // CSCREENMANAGER_H

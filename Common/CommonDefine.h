@@ -13,6 +13,6 @@
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 #endif
 
-#define __UNUSED(x) (void)x
+#define UNUSED(x) (void)x;
 
 #endif // COMMONDEFINE_H

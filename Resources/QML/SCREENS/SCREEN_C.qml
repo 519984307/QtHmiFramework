@@ -7,6 +7,19 @@ Qml.QmlContainer {
     color: "green"
     title: "SCREEN C"
 
+    Text {
+        id: idStackDepth
+        text: `StackView Depth: ${QmlScreens.depth}`
+        color: "black"
+        font.bold: true
+        anchors {
+            top: parent.top
+            topMargin: 50
+            left: parent.left
+            leftMargin: 50
+        }
+    }
+
     Row {
         spacing: 10
         anchors {

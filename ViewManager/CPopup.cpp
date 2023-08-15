@@ -1,7 +1,4 @@
 #include "CPopup.h"
 
-CPopup::CPopup(QObject *parent)
-    : CComponent{parent}
-{
-
-}
+CPopup::CPopup(const S_VIEW_INFORMATION *info, QObject *parent) : AView(info, parent)
+{}

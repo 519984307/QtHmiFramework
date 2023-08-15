@@ -33,11 +33,11 @@ public:
 
         QString info = QString("[%1][%2][%3][%4][fn: %5, line: %6]\t")
                            .arg(time_str)
-                           .arg(flag.c_str())
-                           .arg(lv.c_str())
-                           .arg(file)
-                           .arg(fn)
-                           .arg(line);
+                           .arg(flag.c_str()) // CPP or QML
+                           .arg(lv.c_str()) // Fatal, Info, Warn, Debug, Error
+                           .arg(file) // file name
+                           .arg(fn) // function name
+                           .arg(line); // at line
 
         int size_s = std::snprintf( nullptr, 0, fm, args ... ) + 1; // Extra space for '\0'
         if( size_s < 1 ){ throw std::runtime_error( "Error during formatting." ); }

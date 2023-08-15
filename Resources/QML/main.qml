@@ -17,12 +17,4 @@ Window {
             Logger.qmlLogInfo("Root Initialize Completed!!!")
         }
     }
-
-    function loadScreen() {
-        var comp = Qt.createComponent(
-                    "qrc:/QML_RESOURCE/SCREENS/SCREEN_A.qml")
-        if (comp.status === Component.Ready) {
-            var obj = comp.createObject(idRootWindow, { "anchors.fill": idRootWindow.contentItem})
-        }
-    }
 }

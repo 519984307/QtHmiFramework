@@ -1,12 +1,12 @@
 #ifndef CPOPUP_H
 #define CPOPUP_H
 
-#include "CComponent.h"
+#include "AView.h"
 
-class CPopup : public CComponent
+class CPopup : public AView
 {
 public:
-    explicit CPopup(QObject *parent = nullptr);
+    CPopup(const S_VIEW_INFORMATION *info, QObject *parent = nullptr);
 };
 
 #endif // CPOPUP_H

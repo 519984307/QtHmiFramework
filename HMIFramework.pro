@@ -15,16 +15,14 @@ SOURCES += \
         Utils/Memory/LFUCache/CLFUCache.cpp \
         Utils/Memory/LRUCache/CLRUCache.cpp \
         View/ViewStates.cpp \
-        ViewManager/CComponent.cpp \
+        ViewManager/AView.cpp \
+        ViewManager/AViewManager.cpp \
         ViewManager/CNotify.cpp \
-        ViewManager/CNotifyManager.cpp \
         ViewManager/CPopup.cpp \
         ViewManager/CPopupManager.cpp \
         ViewManager/CScreen.cpp \
         ViewManager/CScreenManager.cpp \
         ViewManager/CToast.cpp \
-        ViewManager/CToastManager.cpp \
-        ViewManager/CViewManager.cpp \
         main.cpp
 
 HEADERS += \
@@ -41,20 +39,16 @@ HEADERS += \
     $$PWD/View/ViewStates.h \
     $$PWD/View/ViewData.h \
     $$PWD/View/ViewDefines.h \
-    $$PWD/ViewManager/CViewManager.h \
     $$PWD/Utils/Logger/CLogger.h \
     $$PWD/Utils/Logger/LoggerDefines.h \
-    $$PWD/ViewManager/CComponent.h \
+    $$PWD/ViewManager/AView.h \
     $$PWD/ViewManager/CNotify.h \
-    $$PWD/ViewManager/CNotifyManager.h \
     $$PWD/ViewManager/CPopup.h \
-    $$PWD/ViewManager/CPopupManager.h \
     $$PWD/ViewManager/CScreen.h \
-    $$PWD/ViewManager/CScreenManager.h \
     $$PWD/ViewManager/CToast.h \
-    $$PWD/ViewManager/CToastManager.h \
-    $$PWD/ViewManager/AViewManager.h \
-    $$PWD/ViewManager/ViewManagerDefines.h
+    ViewManager/AViewManager.h \
+    ViewManager/CPopupManager.h \
+    ViewManager/CScreenManager.h
 
 INCLUDEPATH += \
     $$PWD/QmlTypes \

@@ -1,7 +1,4 @@
 #include "CToast.h"
 
-CToast::CToast(QObject *parent)
-    : CComponent{parent}
-{
-
-}
+CToast::CToast(const S_VIEW_INFORMATION *info, QObject *parent) : AView(info, parent)
+{}

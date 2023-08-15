@@ -10,6 +10,19 @@ Qml.QmlContainer {
     onEntry: {
     }
 
+    Text {
+        id: idStackDepth
+        text: `StackView Depth: ${QmlScreens.depth}`
+        color: "black"
+        font.bold: true
+        anchors {
+            top: parent.top
+            topMargin: 50
+            left: parent.left
+            leftMargin: 50
+        }
+    }
+
     Row {
         spacing: 10
         anchors {
@@ -73,7 +86,7 @@ Qml.QmlContainer {
         Rectangle {
             width: 100
             height: 50
-            color: QmlViewManager.depth > 1 ? "black" : "gray"
+            color: idScrAMouseBack.enabled ? "black" : "gray"
 
             Text {
                 text: qsTr("Back")
@@ -81,8 +94,9 @@ Qml.QmlContainer {
                 color: "white"
             }
             MouseArea {
+                id: idScrAMouseBack
                 anchors.fill: parent
-                enabled: QmlViewManager.depth > 1
+                enabled: true
                 onClicked: {
                     QmlNgin.sendEvent(EVT.E_SCREEN_A_EVT_BACK)
                 }

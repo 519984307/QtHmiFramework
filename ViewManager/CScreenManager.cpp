@@ -1,56 +1,66 @@
 #include "CScreenManager.h"
+#include "CScreen.h"
 
-CScreenManager::CScreenManager(QObject *parent)
-    : QObject{parent}
+CScreenManager::CScreenManager(QObject *parent) : AViewManager(parent)
+{}
+
+AView *CScreenManager::createView(const S_VIEW_INFORMATION *view)
 {
-
+    return new CScreen(view);
 }
 
 void CScreenManager::pushEnter(const S_VIEW_INFORMATION *nextView)
 {
-    if(nextView == nullptr) return;
+
+    if(nextView == nullptr)
+    {
+        CPP_LOG_INFO("");
+        return;
+    }
     E_CACHE_STATUS cached = cacheStatus(nextView->id);
     if(cached == E_CACHE_STATUS::HIT)
     {
-        CPP_LOG_INFO("Load SCREEN [%s] from cache memory", readCache<CScreen>(m_last_view_id)->info()->path.toStdString().c_str());
-        if(isValidDepth() && isValidLastId()) {readCache<CScreen>(m_last_view_id)->hide(); }
-        m_views.push(readCache<CScreen>(nextView->id));
-        m_views.top()->show();
+        CPP_LOG_INFO("Load SCREEN [%s] from cache memory", readCache(nextView->id)->info()->path);
+        if(isValidDepth() && isValidLastId()) m_view.top()->hide();
+        m_view.push(readCache(nextView->id));
+        m_view.top()->show();
     }
     else if(cached == E_CACHE_STATUS::MISS)
     {
-        CScreen *comp = new CScreen;
-        comp->setInfo(nextView);
-        m_views.push(comp);
-        writeCache<CScreen>(nextView->id, comp);
-        m_event_view_change_cb();
-        CPP_LOG_INFO("Load SCREEN [%s]", comp->info()->path.toStdString().c_str());
+        AView* newView = createView(nextView);
+        writecache(nextView->id, newView);
+        m_view.push(newView);
+        emit signalPushEnter(newView);
+        CPP_LOG_INFO("Load SCREEN [%s]", newView->info()->path);
     }
 
-    if(m_last_view_id != nextView->id)
-    {
-        m_last_view_id = nextView->id;
-    }
+    m_last_view = m_view.top();
 
-    increaseHistory(m_last_view_id);
+    increaseHistory(m_last_view->info()->id);
     increaseDepth();
 }
 
 void CScreenManager::popExit()
 {
-    readCache<CScreen>(m_last_view_id)->hide();
-    if(history(m_last_view_id) <= 1)
+    if(!isValidDepth()) return;
+
+    readCache(m_last_view->info()->id)->hide();
+    if(history(m_last_view->info()->id) < 1)
     {
-        writeCache<CScreen>(m_last_view_id, nullptr);
-        safeRelease(readCache<CScreen>(m_last_view_id));
+        writecache(m_last_view->info()->id, nullptr);
+        safeRelease(readCache(m_last_view->info()->id));
     }
 
-    m_views.pop();
-
-    decreaseHistory(m_last_view_id);
+    decreaseHistory(m_last_view->info()->id);
     decreaseDepth();
+    m_view.pop();
 
-    if(!isValidDepth()) return;
-    m_views.top()->show();
-    m_last_view_id = m_views.top()->info()->id;
+    m_view.top()->show();
+    m_last_view = m_view.top();
 }
+
+int CScreenManager::depth() const
+{
+    return m_depth;
+}
+

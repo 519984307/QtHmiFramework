@@ -1,12 +1,12 @@
 #ifndef CTOAST_H
 #define CTOAST_H
 
-#include "CComponent.h"
+#include "AView.h"
 
-class CToast : public CComponent
+class CToast : public AView
 {
 public:
-    explicit CToast(QObject *parent = nullptr);
+    CToast(const S_VIEW_INFORMATION *info, QObject *parent = nullptr);
 };
 
 #endif // CTOAST_H

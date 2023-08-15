@@ -41,7 +41,7 @@ struct S_VIEW_INFORMATION
     void                        (*fnExit)();
     E_DURATION                  duration{E_DURATION::NONE};
     E_VIEW_TYPE                 type{E_VIEW_TYPE::SCREEN_TYPE};
-    QString                     path;
+    const char*                 path;
 };
 
 #endif // COMMONSTRUCTS_H
