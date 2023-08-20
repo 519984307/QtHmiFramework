@@ -10,20 +10,23 @@ QMAKE_CXXFLAGS_WARN_ON += \
     -Wunused-parameter
 
 SOURCES += \
-        CNgin.cpp \
-        Utils/Logger/CLogger.cpp \
-        Utils/Memory/LFUCache/CLFUCache.cpp \
-        Utils/Memory/LRUCache/CLRUCache.cpp \
-        View/ViewStates.cpp \
-        ViewManager/AView.cpp \
-        ViewManager/AViewManager.cpp \
-        ViewManager/CNotify.cpp \
-        ViewManager/CPopup.cpp \
-        ViewManager/CPopupManager.cpp \
-        ViewManager/CScreen.cpp \
-        ViewManager/CScreenManager.cpp \
-        ViewManager/CToast.cpp \
-        main.cpp
+        $$PWD/AnimationManager/AAnimation.cpp \
+        $$PWD/CNgin.cpp \
+        $$PWD/Utils/Logger/CLogger.cpp \
+        $$PWD/Utils/Memory/LFUCache/CLFUCache.cpp \
+        $$PWD/Utils/Memory/LRUCache/CLRUCache.cpp \
+        $$PWD/View/ViewStates.cpp \
+        $$PWD/ViewManager/AView.cpp \
+        $$PWD/ViewManager/AViewManager.cpp \
+        $$PWD/ViewManager/Notify/CNotify.cpp \
+        $$PWD/ViewManager/Toast/CToast.cpp \
+        $$PWD/ViewManager/Popup/CPopup.cpp \
+        $$PWD/ViewManager/Popup/CPopupManager.cpp \
+        $$PWD/ViewManager/Screen/CScreen.cpp \
+        $$PWD/ViewManager/Screen/CScreenManager.cpp \
+        $$PWD/ViewManager/Screen/CScreenTransitions.cpp \
+        $$PWD/AnimationManager/ATransition.cpp \
+        $$PWD/main.cpp
 
 HEADERS += \
     $$PWD/CNgin.h \
@@ -42,22 +45,24 @@ HEADERS += \
     $$PWD/Utils/Logger/CLogger.h \
     $$PWD/Utils/Logger/LoggerDefines.h \
     $$PWD/ViewManager/AView.h \
-    $$PWD/ViewManager/CNotify.h \
-    $$PWD/ViewManager/CPopup.h \
-    $$PWD/ViewManager/CScreen.h \
-    $$PWD/ViewManager/CToast.h \
-    ViewManager/AViewManager.h \
-    ViewManager/CPopupManager.h \
-    ViewManager/CScreenManager.h
+    $$PWD/ViewManager/AViewManager.h \
+    $$PWD/AnimationManager/AAnimation.h \
+    $$PWD/AnimationManager/ATransition.h \
+    $$PWD/ViewManager/Notify/CNotify.h \
+    $$PWD/ViewManager/Toast/CToast.h \
+    $$PWD/ViewManager/Popup/CPopup.h \
+    $$PWD/ViewManager/Popup/CPopupManager.h \
+    $$PWD/ViewManager/Screen/CScreen.h \
+    $$PWD/ViewManager/Screen/CScreenManager.h \
+    $$PWD/ViewManager/Screen/CScreenTransitions.h
 
 INCLUDEPATH += \
+    $$PWD/View \
     $$PWD/QmlTypes \
     $$PWD/ViewManager \
-    $$PWD/View/States \
-    $$PWD/View \
+    $$PWD/AnimationManager \
     $$PWD/Common \
     $$PWD/Utils \
-    $$PWD/ObserverManager \
     $$PWD
 
 RESOURCES += \

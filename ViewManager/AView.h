@@ -42,6 +42,8 @@ public:
 
     virtual void customizeProperties() {};
 
+    QQuickItem *item() const;
+
 private:
     void initConnections();
     void readProperties();

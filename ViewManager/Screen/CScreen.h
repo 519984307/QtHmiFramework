@@ -2,7 +2,6 @@
 #define CSCREEN_H
 
 #include "AView.h"
-
 class CScreen : public AView
 {
     Q_OBJECT
@@ -12,6 +11,9 @@ public:
     // AView interface
 public:
     virtual void customizeProperties() override;
+
+
+private:
 };
 
 #endif // CSCREEN_H

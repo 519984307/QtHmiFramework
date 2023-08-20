@@ -1,7 +1,8 @@
 #include "CNgin.h"
 #include "Utils.h"
 #include "Logger/LoggerDefines.h"
-#include "CScreenManager.h"
+#include "Screen/CScreenManager.h"
+#include "Popup/CPopupManager.h"
 #include "CViewEnums.h"
 
 #define QML_BASE "qrc:/QML_RESOURCE//main.qml"
@@ -20,6 +21,8 @@ CNgin::CNgin(QObject *parent)
     m_base               = new QQmlComponent(m_qml_ngin, this);
 
     m_view_managers[E_VIEW_TYPE::SCREEN_TYPE] = new CScreenManager(this);
+    m_view_managers[E_VIEW_TYPE::POPUP_TYPE] = new CPopupManager(this);
+
     initConnections();
 }
 
@@ -47,9 +50,14 @@ void CNgin::initConnections()
         connect(it.value(),
                 &AViewManager::signalPushEnter,
                 this,
-                &CNgin::onSignalPushEnter);
+                &CNgin::onSignalPushEnter, Qt::QueuedConnection);
         ++it;
     }
+}
+
+void CNgin::updateLastViewType(E_VIEW_TYPE type)
+{
+    m_last_view_type = type;
 }
 
 void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t screenHeight, uchar event)
@@ -81,6 +89,7 @@ void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t scree
     // set context
     setCtxProperty("QmlNgin", QVariant::fromValue(this));
     setCtxProperty("QmlScreens", QVariant::fromValue(m_view_managers[E_VIEW_TYPE::SCREEN_TYPE]));
+    setCtxProperty("QmlPopups", QVariant::fromValue(m_view_managers[E_VIEW_TYPE::POPUP_TYPE]));
 
 
     // register QML types
@@ -139,6 +148,7 @@ void CNgin::sendEvent(uchar evtId)
 
     const QList<uint32_t> anyId = {E_SCREEN_ID::E_SCREEN_ANY_ID, E_POPUP_ID::E_POPUP_ANY_ID};
     const S_VIEW_EVENT* evt = findEventByID(evtId);
+    const S_VIEW_INFORMATION* info = findViewByID(evt->view);
 
     if(evt == nullptr)
     {
@@ -146,6 +156,7 @@ void CNgin::sendEvent(uchar evtId)
         return;
     }
 
+    m_last_view_type = info->type;
     m_last_event = evt->event; // event id
     evt->fn();
 
@@ -155,13 +166,12 @@ void CNgin::sendEvent(uchar evtId)
     }
     else
     {
-        const S_VIEW_INFORMATION* info = findViewByID(evt->destination);
+        info = findViewByID(evt->destination);
         if(info == nullptr)
         {
             CPP_LOG_WARN("Screen with ID [%u] not found!!!", evt->destination)
             return;
         }
-        m_last_view_type = info->type;
         this->pushEnter(info);
     }
 }
@@ -213,7 +223,7 @@ void CNgin::onStatusChanged(QQmlComponent::Status status)
 
 void CNgin::onSignalPushEnter(AView *newView)
 {
-    if(newView == nullptr) return;
+    if(newView == nullptr || m_last_view_type == E_VIEW_TYPE::NONE_TYPE) return;
     CPP_LOG_DEBUG("Path %s", newView->info()->path);
     m_base->loadUrl(QUrl(newView->info()->path), QQmlComponent::Asynchronous);
 }

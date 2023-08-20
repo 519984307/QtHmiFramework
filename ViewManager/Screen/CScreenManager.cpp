@@ -11,56 +11,45 @@ AView *CScreenManager::createView(const S_VIEW_INFORMATION *view)
 
 void CScreenManager::pushEnter(const S_VIEW_INFORMATION *nextView)
 {
+    if(nextView == nullptr) return;
 
-    if(nextView == nullptr)
-    {
-        CPP_LOG_INFO("");
-        return;
-    }
     E_CACHE_STATUS cached = cacheStatus(nextView->id);
     if(cached == E_CACHE_STATUS::HIT)
     {
         CPP_LOG_INFO("Load SCREEN [%s] from cache memory", readCache(nextView->id)->info()->path);
-        if(isValidDepth() && isValidLastId()) m_view.top()->hide();
-        m_view.push(readCache(nextView->id));
-        m_view.top()->show();
+        if(isValidDepth()) m_views.top()->hide();
+        m_views.push(readCache(nextView->id));
+        m_views.top()->show();
     }
     else if(cached == E_CACHE_STATUS::MISS)
     {
         AView* newView = createView(nextView);
         writecache(nextView->id, newView);
-        m_view.push(newView);
-        emit signalPushEnter(newView);
+        m_views.push(newView);
         CPP_LOG_INFO("Load SCREEN [%s]", newView->info()->path);
+        emit signalPushEnter(newView);
     }
 
-    m_last_view = m_view.top();
-
-    increaseHistory(m_last_view->info()->id);
-    increaseDepth();
+    updateDepth();
+    increaseHistory(nextView->id);
+    m_last_view = m_views.top();
 }
 
 void CScreenManager::popExit()
 {
     if(!isValidDepth()) return;
-
-    readCache(m_last_view->info()->id)->hide();
-    if(history(m_last_view->info()->id) < 1)
+    m_last_view->hide();
+    decreaseHistory(m_last_view->info()->id);
+    if(history(m_last_view->info()->id) == 0)
     {
         writecache(m_last_view->info()->id, nullptr);
-        safeRelease(readCache(m_last_view->info()->id));
+        safeRelease(m_last_view);
     }
 
-    decreaseHistory(m_last_view->info()->id);
-    decreaseDepth();
-    m_view.pop();
+    m_views.pop();
 
-    m_view.top()->show();
-    m_last_view = m_view.top();
-}
-
-int CScreenManager::depth() const
-{
-    return m_depth;
+    m_last_view = m_views.top();
+    m_last_view->show();
+    updateDepth();
 }
 

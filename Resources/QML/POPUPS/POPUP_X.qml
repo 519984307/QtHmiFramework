@@ -9,6 +9,19 @@ Qml.QmlContainer {
     color: "gray"
     title: "POPUP X"
 
+    Text {
+        id: idStackDepth
+        text: `StackView Depth: ${QmlPopups.depth}`
+        color: "black"
+        font.bold: true
+        anchors {
+            top: parent.top
+            topMargin: 50
+            left: parent.left
+            leftMargin: 50
+        }
+    }
+
     Row {
         spacing: 10
         anchors.centerIn: parent

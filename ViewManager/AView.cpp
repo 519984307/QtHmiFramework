@@ -31,8 +31,12 @@ void AView::readProperties()
     m_properties["z"]           = m_item->property("z").toReal();
     m_properties["width"]       = m_item->property("width").toReal();
     m_properties["height"]      = m_item->property("height").toReal();
-
     m_properties["anchors"]     = m_item->property("anchors");
+}
+
+QQuickItem *AView::item() const
+{
+    return m_item;
 }
 
 void AView::initConnections()

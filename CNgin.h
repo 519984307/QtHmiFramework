@@ -37,6 +37,7 @@ private:
     ~CNgin();
 
     void initConnections();
+    void updateLastViewType(E_VIEW_TYPE);
 
 public slots:
     void onCompleted();

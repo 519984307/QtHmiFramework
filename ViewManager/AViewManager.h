@@ -3,7 +3,9 @@
 
 #include <QObject>
 #include <QStack>
+#include <functional>
 #include "AView.h"
+
 class AViewManager: public QObject
 {
     Q_OBJECT
@@ -16,15 +18,13 @@ public:
     virtual void popExit() = 0;
 
     inline int history(uint32_t key) { return m_view_history[key]; }
-
     inline int increaseHistory(uint32_t key) { return ++m_view_history[key]; }
-
     inline int decreaseHistory(uint32_t key)
     {
         --m_view_history[key];
-        if(m_view_history[m_last_view->info()->id] < 1)
+        if(m_view_history[key] < 1)
         {
-            m_view_history[m_last_view->info()->id] = 0;
+            m_view_history[key] = 0;
         }
         return m_view_history[key];
     }
@@ -37,9 +37,6 @@ public:
                    ? E_CACHE_STATUS::HIT:E_CACHE_STATUS::MISS;
     }
 
-    inline bool isValidLastId() { return m_view_cached[m_last_view->info()->id] != nullptr; }
-
-
     AView *last_view() const;
 
 signals:
@@ -50,5 +47,6 @@ protected:
     QHash<uint32_t, int>            m_view_history;
     AView                          *m_last_view                     = nullptr;
 };
+
 
 #endif // AVIEWMANAGER_H
