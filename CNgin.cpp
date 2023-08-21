@@ -93,6 +93,7 @@ void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t scree
 
 
     // register QML types
+    qmlRegisterType<CViewEnums>("VIEWENUMS", 1, 0, "EVT");
     qmlRegisterSingletonInstance("Api.Common", 1, 0, "Logger", CLogger::instance(E_LOGGER_FLAG::QML));
 
 
@@ -162,7 +163,7 @@ void CNgin::sendEvent(uchar evtId)
 
     if(anyId.contains(evt->destination))
     {
-        this->popExit();
+        this->popExit(info);
     }
     else
     {
@@ -206,7 +207,8 @@ void CNgin::onStatusChanged(QQmlComponent::Status status)
         item->setParentItem(m_qml_parent);
         m_view_managers[m_last_view_type]->last_view()
             ->initialize(item)
-            ->customizeProperties();
+            ->customizeProperties()
+            ->show();
 
         break;
     }
@@ -270,10 +272,12 @@ const S_VIEW_EVENT *CNgin::findEventByID(const uchar &id)
 
 void CNgin::pushEnter(const S_VIEW_INFORMATION *view)
 {
+    if(~m_last_view_type & (E_VIEW_TYPE::NONE_TYPE | E_VIEW_TYPE::SCREEN_TYPE) && view->type == E_VIEW_TYPE::SCREEN_TYPE) return;
     m_view_managers[m_last_view_type]->pushEnter(view);
 }
 
-void CNgin::popExit()
+void CNgin::popExit(const S_VIEW_INFORMATION *view)
 {
+    if(~m_last_view_type & (E_VIEW_TYPE::NONE_TYPE | E_VIEW_TYPE::SCREEN_TYPE) && view->type == E_VIEW_TYPE::SCREEN_TYPE) return;
     m_view_managers[m_last_view_type]->popExit();
 }

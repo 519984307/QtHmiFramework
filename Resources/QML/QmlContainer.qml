@@ -8,6 +8,7 @@ Rectangle {
     signal exit();
 
     color: "gray"
+    visible: false
     Text {
         id: idScreenTitle
         text: title

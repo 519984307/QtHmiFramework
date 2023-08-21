@@ -12,7 +12,7 @@ public:
 
     // AView interface
 public:
-    virtual void customizeProperties() override;
+    virtual AView *customizeProperties() override;
 
 private:
     QTimer                  *m_timer = nullptr;

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QQuickItem>
+#include <QCoreApplication>
 #include <QTimer>
 #include <QHash>
 #include "CommonStructs.h"
@@ -19,13 +20,11 @@ public:
 
     inline void show()
     {
-        CPP_LOG_INFO("%s", m_info->path);
         if(m_item == nullptr) return;
         m_item->setProperty("visible", true);
     }
     inline void hide()
     {
-        CPP_LOG_INFO("%s", m_info->path);
         if(m_item == nullptr) return;
         m_item->setProperty("visible", false);
     }
@@ -40,7 +39,7 @@ public:
     AView *initialize(QQuickItem*);
 
 
-    virtual void customizeProperties() {};
+    virtual AView *customizeProperties() { return this; };
 
     QQuickItem *item() const;
 

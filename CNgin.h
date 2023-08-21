@@ -49,7 +49,7 @@ private:
     const S_VIEW_INFORMATION* findViewByID(const uint32_t&);
     const S_VIEW_EVENT* findEventByID(const uchar&);
     void pushEnter(const S_VIEW_INFORMATION*);
-    void popExit();
+    void popExit(const S_VIEW_INFORMATION*);
 
 private:
     static CNgin                                            *s_instance;

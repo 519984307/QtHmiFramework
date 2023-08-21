@@ -2,9 +2,11 @@
 #define COMMONDEFINE_H
 
 #include <QtGlobal>
-#include <string.h>
+#include <string>
 
 #define ONE_SEC 1000
+#define SCREEN_Z 1
+#define POPUP_z 1000
 #define SIZE_OF_ARRAY(arr) sizeof(arr)/sizeof(*(arr))
 #define stringify(name) # name
 #ifdef Q_OS_WIN

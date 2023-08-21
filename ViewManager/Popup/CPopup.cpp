@@ -17,9 +17,12 @@ CPopup::~CPopup()
     safeRelease(m_timer);
 }
 
-void CPopup::customizeProperties()
+AView *CPopup::customizeProperties()
 {
     qvariant_cast<QObject*>(m_properties["anchors"])->setProperty("centerIn", QVariant::fromValue(parentItem()));
+    m_item->setProperty("z", POPUP_z);
+
+    return this;
 }
 
 bool CPopup::event(QEvent *event)
