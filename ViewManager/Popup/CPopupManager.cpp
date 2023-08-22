@@ -7,6 +7,14 @@ CPopupManager::CPopupManager(QObject *parent)
 
 }
 
+void CPopupManager::signalInvisible()
+{
+    AView *obj = reinterpret_cast<AView*>(this->sender());
+    m_views.removeOne(obj);
+    safeRelease(this->sender());
+    updateDepth();
+}
+
 AView *CPopupManager::createView(const S_VIEW_INFORMATION *view)
 {
     return new CPopup(view);
@@ -15,45 +23,39 @@ AView *CPopupManager::createView(const S_VIEW_INFORMATION *view)
 void CPopupManager::pushEnter(const S_VIEW_INFORMATION *nextView)
 {
     if(nextView == nullptr) return;
-
-    E_CACHE_STATUS cached = cacheStatus(nextView->id);
-    if(cached == E_CACHE_STATUS::HIT)
+    if(m_last_view != nullptr) m_last_view->hide();
+    if(m_views.size() > 5)
     {
-        CPP_LOG_INFO("Load SCREEN [%s] from cache memory", readCache(nextView->id)->info()->path);
-        if(isValidDepth()) m_views.top()->hide();
-        m_views.push(readCache(nextView->id));
-        m_views.top()->show();
-    }
-    else if(cached == E_CACHE_STATUS::MISS)
-    {
-        AView* newView = createView(nextView);
-        writecache(nextView->id, newView);
-        m_views.push(newView);
-        CPP_LOG_INFO("Load SCREEN [%s]", newView->info()->path);
-        emit signalPushEnter(newView);
+        m_views.front()->hide();
+        safeRelease(m_views.front());
+        m_views.pop_front();
     }
 
+    AView* newView = createView(nextView);
+    connect(newView, &AView::signalInvisible,this, &CPopupManager::signalInvisible);
+    m_views.push_back(newView);
+    m_last_view = m_views.last();
     updateDepth();
-    increaseHistory(nextView->id);
-    m_last_view = m_views.top();
+
+    emit signalPushEnter(m_last_view);
+    CPP_LOG_INFO("Load POPUP [%s]", newView->info()->path);
 }
 
 void CPopupManager::popExit()
 {
-    if(!isValidDepth()) return;
+    if(m_views.size() < 1) return;
     m_last_view->hide();
-    decreaseHistory(m_last_view->info()->id);
-    if(history(m_last_view->info()->id) == 0)
-    {
-        writecache(m_last_view->info()->id, nullptr);
-        safeRelease(m_last_view);
-    }
+    m_last_view->disconnect();
+    safeRelease(m_last_view);
+    m_views.pop_back();
 
-    m_views.pop();
-    if(depth() > 0)
+    if(!m_views.isEmpty())
     {
-        m_last_view = m_views.top();
+        m_last_view = m_views.last();
         m_last_view->show();
         updateDepth();
     }
+    qInfo() << m_views;
+
+    CPP_LOG_INFO("%d", m_views.size());
 }

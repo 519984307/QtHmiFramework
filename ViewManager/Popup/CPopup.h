@@ -17,9 +17,6 @@ public:
 private:
     QTimer                  *m_timer = nullptr;
 
-    // QObject interface
-public:
-    virtual bool event(QEvent *event) override;
 };
 
 #endif // CPOPUP_H

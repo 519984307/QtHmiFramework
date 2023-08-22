@@ -26,8 +26,8 @@ void CScreenManager::pushEnter(const S_VIEW_INFORMATION *nextView)
         AView* newView = createView(nextView);
         writecache(nextView->id, newView);
         m_views.push(newView);
-        CPP_LOG_INFO("Load SCREEN [%s]", newView->info()->path);
         emit signalPushEnter(newView);
+        CPP_LOG_INFO("Load SCREEN [%s]", newView->info()->path);
     }
 
     updateDepth();

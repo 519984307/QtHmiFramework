@@ -34,6 +34,16 @@ void AView::readProperties()
     m_properties["anchors"]     = m_item->property("anchors");
 }
 
+bool AView::event(QEvent *event)
+{
+    return QObject::event(event);
+}
+
+bool AView::eventFilter(QObject *watched, QEvent *event)
+{
+    return QObject::eventFilter(watched, event);
+}
+
 QQuickItem *AView::item() const
 {
     return m_item;

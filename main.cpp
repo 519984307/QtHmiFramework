@@ -15,6 +15,5 @@ int main(int argc, char *argv[])
     CNgin::instance()->registerEvents(ALL_EVENTS, SIZE_OF_ARRAY(ALL_EVENTS));
     CNgin::instance()->completed();
 
-
     return app.exec();
 }

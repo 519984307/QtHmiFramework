@@ -12,10 +12,12 @@ public:
 
     inline int depth() const {return m_views.size(); }
     inline void updateDepth() { emit depthChanged(); }
-    inline bool isValidDepth() { return depth() > 0; }
 
 signals:
     void depthChanged();
+
+public slots:
+    void signalInvisible();
 
     // AViewManager interface
 public:
@@ -24,7 +26,7 @@ public:
     virtual void popExit() override;
 
 private:
-    QStack<AView*>                 m_views;
+    QList<AView*>                 m_views;
 };
 
 #endif // CPOPUPMANAGER_H

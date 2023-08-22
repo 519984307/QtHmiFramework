@@ -22,11 +22,13 @@ public:
     {
         if(m_item == nullptr) return;
         m_item->setProperty("visible", true);
+        emit signalVisible();
     }
     inline void hide()
     {
         if(m_item == nullptr) return;
         m_item->setProperty("visible", false);
+        emit signalInvisible();
     }
 
     const S_VIEW_INFORMATION *info() const
@@ -47,10 +49,20 @@ private:
     void initConnections();
     void readProperties();
 
+    // QObject interface
+public:
+    virtual bool event(QEvent *event) override;
+    virtual bool eventFilter(QObject *watched, QEvent *event) override;
+
 protected:
     const S_VIEW_INFORMATION    *m_info         = nullptr;
     QQuickItem                  *m_item         = nullptr;
     QHash<QString, QVariant>     m_properties;
+
+signals:
+    void signalVisible();
+    void signalInvisible();
+
 };
 
 
