@@ -1,6 +1,7 @@
 #ifndef CSCREENMANAGER_H
 #define CSCREENMANAGER_H
 
+#include "CScreen.h"
 #include "AViewManager.h"
 #include "CScreenTransitions.h"
 
@@ -26,8 +27,8 @@ public:
         }
         return m_view_history[key];
     }
-    inline AView* readCache(uint32_t key) const { return m_view_cached[key]; }
-    inline void writecache(uint32_t key, AView* val) { m_view_cached[key] = val; }
+    inline CScreen* readCache(uint32_t key) const { return m_view_cached[key]; }
+    inline void writecache(uint32_t key, CScreen* val) { m_view_cached[key] = val; }
     inline E_CACHE_STATUS cacheStatus(const uint32_t key)
     {
         if(m_view_cached.isEmpty()) return E_CACHE_STATUS::MISS;
@@ -42,14 +43,13 @@ signals:
 
     // AViewManager interface
 public:
-    virtual AView *createView(const S_VIEW_INFORMATION *view) override;
     virtual void pushEnter(const S_VIEW_INFORMATION *view) override;
     virtual void popExit() override;
 
 
 private:
-    QStack<AView*>                  m_views;
-    QHash<uint32_t, AView*>         m_view_cached;
+    QStack<CScreen*>                  m_views;
+    QHash<uint32_t, CScreen*>         m_view_cached;
     QHash<uint32_t, int>            m_view_history;
     CScreenTransitions              m_transitions;
 

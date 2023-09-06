@@ -59,7 +59,6 @@ private:
     QQmlComponent                                           *m_base               = nullptr;
     QQuickWindow                                            *m_window             = nullptr;
     QQuickItem                                              *m_qml_parent         = nullptr;
-    QQmlContext                                             *m_root_ctx           = nullptr;
     QHash<uchar, const S_VIEW_EVENT*>                        m_event_cached;
     QHash<uint32_t, const S_VIEW_INFORMATION*>               m_info_cached;
     QList<const S_VIEW_INFORMATION*>                         m_infos{};

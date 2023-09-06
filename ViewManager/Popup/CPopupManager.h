@@ -1,6 +1,7 @@
 #ifndef CPOPUPMANAGER_H
 #define CPOPUPMANAGER_H
 
+#include "CPopup.h"
 #include "AViewManager.h"
 
 class CPopupManager : public AViewManager
@@ -12,6 +13,7 @@ public:
 
     inline int depth() const {return m_views.size(); }
     inline void updateDepth() { emit depthChanged(); }
+    inline bool isValidDepth() { return depth() > 0; }
 
 signals:
     void depthChanged();
@@ -21,12 +23,13 @@ public slots:
 
     // AViewManager interface
 public:
-    virtual AView *createView(const S_VIEW_INFORMATION *view) override;
     virtual void pushEnter(const S_VIEW_INFORMATION *view) override;
     virtual void popExit() override;
+    virtual int  indexOfView(const uint32_t &) override;
 
 private:
-    QList<AView*>                 m_views;
+    QList<CPopup*>                  m_views;
+
 };
 
 #endif // CPOPUPMANAGER_H

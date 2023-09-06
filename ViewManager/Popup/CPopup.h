@@ -6,6 +6,7 @@
 
 class CPopup : public AView
 {
+    Q_OBJECT
 public:
     CPopup(const S_VIEW_INFORMATION *info, QObject *parent = nullptr);
     ~CPopup();
@@ -13,6 +14,12 @@ public:
     // AView interface
 public:
     virtual AView *customizeProperties() override;
+
+public slots:
+    void onVisibleTimeout();
+
+signals:
+    void signalWaittingForTimeout();
 
 private:
     QTimer                  *m_timer = nullptr;

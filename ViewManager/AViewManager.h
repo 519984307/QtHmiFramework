@@ -12,10 +12,9 @@ class AViewManager: public QObject
 public:
     explicit AViewManager(QObject *parent = nullptr);
     virtual ~AViewManager(){};
-
-    virtual AView* createView(const S_VIEW_INFORMATION *view) = 0;
     virtual void pushEnter(const S_VIEW_INFORMATION* view) = 0;
     virtual void popExit() = 0;
+    virtual int indexOfView(const uint32_t &) { return -1; }
 
     AView *last_view() const;
 

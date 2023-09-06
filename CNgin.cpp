@@ -180,7 +180,7 @@ void CNgin::sendEvent(uchar evtId)
 void CNgin::onCompleted()
 {
     m_root_object = m_qml_ngin->rootObjects().at(0);
-
+    if (m_root_object == nullptr) return;
     if (m_window == nullptr)
     {
         m_window = qobject_cast<QQuickWindow*>(m_root_object);

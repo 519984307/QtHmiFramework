@@ -4,11 +4,6 @@
 CScreenManager::CScreenManager(QObject *parent) : AViewManager(parent)
 {}
 
-AView *CScreenManager::createView(const S_VIEW_INFORMATION *view)
-{
-    return new CScreen(view);
-}
-
 void CScreenManager::pushEnter(const S_VIEW_INFORMATION *nextView)
 {
     if(nextView == nullptr) return;
@@ -23,7 +18,7 @@ void CScreenManager::pushEnter(const S_VIEW_INFORMATION *nextView)
     }
     else if(cached == E_CACHE_STATUS::MISS)
     {
-        AView* newView = createView(nextView);
+        CScreen* newView = new CScreen(nextView, this);
         writecache(nextView->id, newView);
         m_views.push(newView);
         emit signalPushEnter(newView);
