@@ -26,11 +26,12 @@ void CNotifyManager::pushEnter(const S_VIEW_INFORMATION *view)
 {
     if(view == nullptr) return;
     CNotify *newView = new CNotify(view, this);
-    m_views.insert(view->id, newView);
+    m_last_view = newView;
+    m_views.push_back(newView);
     connect((CNotify*)newView, &CNotify::signalWaittingForTimeout,this, &CNotifyManager::onSignalInvisible, Qt::DirectConnection);
     emit signalPushEnter(newView);
     updateDepth();
-    CPP_LOG_INFO("Load NOTIFY [%s]", newView->info()->path);
+    CPP_LOG_INFO("Load NOTIFY [%s]", newView->info()->path)
 }
 
 void CNotifyManager::popExit()

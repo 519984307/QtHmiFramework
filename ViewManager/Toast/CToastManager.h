@@ -1,15 +1,15 @@
-#ifndef CNOTIFYMANAGER_H
-#define CNOTIFYMANAGER_H
+#ifndef CTOASTMANAGER_H
+#define CTOASTMANAGER_H
 
-#include "CNotify.h"
+#include "CToast.h"
 #include "AViewManager.h"
-class CNotifyManager : public AViewManager
+
+class CToastManager : public AViewManager
 {
     Q_OBJECT
     Q_PROPERTY(int depth READ depth NOTIFY depthChanged)
 public:
-    explicit CNotifyManager(QObject *parent = nullptr);
-
+    explicit CToastManager(QObject *parent = nullptr);
     inline int depth() const {return m_views.size(); }
     inline void updateDepth() { emit depthChanged(); }
 
@@ -27,8 +27,7 @@ signals:
     void depthChanged();
 
 private:
-    QList<CNotify*>                  m_views;
-
+    QList<CToast*>                  m_views;
 };
 
-#endif // CNOTIFYMANAGER_H
+#endif // CTOASTMANAGER_H

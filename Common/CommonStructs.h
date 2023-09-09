@@ -40,7 +40,7 @@ struct S_VIEW_INFORMATION
     void                        (*fnEntry)();
     void                        (*fnExit)();
     E_DURATION                  duration{E_DURATION::NONE};
-    E_VIEW_TYPE                 type{E_VIEW_TYPE::SCREEN_TYPE};
+    E_VIEW_TYPE                 type{E_VIEW_TYPE::NONE_TYPE};
     const char*                 path;
 };
 

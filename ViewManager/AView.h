@@ -62,6 +62,10 @@ protected:
 signals:
     void signalVisible();
     void signalInvisible();
+    void signalWaittingForTimeout();
+
+private:
+    QTimer                  *m_timer = nullptr;
 
 };
 

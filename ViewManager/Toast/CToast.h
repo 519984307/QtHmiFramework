@@ -7,6 +7,10 @@ class CToast : public AView
 {
 public:
     CToast(const S_VIEW_INFORMATION *info, QObject *parent = nullptr);
+
+    // AView interface
+public:
+    virtual AView *customizeProperties() override;
 };
 
 #endif // CTOAST_H

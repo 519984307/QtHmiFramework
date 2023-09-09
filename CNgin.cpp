@@ -3,6 +3,8 @@
 #include "Logger/LoggerDefines.h"
 #include "Screen/CScreenManager.h"
 #include "Popup/CPopupManager.h"
+#include "Notify/CNotifyManager.h"
+#include "Toast/CToastManager.h"
 #include "CViewEnums.h"
 
 #define QML_BASE "qrc:/QML_RESOURCE//main.qml"
@@ -22,6 +24,10 @@ CNgin::CNgin(QObject *parent)
 
     m_view_managers[E_VIEW_TYPE::SCREEN_TYPE] = new CScreenManager(this);
     m_view_managers[E_VIEW_TYPE::POPUP_TYPE] = new CPopupManager(this);
+    m_view_managers[E_VIEW_TYPE::NOTIFY_TYPE] = new CNotifyManager(this);
+    m_view_managers[E_VIEW_TYPE::TOAST_TYPE] = new CToastManager(this);
+
+
 
     initConnections();
 }
@@ -170,9 +176,11 @@ void CNgin::sendEvent(uchar evtId)
         info = findViewByID(evt->destination);
         if(info == nullptr)
         {
-            CPP_LOG_WARN("Screen with ID [%u] not found!!!", evt->destination)
+            CPP_LOG_WARN("View with ID [%u] not found!!!", evt->destination)
             return;
         }
+
+        m_last_view_type = info->type;
         this->pushEnter(info);
     }
 }
@@ -272,12 +280,11 @@ const S_VIEW_EVENT *CNgin::findEventByID(const uchar &id)
 
 void CNgin::pushEnter(const S_VIEW_INFORMATION *view)
 {
-    if(~m_last_view_type & (E_VIEW_TYPE::NONE_TYPE | E_VIEW_TYPE::SCREEN_TYPE) && view->type == E_VIEW_TYPE::SCREEN_TYPE) return;
     m_view_managers[m_last_view_type]->pushEnter(view);
 }
 
 void CNgin::popExit(const S_VIEW_INFORMATION *view)
 {
-    if(~m_last_view_type & (E_VIEW_TYPE::NONE_TYPE | E_VIEW_TYPE::SCREEN_TYPE) && view->type == E_VIEW_TYPE::SCREEN_TYPE) return;
+    Q_UNUSED(view)
     m_view_managers[m_last_view_type]->popExit();
 }

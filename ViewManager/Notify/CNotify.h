@@ -13,12 +13,6 @@ public:
     // AView interface
 public:
     virtual AView *customizeProperties() override;
-
-signals:
-    void signalWaittingForTimeout();
-
-private:
-    QTimer                  *m_timer = nullptr;
 };
 
 #endif // CNOTIFY_H

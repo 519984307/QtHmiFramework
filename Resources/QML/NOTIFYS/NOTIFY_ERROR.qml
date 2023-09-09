@@ -5,9 +5,9 @@ import "../" as Qml
 
 Qml.QmlContainer {
     width: 420
-    height: 50
-    color: "red"
-    title: ""
+    height: 100
+    color: "white"
+    title: "NOTIFY ERROR"
 
-    border.color: "white"
+    border.color: "black"
 }

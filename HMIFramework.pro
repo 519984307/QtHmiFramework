@@ -27,7 +27,8 @@ SOURCES += \
         $$PWD/ViewManager/Screen/CScreenTransitions.cpp \
         $$PWD/AnimationManager/ATransition.cpp \
         $$PWD/main.cpp \
-        ViewManager/Notify/CNotifyManager.cpp
+        ViewManager/Notify/CNotifyManager.cpp \
+        ViewManager/Toast/CToastManager.cpp
 
 HEADERS += \
     $$PWD/CNgin.h \
@@ -56,7 +57,8 @@ HEADERS += \
     $$PWD/ViewManager/Screen/CScreen.h \
     $$PWD/ViewManager/Screen/CScreenManager.h \
     $$PWD/ViewManager/Screen/CScreenTransitions.h \
-    ViewManager/Notify/CNotifyManager.h
+    ViewManager/Notify/CNotifyManager.h \
+    ViewManager/Toast/CToastManager.h
 
 INCLUDEPATH += \
     $$PWD/View \
