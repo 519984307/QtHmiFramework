@@ -8,7 +8,7 @@ CPopup::CPopup(const S_VIEW_INFORMATION *info, QObject *parent) : AView(info, pa
         m_timer->setSingleShot(true);
         m_timer->start(info->duration * ONE_SEC);
 
-        connect(m_timer, &QTimer::timeout, this, &CPopup::onVisibleTimeout, Qt::DirectConnection);
+        connect(m_timer, &QTimer::timeout, this, &CPopup::signalWaittingForTimeout, Qt::DirectConnection);
     }
 }
 
@@ -23,9 +23,4 @@ AView *CPopup::customizeProperties()
     m_item->setProperty("z", POPUP_z);
 
     return this;
-}
-
-void CPopup::onVisibleTimeout()
-{
-    emit signalWaittingForTimeout();
 }

@@ -19,13 +19,12 @@ signals:
     void depthChanged();
 
 public slots:
-    void signalInvisible();
+    void onSignalInvisible();
 
     // AViewManager interface
 public:
     virtual void pushEnter(const S_VIEW_INFORMATION *view) override;
     virtual void popExit() override;
-    virtual int  indexOfView(const uint32_t &) override;
 
 private:
     QList<CPopup*>                  m_views;

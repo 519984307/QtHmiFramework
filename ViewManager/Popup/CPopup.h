@@ -15,9 +15,6 @@ public:
 public:
     virtual AView *customizeProperties() override;
 
-public slots:
-    void onVisibleTimeout();
-
 signals:
     void signalWaittingForTimeout();
 

@@ -6,15 +6,15 @@ CPopupManager::CPopupManager(QObject *parent)
 
 }
 
-void CPopupManager::signalInvisible()
+void CPopupManager::onSignalInvisible()
 {
     if(this->sender() == nullptr) return;
     CPopup *obj = reinterpret_cast<CPopup*>(this->sender());
     obj->hide();
-    safeRelease(obj);
-    int idx = indexOfView(obj->info()->id);
+    int idx = indexOfViewByID<CPopup>(m_views, obj->info()->id);
     m_views.removeAt(idx);
     updateDepth();
+    safeRelease(obj);
 }
 
 void CPopupManager::pushEnter(const S_VIEW_INFORMATION *nextView)
@@ -23,11 +23,10 @@ void CPopupManager::pushEnter(const S_VIEW_INFORMATION *nextView)
     CPopup* newView = new CPopup(nextView, this);
     m_last_view = newView;
     m_views.push_back(newView);
-    connect((CPopup*)newView, &CPopup::signalWaittingForTimeout,this, &CPopupManager::signalInvisible);
+    connect((CPopup*)newView, &CPopup::signalWaittingForTimeout,this, &CPopupManager::onSignalInvisible);
     emit signalPushEnter(newView);
     updateDepth();
     CPP_LOG_INFO("Load POPUP [%s]", newView->info()->path);
-
 }
 
 void CPopupManager::popExit()
@@ -48,18 +47,4 @@ void CPopupManager::popExit()
         m_last_view->show();
 
     }
-}
-
-int CPopupManager::indexOfView(const uint32_t &id)
-{
-    QList<CPopup*>::iterator it = m_views.begin();
-    while(it != m_views.end())
-    {
-        if((*it)->info()->id == id)
-        {
-            return (int)(it - m_views.begin());
-        }
-        ++it;
-    }
-    return -1;
 }
