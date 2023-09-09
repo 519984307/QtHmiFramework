@@ -11,6 +11,7 @@
 #include <QQuickItem>
 #include <QTimer>
 #include <QQueue>
+#include <QSensor>
 #include <vector>
 #include "AViewManager.h"
 #include "Common.h"
