@@ -6,14 +6,13 @@ class CScreen : public AView
 {
     Q_OBJECT
 public:
-    CScreen(const S_VIEW_INFORMATION *info, QObject *parent = nullptr);
+    CScreen(const S_VIEW_INFORMATION *info, QQuickItem *parent = nullptr);
 
     // AView interface
 public:
     virtual AView *customizeProperties() override;
 
 
-private:
 };
 
 #endif // CSCREEN_H

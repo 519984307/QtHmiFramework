@@ -27,6 +27,7 @@ SOURCES += \
         $$PWD/ViewManager/Screen/CScreenTransitions.cpp \
         $$PWD/AnimationManager/ATransition.cpp \
         $$PWD/main.cpp \
+        QmlTypes/CQmlRootContainer.cpp \
         ViewManager/Notify/CNotifyManager.cpp \
         ViewManager/Toast/CToastManager.cpp
 
@@ -57,6 +58,7 @@ HEADERS += \
     $$PWD/ViewManager/Screen/CScreen.h \
     $$PWD/ViewManager/Screen/CScreenManager.h \
     $$PWD/ViewManager/Screen/CScreenTransitions.h \
+    QmlTypes/CQmlRootContainer.h \
     ViewManager/Notify/CNotifyManager.h \
     ViewManager/Toast/CToastManager.h
 

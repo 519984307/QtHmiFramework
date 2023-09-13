@@ -1,6 +1,6 @@
 #include "CPopup.h"
 
-CPopup::CPopup(const S_VIEW_INFORMATION *info, QObject *parent) : AView(info, parent)
+CPopup::CPopup(const S_VIEW_INFORMATION *info, QQuickItem *parent) : AView(info, parent)
 {}
 
 CPopup::~CPopup()
@@ -8,8 +8,9 @@ CPopup::~CPopup()
 
 AView *CPopup::customizeProperties()
 {
+    CPP_LOG_INFO("[Entry]")
     qvariant_cast<QObject*>(m_properties["anchors"])->setProperty("centerIn", QVariant::fromValue(parentItem()));
-    m_item->setProperty("z", POPUP_z);
-
+    this->setProperty("z", POPUP_z);
+    CPP_LOG_INFO("[Exit]")
     return this;
 }

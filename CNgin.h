@@ -44,7 +44,7 @@ public slots:
     void onCompleted();
     void onProgressChanged(qreal);
     void onStatusChanged(QQmlComponent::Status);
-    void onSignalPushEnter(AView*);
+    void onSignalPushEnter(const S_VIEW_INFORMATION *, E_CACHE_STATUS);
 
 private:
     const S_VIEW_INFORMATION* findViewByID(const uint32_t&);

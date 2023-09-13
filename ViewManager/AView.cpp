@@ -1,16 +1,17 @@
 #include "AView.h"
 #include "Utils.h"
 
-AView::AView(const S_VIEW_INFORMATION *info, QObject *parent):QObject{parent}
+AView::AView(const S_VIEW_INFORMATION *info, QQuickItem *parent):CQmlRootContainer{parent}
 {
     m_info = info;
-    if(info->duration > 0)
+    if(info->type > E_VIEW_TYPE::SCREEN_TYPE)
     {
-        m_timer = new QTimer(this);
-        m_timer->setSingleShot(true);
-        m_timer->start(info->duration * ONE_SEC);
-
-        connect(m_timer, &QTimer::timeout, this, &AView::signalWaittingForTimeout, Qt::DirectConnection);
+        if(info->duration > 0)
+        {
+            m_timer = new QTimer(this);
+            m_timer->setSingleShot(true);
+            m_timer->start(info->duration * ONE_SEC);
+        }
     }
     initConnections();
 }
@@ -20,26 +21,25 @@ AView::~AView()
     safeRelease(m_timer);
 }
 
-QQuickItem *AView::parentItem() const
+AView * AView::initialize(QQuickItem *parent)
 {
-    return m_item->parentItem();
-}
-
-AView * AView::initialize(QQuickItem *item)
-{
-    m_item = item;
+    CPP_LOG_INFO("[Entry]")
+    this->setParentItem(parent);
     readProperties();
+    CPP_LOG_INFO("[Exit]")
     return this;
 }
 
 void AView::readProperties()
 {
-    m_properties["x"]           = m_item->property("x").toReal();
-    m_properties["y"]           = m_item->property("y").toReal();
-    m_properties["z"]           = m_item->property("z").toReal();
-    m_properties["width"]       = m_item->property("width").toReal();
-    m_properties["height"]      = m_item->property("height").toReal();
-    m_properties["anchors"]     = m_item->property("anchors");
+    CPP_LOG_INFO("[Entry]")
+    m_properties["x"]           = this->property("x").toReal();
+    m_properties["y"]           = this->property("y").toReal();
+    m_properties["z"]           = this->property("z").toReal();
+    m_properties["width"]       = this->property("width").toReal();
+    m_properties["height"]      = this->property("height").toReal();
+    m_properties["anchors"]     = this->property("anchors");
+    CPP_LOG_INFO("[Exit]")
 }
 
 bool AView::event(QEvent *event)
@@ -52,11 +52,15 @@ bool AView::eventFilter(QObject *watched, QEvent *event)
     return QObject::eventFilter(watched, event);
 }
 
-QQuickItem *AView::item() const
+void AView::setInfo(const S_VIEW_INFORMATION *newInfo)
 {
-    return m_item;
+    m_info = newInfo;
 }
 
 void AView::initConnections()
 {
+    if(m_timer != nullptr)
+    {
+        connect(m_timer, &QTimer::timeout, this, &AView::signalWaittingForTimeout, Qt::DirectConnection);
+    }
 }

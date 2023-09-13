@@ -1,6 +1,6 @@
 #include "CNotify.h"
 
-CNotify::CNotify(const S_VIEW_INFORMATION *info, QObject *parent) : AView(info, parent)
+CNotify::CNotify(const S_VIEW_INFORMATION *info, QQuickItem *parent) : AView(info, parent)
 {}
 
 CNotify::~CNotify()
@@ -8,11 +8,12 @@ CNotify::~CNotify()
 
 AView *CNotify::customizeProperties()
 {
+    CPP_LOG_INFO("[Entry]")
     QObject *position = qvariant_cast<QObject*>(m_properties["anchors"]);
     position->setProperty("horizontalCenter", QVariant::fromValue(parentItem()->property("horizontalCenter")));
     position->setProperty("top", QVariant::fromValue(parentItem()->property("top")));
     position->setProperty("topMargin", 50);
-
-    m_item->setProperty("z", NOTIFY_Z);
+    this->setProperty("z", NOTIFY_Z);
+    CPP_LOG_INFO("[Exit]")
     return this;
 }

@@ -1,5 +1,5 @@
 import QtQuick 2.15
-import Api.Common 1.0
+import Common.Utilities 1.0
 
 Rectangle {
     property string title: ""

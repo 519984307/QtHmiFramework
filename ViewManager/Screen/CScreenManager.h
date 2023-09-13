@@ -39,11 +39,11 @@ public:
 signals:
     void depthChanged();
 
-
-
     // AViewManager interface
 public:
     virtual void pushEnter(const S_VIEW_INFORMATION *view) override;
+    virtual AViewManager *pushEnter(AView*) override;
+    virtual void pushEnterExisted(const S_VIEW_INFORMATION* view) override;
     virtual void popExit() override;
 
 

@@ -13,13 +13,14 @@ public:
     explicit AViewManager(QObject *parent = nullptr);
     virtual ~AViewManager(){};
     virtual void pushEnter(const S_VIEW_INFORMATION* view) = 0;
+    virtual AViewManager *pushEnter(AView*) = 0;
+    virtual void pushEnterExisted(const S_VIEW_INFORMATION* view) = 0;
     virtual void popExit() = 0;
-
-    AView *last_view() const;
+    AView *lastView() const;
 
 
 signals:
-    void signalPushEnter(AView*);
+    void signalPushEnter(const S_VIEW_INFORMATION*, E_CACHE_STATUS);
 
 protected:
     template<class AT>

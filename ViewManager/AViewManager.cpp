@@ -3,7 +3,7 @@
 AViewManager::AViewManager(QObject *parent) : QObject(parent)
 {}
 
-AView *AViewManager::last_view() const
+AView *AViewManager::lastView() const
 {
     return m_last_view;
 }

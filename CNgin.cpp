@@ -6,6 +6,7 @@
 #include "Notify/CNotifyManager.h"
 #include "Toast/CToastManager.h"
 #include "CViewEnums.h"
+#include "QmlTypes.h"
 
 #define QML_BASE "qrc:/QML_RESOURCE//main.qml"
 
@@ -71,19 +72,19 @@ void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t scree
     const QUrl url(QStringLiteral(QML_BASE));
 
     QObject::connect(m_qml_ngin, &QQmlApplicationEngine::objectCreated,
-                     &app, [event, url, this](QObject *obj, const QUrl &objUrl) {
-        if (!obj && url == objUrl)
-        {
-            QCoreApplication::exit(-1);
-        }
-        else
-        {
-            emit initCompleted();
+        &app, [event, url, this](QObject *obj, const QUrl &objUrl) {
+            if (!obj && url == objUrl)
+            {
+                QCoreApplication::exit(-1);
+            }
+            else
+            {
+                emit initCompleted();
 
-            CNgin::instance()->sendEvent(event);
+                CNgin::instance()->sendEvent(event);
 
-        }
-    }, Qt::QueuedConnection);
+            }
+        }, Qt::QueuedConnection);
 
 
     if(screenHeight * screenHeight > 0)
@@ -94,13 +95,14 @@ void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t scree
 
     // set context
     setCtxProperty("QmlNgin", QVariant::fromValue(this));
-    setCtxProperty("QmlScreens", QVariant::fromValue(m_view_managers[E_VIEW_TYPE::SCREEN_TYPE]));
+    setCtxProperty("QmlRootContainers", QVariant::fromValue(m_view_managers[E_VIEW_TYPE::SCREEN_TYPE]));
     setCtxProperty("QmlPopups", QVariant::fromValue(m_view_managers[E_VIEW_TYPE::POPUP_TYPE]));
 
 
     // register QML types
     qmlRegisterType<CViewEnums>("VIEWENUMS", 1, 0, "EVT");
-    qmlRegisterSingletonInstance("Api.Common", 1, 0, "Logger", CLogger::instance(E_LOGGER_FLAG::QML));
+    qmlRegisterType<CQmlRootContainer>("Common.Qml", 1, 0, "QmlRootContainer");
+    qmlRegisterSingletonInstance("Common.Utilities", 1, 0, "Logger", CLogger::instance(E_LOGGER_FLAG::QML));
 
 
     // do other things
@@ -140,18 +142,18 @@ void CNgin::registerEvents(const S_VIEW_EVENT *events, uint32_t len)
 
 void CNgin::sendEvent(uchar evtId)
 {
-//    if(m_last_event != 0 && m_last_event == evtId)
-//    {
-//        CPP_LOG_WARN("The current Event [%u] the last Event", evtId);
-//        return;
-//    }
+    //    if(m_last_event != 0 && m_last_event == evtId)
+    //    {
+    //        CPP_LOG_WARN("The current Event [%u] the last Event", evtId);
+    //        return;
+    //    }
 
-//    CPP_LOG_WARN("The Event [%u] [%s] processing", evtId, m_event_is_processing? "is":"is not");
-//    if(m_event_is_processing)
-//    {
-//        m_events_queue.enqueue(evtId);
-//        return;
-//    }
+    //    CPP_LOG_WARN("The Event [%u] [%s] processing", evtId, m_event_is_processing? "is":"is not");
+    //    if(m_event_is_processing)
+    //    {
+    //        m_events_queue.enqueue(evtId);
+    //        return;
+    //    }
 
     const QList<uint32_t> anyId = {E_SCREEN_ID::E_SCREEN_ANY_ID, E_POPUP_ID::E_POPUP_ANY_ID};
     const S_VIEW_EVENT* evt = findEventByID(evtId);
@@ -210,11 +212,12 @@ void CNgin::onStatusChanged(QQmlComponent::Status status)
     case QQmlComponent::Ready:
     {
         CPP_LOG_INFO("This QQmlComponent is ready and create() may be called.")
+        CQmlRootContainer *container = qobject_cast<CQmlRootContainer*>(m_base->create());
 
-        QQuickItem *item = qobject_cast<QQuickItem*>(m_base->create());
-        item->setParentItem(m_qml_parent);
-        m_view_managers[m_last_view_type]->last_view()
-            ->initialize(item)
+        m_view_managers[m_last_view_type]
+            ->pushEnter((AView*)container)
+            ->lastView()
+            ->initialize(m_qml_parent)
             ->customizeProperties()
             ->show();
 
@@ -231,11 +234,18 @@ void CNgin::onStatusChanged(QQmlComponent::Status status)
     }
 }
 
-void CNgin::onSignalPushEnter(AView *newView)
+void CNgin::onSignalPushEnter(const S_VIEW_INFORMATION *nextView, E_CACHE_STATUS status)
 {
-    if(newView == nullptr || m_last_view_type == E_VIEW_TYPE::NONE_TYPE) return;
-    CPP_LOG_DEBUG("Path %s", newView->info()->path);
-    m_base->loadUrl(QUrl(newView->info()->path), QQmlComponent::Asynchronous);
+    if(status == E_CACHE_STATUS::HIT)
+    {
+        m_view_managers[m_last_view_type]->pushEnterExisted(nextView);
+    }
+    else if(status == E_CACHE_STATUS::MISS)
+    {
+        if(nextView == nullptr || m_last_view_type == E_VIEW_TYPE::NONE_TYPE) return;
+        CPP_LOG_DEBUG("Path %s", nextView->path);
+        m_base->loadUrl(QUrl(nextView->path), QQmlComponent::Asynchronous);
+    }
 }
 
 const S_VIEW_INFORMATION *CNgin::findViewByID(const uint32_t &id)

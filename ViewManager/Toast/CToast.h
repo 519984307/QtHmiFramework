@@ -6,7 +6,7 @@
 class CToast : public AView
 {
 public:
-    CToast(const S_VIEW_INFORMATION *info, QObject *parent = nullptr);
+    CToast(const S_VIEW_INFORMATION *info, QQuickItem *parent = nullptr);
 
     // AView interface
 public:

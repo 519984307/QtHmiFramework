@@ -79,8 +79,8 @@ inline std::string dec64ToASCII(uint64_t dec)
     return str;
 }
 
-inline const char* qstrTochars(const QString &str)
+inline const char* qstrTochars(std::string &str)
 {
-    return str.toStdString().c_str();
+    return str.c_str();
 }
 #endif // UTILS_H

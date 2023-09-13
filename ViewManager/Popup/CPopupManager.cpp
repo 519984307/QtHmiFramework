@@ -20,13 +20,25 @@ void CPopupManager::onSignalInvisible()
 void CPopupManager::pushEnter(const S_VIEW_INFORMATION *nextView)
 {
     if(nextView == nullptr) return;
-    CPopup* newView = new CPopup(nextView, this);
+    emit signalPushEnter(nextView, E_CACHE_STATUS::MISS);
+}
+
+AViewManager *CPopupManager::pushEnter(AView *newView)
+{
+    CPP_LOG_INFO("[Entry]")
     m_last_view = newView;
-    m_views.push_back(newView);
-    connect((CPopup*)newView, &CPopup::signalWaittingForTimeout,this, &CPopupManager::onSignalInvisible);
-    emit signalPushEnter(newView);
+    CPopup *obj = (CPopup*)newView;
+    m_views.push_back(obj);
     updateDepth();
-    CPP_LOG_INFO("Load POPUP [%s]", newView->info()->path);
+    CPP_LOG_INFO("Load POPUP [%s]", obj->info()->path);
+    connect(obj, &CPopup::signalWaittingForTimeout,this, &CPopupManager::onSignalInvisible);
+    CPP_LOG_INFO("[Exit]")
+    return this;
+}
+
+void CPopupManager::pushEnterExisted(const S_VIEW_INFORMATION *view)
+{
+    Q_UNUSED(view)
 }
 
 void CPopupManager::popExit()

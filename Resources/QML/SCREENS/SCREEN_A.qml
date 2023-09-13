@@ -1,18 +1,16 @@
 import QtQuick 2.15
 import VIEWENUMS 1.0
+import Common.Qml 1.0
 
 import "../" as Qml
 
-Qml.QmlContainer {
+QmlRootContainer {
     color: "red"
     title: "SCREEN A"
 
-    onEntry: {
-    }
-
     Text {
         id: idStackDepth
-        text: `StackView Depth: ${QmlScreens.depth}`
+        text: `StackView Depth: ${QmlRootContainers.depth}`
         color: "black"
         font.bold: true
         anchors {

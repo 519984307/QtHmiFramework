@@ -8,7 +8,7 @@ class CNotify : public AView
 {
     Q_OBJECT
 public:
-    CNotify(const S_VIEW_INFORMATION *info, QObject *parent = nullptr);
+    CNotify(const S_VIEW_INFORMATION *info, QQuickItem *parent = nullptr);
     ~CNotify();
     // AView interface
 public:

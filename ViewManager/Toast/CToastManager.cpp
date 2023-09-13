@@ -15,16 +15,28 @@ void CToastManager::removeById(const uint32_t &id)
     safeRelease(obj);
 }
 
-void CToastManager::pushEnter(const S_VIEW_INFORMATION *view)
+void CToastManager::pushEnter(const S_VIEW_INFORMATION *nextView)
 {
-    if(view == nullptr) return;
-    CToast *newView = new CToast(view, this);
+    if(nextView == nullptr) return;
+    emit signalPushEnter(nextView, E_CACHE_STATUS::MISS);
+}
+
+AViewManager *CToastManager::pushEnter(AView *newView)
+{
+    CPP_LOG_INFO("[Entry]")
     m_last_view = newView;
-    m_views.push_back(newView);
-    connect((CToast*)newView, &CToast::signalWaittingForTimeout,this, &CToastManager::onSignalInvisible, Qt::DirectConnection);
-    emit signalPushEnter(newView);
+    CToast *obj = (CToast*)newView;
+    m_views.push_back(obj);
     updateDepth();
-    CPP_LOG_INFO("Load TOAST [%s]", newView->info()->path)
+    CPP_LOG_INFO("Load TOAST [%s]", obj->info()->path)
+    connect(obj, &CToast::signalWaittingForTimeout,this, &CToastManager::onSignalInvisible, Qt::DirectConnection);
+    CPP_LOG_INFO("[Exit]")
+    return this;
+}
+
+void CToastManager::pushEnterExisted(const S_VIEW_INFORMATION *view)
+{
+    Q_UNUSED(view)
 }
 
 void CToastManager::popExit()
