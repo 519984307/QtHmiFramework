@@ -8,6 +8,8 @@ CView::CView(QQuickItem *parent):QQuickPaintedItem{parent}
     setAcceptTouchEvents(true);
     setAcceptedMouseButtons(Qt::AllButtons);
 
+    setVisible(false);
+
     initConnections();
 }
 

@@ -28,10 +28,12 @@ CNgin::CNgin(QObject *parent)
 
     m_view_managers[E_VIEW_TYPE::SCREEN_TYPE]   = new CScreenManager(this);
     m_view_managers[E_VIEW_TYPE::POPUP_TYPE]    = new CPopupManager(this);
-//    m_view_managers[E_VIEW_TYPE::NOTIFY_TYPE]   = new CNotifyManager(this);
-//    m_view_managers[E_VIEW_TYPE::TOAST_TYPE]    = new CToastManager(this);
+    //    m_view_managers[E_VIEW_TYPE::NOTIFY_TYPE]   = new CNotifyManager(this);
+    //    m_view_managers[E_VIEW_TYPE::TOAST_TYPE]    = new CToastManager(this);
 
 
+    m_view_types_dict[E_VIEW_TYPE::SCREEN_TYPE] = "Screen";
+    m_view_types_dict[E_VIEW_TYPE::POPUP_TYPE]  = "Popup";
 
     initConnections();
 }
@@ -56,6 +58,15 @@ void CNgin::initConnections()
     QHash<E_VIEW_TYPE, CViewManager*>::iterator it = m_view_managers.begin();
     while(it != m_view_managers.end())
     {
+        connect(it.value(),
+                &CViewManager::signalPushBack,
+                this,
+                &CNgin::onSignalPushBack, Qt::QueuedConnection);
+
+        connect(it.value(),
+                &CViewManager::signalPopBack,
+                this,
+                &CNgin::onSignalPopBack, Qt::QueuedConnection);
         ++it;
     }
 }
@@ -90,6 +101,9 @@ void CNgin::initialize(QGuiApplication&app, const uint32_t &screenWidth, const u
 
     // set context
     setCtxProperty("QmlNgin", QVariant::fromValue(this));
+    setCtxProperty("QmlScreenManager", QVariant::fromValue(m_view_managers[E_VIEW_TYPE::SCREEN_TYPE]));
+    setCtxProperty("QmlPopupManager", QVariant::fromValue(m_view_managers[E_VIEW_TYPE::POPUP_TYPE]));
+
 
 
     // register QML types and other types
@@ -166,7 +180,7 @@ void CNgin::sendEvent(const uchar &evtId)
 
     if(anyId.contains(evt->destination))
     {
-        m_view_managers[m_last_view_type]->popBack();
+        m_view_managers[m_last_view_type]->popExit();
     }
     else
     {
@@ -178,7 +192,7 @@ void CNgin::sendEvent(const uchar &evtId)
         }
 
         m_last_view_type = info->type;
-        m_view_managers[m_last_view_type]->pushBack(m_qml_base, m_qml_parent, info);
+        m_view_managers[m_last_view_type]->pushEnter(info);
     }
 }
 
@@ -200,6 +214,63 @@ void CNgin::onCompleted(const uchar& event)
         if (m_root_object == nullptr || m_qml_window == nullptr || m_qml_base == nullptr) return;
         CNgin::instance()->sendEvent(event);
     }
+}
+
+void CNgin::onSignalPushBack(const S_VIEW_INFORMATION *nextView, E_CACHE_STATUS status)
+{
+    CPP_LOG_DEBUG("Path %s", nextView->path);
+    CView *obj = nullptr;
+    if(status == E_CACHE_STATUS::HIT)
+    {
+        CPP_LOG_INFO("Load SCREEN [%s] from cache memory", nextView->path);
+        obj = m_view_managers[m_last_view_type]->findViewObjectByID(nextView->id);
+
+        if(obj == nullptr) return;
+
+        m_view_managers[m_last_view_type]->views().last()->hide();
+    }
+    else if(status == E_CACHE_STATUS::MISS)
+    {
+        if(nextView == nullptr || m_last_view_type == E_VIEW_TYPE::NONE_TYPE) return;
+        m_qml_base->loadUrl(QUrl(nextView->path), QQmlComponent::PreferSynchronous);
+        switch (m_qml_base->status()) {
+        case QQmlComponent::Null:
+            CPP_LOG_INFO("This QQmlComponent has no data. Call loadUrl() or setData() to add QML content.")
+
+            break;
+        case QQmlComponent::Ready:
+        {
+            CPP_LOG_INFO("This QQmlComponent is ready and create() may be called.")
+            obj = qobject_cast<CView*>(m_qml_base->create());
+            obj->initialize(nextView, m_qml_parent);
+            m_view_managers[m_last_view_type]->writecache(nextView->id, obj);
+            break;
+        }
+        case QQmlComponent::Loading:
+            CPP_LOG_INFO("This QQmlComponent is loading network data.")
+
+            break;
+        case QQmlComponent::Error:
+            CPP_LOG_INFO("An error has occurred. Call errors() to retrieve a list of errors.")
+
+            break;
+        default:
+            break;
+        }
+    }
+
+    if(obj == nullptr) return;
+
+    obj->show();
+    m_view_managers[m_last_view_type]->pushBack(obj);
+
+}
+
+void CNgin::onSignalPopBack()
+{
+    if(!m_view_managers[m_last_view_type]->isValidDepth()) return;
+    m_view_managers[m_last_view_type]->views().last()->hide();
+    m_view_managers[m_last_view_type]->popBack();
 }
 
 const S_VIEW_INFORMATION *CNgin::findViewByID(const uint32_t &id)

@@ -28,29 +28,21 @@ public:
                    ? E_CACHE_STATUS::HIT:E_CACHE_STATUS::MISS;
     }
 
-    inline int history(uint32_t key) { return m_view_history[key]; }
-    inline int increaseHistory(uint32_t key) { return ++m_view_history[key]; }
-    inline int decreaseHistory(uint32_t key)
-    {
-        --m_view_history[key];
-        if(m_view_history[key] < 1)
-        {
-            m_view_history[key] = 0;
-        }
-        return m_view_history[key];
-    }
+    virtual void pushEnter(const S_VIEW_INFORMATION*);
+    virtual void popExit();
 
-    void pushBack(QQmlComponent *, QQuickItem *, const S_VIEW_INFORMATION*);
+    void pushBack(CView*);
     void popBack();
 
-signals:
-    void signalPushBack();
-    void signalPopBack();
-    void depthChanged();
+    CView *findViewObjectByID(const uint32_t &id);
 
-public slots:
-    void onStatusChanged(QQmlComponent::Status);
-    void onProgressChanged(qreal);
+    QList<CView *> views() const;
+
+signals:
+    void signalPushBack(const S_VIEW_INFORMATION*, E_CACHE_STATUS);
+    void signalPopBack();
+
+    void depthChanged();
 
 protected:
     template<class AT>
@@ -70,18 +62,12 @@ protected:
 
 
     QList<CView*>                           m_views;
+    QHash<uint32_t, CView*>                 m_view_cached;
+    QHash<uint32_t, int>                    m_view_history;
     bool                                    m_is_valid_depth{false};
 
 private:
     void initConnections();
-
-private:
-    QHash<uint32_t, CView*>                 m_view_cached;
-    QHash<uint32_t, int>                    m_view_history;
-    QQmlComponent                          *m_qml_base          = nullptr;
-    QQuickItem                             *m_qml_parent        = nullptr;
-    CView                                  *m_last_view         = nullptr;
-    const S_VIEW_INFORMATION               *m_next_view_info    = nullptr;
 
 };
 

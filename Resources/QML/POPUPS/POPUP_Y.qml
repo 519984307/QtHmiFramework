@@ -12,7 +12,7 @@ QmlPopup {
 
     Text {
         id: idStackDepth
-        text: `StackView Depth: ${0}`
+        text: `StackView Depth: ${QmlPopupManager.depth}`
         color: "black"
         font.bold: true
         anchors {

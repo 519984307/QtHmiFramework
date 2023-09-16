@@ -21,13 +21,13 @@ public:
     explicit CView(QQuickItem *parent = nullptr);
     ~CView();
 
-    inline void show()
+    void show()
     {
         CPP_LOG_INFO("[Entry]")
         this->setProperty("visible", true);
         CPP_LOG_INFO("[Exit]")
     }
-    inline void hide()
+    void hide()
     {
         CPP_LOG_INFO("[Entry]")
         this->setProperty("visible", false);

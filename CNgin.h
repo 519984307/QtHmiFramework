@@ -49,6 +49,8 @@ private:
 
 public slots:
     void onCompleted(const uchar&);
+    void onSignalPushBack(const S_VIEW_INFORMATION *, E_CACHE_STATUS);
+    void onSignalPopBack();
 
 private:
     const S_VIEW_INFORMATION* findViewByID(const uint32_t&);
@@ -63,6 +65,7 @@ private:
     QQuickWindow                                            *m_qml_window         = nullptr;
     QQuickItem                                              *m_qml_parent         = nullptr;
 
+    QHash<uint8_t, QString>                                  m_view_types_dict;
     QHash<uchar, const S_VIEW_EVENT*>                        m_event_cached;
     QHash<uint32_t, const S_VIEW_INFORMATION*>               m_info_cached;
     QList<const S_VIEW_INFORMATION*>                         m_infos{};
