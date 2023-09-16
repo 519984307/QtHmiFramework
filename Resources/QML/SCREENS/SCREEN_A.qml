@@ -4,13 +4,13 @@ import Common.Qml 1.0
 
 import "../" as Qml
 
-QmlRootContainer {
+QmlScreen {
     color: "red"
     title: "SCREEN A"
 
     Text {
         id: idStackDepth
-        text: `StackView Depth: ${QmlRootContainers.depth}`
+        text: `StackView Depth: ${0}`
         color: "black"
         font.bold: true
         anchors {

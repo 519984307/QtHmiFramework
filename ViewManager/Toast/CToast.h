@@ -1,16 +1,18 @@
 #ifndef CTOAST_H
 #define CTOAST_H
 
-#include "AView.h"
+#include <CView.h>
 
-class CToast : public AView
+class CToast : public CView
 {
+    Q_OBJECT
 public:
-    CToast(const S_VIEW_INFORMATION *info, QQuickItem *parent = nullptr);
+    CToast(QQuickItem *parent = nullptr);
 
-    // AView interface
+
+    // CView interface
 public:
-    virtual AView *customizeProperties() override;
+    virtual CView *customizeProperties() override;
 };
 
 #endif // CTOAST_H

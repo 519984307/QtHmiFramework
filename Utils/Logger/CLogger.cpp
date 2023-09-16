@@ -1,6 +1,5 @@
 #include "CLogger.h"
 #include "LoggerDefines.h"
-#include <QJSEngine>
 
 CLogger *CLogger::s_instance = nullptr;
 CLogger *CLogger::instance(const E_LOGGER_FLAG &flag)
@@ -39,44 +38,9 @@ void CLogger::selectQtLog(const uint64_t &fn, const char *msg)
     }
 }
 
-void CLogger::qmlLogInfo(QString msg)
-{
-    QML_LOG_INFO(msg.toStdString().c_str());
-}
-
-void CLogger::qmlLogWarn(QString msg)
-{
-    QML_LOG_WARN(msg.toStdString().c_str());
-}
-
-void CLogger::qmlLogFatal(QString msg)
-{
-    QML_LOG_FATAL(msg.toStdString().c_str());
-}
-
-void CLogger::qmlLogDebug(QString msg)
-{
-    QML_LOG_DEBUG(msg.toStdString().c_str());
-}
-
-void CLogger::qmlLogError(QString msg)
-{
-    Q_UNUSED(msg)
-//    QML_LOG_ERROR(msg.toStdString().c_str());
-}
-
-void CLogger::qmlLogTrace(QString msg)
-{
-    Q_UNUSED(msg)
-//    QML_LOG_TRACE(msg.toStdString().c_str());
-}
 CLogger::CLogger(QObject *parent)
     : QObject{parent}
-{
-
-}
+{}
 
 CLogger::~CLogger()
-{
-
-}
+{}

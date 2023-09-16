@@ -1,58 +1,15 @@
 #ifndef CSCREENMANAGER_H
 #define CSCREENMANAGER_H
 
-#include "CScreen.h"
-#include "AViewManager.h"
-#include "CScreenTransitions.h"
+#include <QObject>
+#include <CViewManager.h>
 
-class CScreenManager : public AViewManager
+class CScreenManager: public CViewManager
 {
     Q_OBJECT
-    Q_PROPERTY(int depth READ depth NOTIFY depthChanged)
 public:
     CScreenManager(QObject *parent = nullptr);
-
-    inline int depth() const {return m_views.size(); }
-    inline void updateDepth() { emit depthChanged(); }
-    inline bool isValidDepth() { return depth() > 1; }
-
-    inline int history(uint32_t key) { return m_view_history[key]; }
-    inline int increaseHistory(uint32_t key) { return ++m_view_history[key]; }
-    inline int decreaseHistory(uint32_t key)
-    {
-        --m_view_history[key];
-        if(m_view_history[key] < 1)
-        {
-            m_view_history[key] = 0;
-        }
-        return m_view_history[key];
-    }
-    inline CScreen* readCache(uint32_t key) const { return m_view_cached[key]; }
-    inline void writecache(uint32_t key, CScreen* val) { m_view_cached[key] = val; }
-    inline E_CACHE_STATUS cacheStatus(const uint32_t key)
-    {
-        if(m_view_cached.isEmpty()) return E_CACHE_STATUS::MISS;
-        return (m_view_cached[key] != nullptr)
-                   ? E_CACHE_STATUS::HIT:E_CACHE_STATUS::MISS;
-    }
-
-signals:
-    void depthChanged();
-
-    // AViewManager interface
-public:
-    virtual void pushEnter(const S_VIEW_INFORMATION *view) override;
-    virtual AViewManager *pushEnter(AView*) override;
-    virtual void pushEnterExisted(const S_VIEW_INFORMATION* view) override;
-    virtual void popExit() override;
-
-
-private:
-    QStack<CScreen*>                  m_views;
-    QHash<uint32_t, CScreen*>         m_view_cached;
-    QHash<uint32_t, int>            m_view_history;
-    CScreenTransitions              m_transitions;
-
+    ~CScreenManager();
 };
 
 #endif // CSCREENMANAGER_H

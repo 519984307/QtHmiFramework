@@ -1,18 +1,22 @@
 #ifndef CSCREEN_H
 #define CSCREEN_H
 
-#include "AView.h"
-class CScreen : public AView
+#include <CView.h>
+
+class CScreen : public CView
 {
     Q_OBJECT
 public:
-    CScreen(const S_VIEW_INFORMATION *info, QQuickItem *parent = nullptr);
+    CScreen(QQuickItem *parent = nullptr);
 
-    // AView interface
+    // CView interface
 public:
-    virtual AView *customizeProperties() override;
+    virtual CView *customizeProperties() override;
 
-
+    // QQuickItem interface
+protected:
+    virtual void mousePressEvent(QMouseEvent *event) override;
+    virtual void mouseReleaseEvent(QMouseEvent *event) override;
 };
 
 #endif // CSCREEN_H

@@ -1,9 +1,11 @@
 #include "CToast.h"
 
-CToast::CToast(const S_VIEW_INFORMATION *info, QQuickItem *parent) : AView(info, parent)
-{}
+CToast::CToast(QQuickItem *parent) : CView(parent)
+{
+    m_str_type = __FUNCTION__;
+}
 
-AView *CToast::customizeProperties()
+CView *CToast::customizeProperties()
 {
     CPP_LOG_INFO("[Entry]")
     QObject *position = qvariant_cast<QObject*>(m_properties["anchors"]);

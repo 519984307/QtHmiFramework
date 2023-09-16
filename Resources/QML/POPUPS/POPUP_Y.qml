@@ -4,7 +4,7 @@ import Common.Qml 1.0
 
 import "../" as Qml
 
-QmlRootContainer {
+QmlPopup {
     width: 420
     height: 255
     color: "orange"
@@ -12,7 +12,7 @@ QmlRootContainer {
 
     Text {
         id: idStackDepth
-        text: `StackView Depth: ${QmlPopups.depth}`
+        text: `StackView Depth: ${0}`
         color: "black"
         font.bold: true
         anchors {

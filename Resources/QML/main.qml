@@ -1,6 +1,5 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
-import Common.Utilities 1.0
 import "." as Qml
 
 Window {
@@ -14,7 +13,6 @@ Window {
     Connections {
         target: QmlNgin
         function onInitCompleted() {
-            Logger.qmlLogInfo("Root Initialize Completed!!!")
         }
     }
 }

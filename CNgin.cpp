@@ -1,12 +1,15 @@
 #include "CNgin.h"
 #include "Utils.h"
 #include "Logger/LoggerDefines.h"
+#include "Screen/CScreen.h"
+#include "Popup/CPopup.h"
+#include "Notify/CNotify.h"
+#include "Toast/CToast.h"
 #include "Screen/CScreenManager.h"
 #include "Popup/CPopupManager.h"
-#include "Notify/CNotifyManager.h"
-#include "Toast/CToastManager.h"
+//#include "Notify/CNotifyManager.h"
+//#include "Toast/CToastManager.h"
 #include "CViewEnums.h"
-#include "QmlTypes.h"
 
 #define QML_BASE "qrc:/QML_RESOURCE//main.qml"
 
@@ -21,12 +24,12 @@ CNgin::CNgin(QObject *parent)
 {
     m_qml_ngin           = new QQmlApplicationEngine(this);
     m_qml_ctx            = m_qml_ngin->rootContext();
-    m_base               = new QQmlComponent(m_qml_ngin, this);
+    m_qml_base           = new QQmlComponent(m_qml_ngin, this);
 
     m_view_managers[E_VIEW_TYPE::SCREEN_TYPE]   = new CScreenManager(this);
     m_view_managers[E_VIEW_TYPE::POPUP_TYPE]    = new CPopupManager(this);
-    m_view_managers[E_VIEW_TYPE::NOTIFY_TYPE]   = new CNotifyManager(this);
-    m_view_managers[E_VIEW_TYPE::TOAST_TYPE]    = new CToastManager(this);
+//    m_view_managers[E_VIEW_TYPE::NOTIFY_TYPE]   = new CNotifyManager(this);
+//    m_view_managers[E_VIEW_TYPE::TOAST_TYPE]    = new CToastManager(this);
 
 
 
@@ -36,9 +39,9 @@ CNgin::CNgin(QObject *parent)
 CNgin::~CNgin()
 {
     safeRelease(m_qml_ngin);
-    safeRelease(m_base);
+    safeRelease(m_qml_base);
 
-    QHash<E_VIEW_TYPE, AViewManager*>::iterator it = m_view_managers.begin();
+    QHash<E_VIEW_TYPE, CViewManager*>::iterator it = m_view_managers.begin();
     while(it != m_view_managers.end())
     {
         safeRelease(it.value());
@@ -49,15 +52,10 @@ CNgin::~CNgin()
 void CNgin::initConnections()
 {
     connect(this, &CNgin::initCompleted, this, &CNgin::onCompleted);
-    connect(m_base, &QQmlComponent::statusChanged, this, &CNgin::onStatusChanged);
 
-    QHash<E_VIEW_TYPE, AViewManager*>::iterator it = m_view_managers.begin();
+    QHash<E_VIEW_TYPE, CViewManager*>::iterator it = m_view_managers.begin();
     while(it != m_view_managers.end())
     {
-        connect(it.value(),
-                &AViewManager::signalPushEnter,
-                this,
-                &CNgin::onSignalPushEnter, Qt::QueuedConnection);
         ++it;
     }
 }
@@ -67,7 +65,7 @@ void CNgin::updateLastViewType(E_VIEW_TYPE type)
     m_last_view_type = type;
 }
 
-void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t screenHeight, uchar event)
+void CNgin::initialize(QGuiApplication&app, const uint32_t &screenWidth, const uint32_t &screenHeight, const uchar &event)
 {
     const QUrl url(QStringLiteral(QML_BASE));
 
@@ -79,10 +77,7 @@ void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t scree
             }
             else
             {
-                emit initCompleted();
-
-                CNgin::instance()->sendEvent(event);
-
+                emit initCompleted(event);
             }
         }, Qt::QueuedConnection);
 
@@ -95,15 +90,15 @@ void CNgin::initialize(QGuiApplication&app, uint32_t screenWidth, uint32_t scree
 
     // set context
     setCtxProperty("QmlNgin", QVariant::fromValue(this));
-    setCtxProperty("QmlRootContainers", QVariant::fromValue(m_view_managers[E_VIEW_TYPE::SCREEN_TYPE]));
-    setCtxProperty("QmlPopups", QVariant::fromValue(m_view_managers[E_VIEW_TYPE::POPUP_TYPE]));
 
 
-    // register QML types
+    // register QML types and other types
     qmlRegisterType<CViewEnums>("VIEWENUMS", 1, 0, "EVT");
-    qmlRegisterType<CQmlRootContainer>("Common.Qml", 1, 0, "QmlRootContainer");
-    qmlRegisterSingletonInstance("Common.Utilities", 1, 0, "Logger", CLogger::instance(E_LOGGER_FLAG::QML));
 
+    qmlRegisterType<CScreen>("Common.Qml", 1, 0, "QmlScreen");
+    qmlRegisterType<CPopup>("Common.Qml", 1, 0, "QmlPopup");
+    qmlRegisterType<CNotify>("Common.Qml", 1, 0, "QmlNotify");
+    qmlRegisterType<CToast>("Common.Qml", 1, 0, "QmlToast");
 
     // do other things
 }
@@ -140,7 +135,7 @@ void CNgin::registerEvents(const S_VIEW_EVENT *events, uint32_t len)
     }
 }
 
-void CNgin::sendEvent(uchar evtId)
+void CNgin::sendEvent(const uchar &evtId)
 {
     //    if(m_last_event != 0 && m_last_event == evtId)
     //    {
@@ -171,7 +166,7 @@ void CNgin::sendEvent(uchar evtId)
 
     if(anyId.contains(evt->destination))
     {
-        this->popExit(info);
+        m_view_managers[m_last_view_type]->popBack();
     }
     else
     {
@@ -183,68 +178,27 @@ void CNgin::sendEvent(uchar evtId)
         }
 
         m_last_view_type = info->type;
-        this->pushEnter(info);
+        m_view_managers[m_last_view_type]->pushBack(m_qml_base, m_qml_parent, info);
     }
 }
 
-void CNgin::onCompleted()
+void CNgin::onCompleted(const uchar& event)
 {
-    m_root_object = m_qml_ngin->rootObjects().at(0);
-    if (m_root_object == nullptr) return;
-    if (m_window == nullptr)
+    // [INITIALIZE]
     {
-        m_window = qobject_cast<QQuickWindow*>(m_root_object);
-        m_qml_parent = m_window->contentItem();
+        m_root_object = m_qml_ngin->rootObjects().at(0);
+        if (m_root_object == nullptr) return;
+        if (m_qml_window == nullptr)
+        {
+            m_qml_window = qobject_cast<QQuickWindow*>(m_root_object);
+            m_qml_parent = m_qml_window->contentItem();
+        }
     }
-}
 
-void CNgin::onProgressChanged(qreal progress)
-{
-    Q_UNUSED(progress)
-}
-
-void CNgin::onStatusChanged(QQmlComponent::Status status)
-{
-    switch (status) {
-    case QQmlComponent::Null:
-        CPP_LOG_INFO("This QQmlComponent has no data. Call loadUrl() or setData() to add QML content.")
-        break;
-    case QQmlComponent::Ready:
+    // [AFTER ALL INITIALIZED]
     {
-        CPP_LOG_INFO("This QQmlComponent is ready and create() may be called.")
-        CQmlRootContainer *container = qobject_cast<CQmlRootContainer*>(m_base->create());
-
-        m_view_managers[m_last_view_type]
-            ->pushEnter((AView*)container)
-            ->lastView()
-            ->initialize(m_qml_parent)
-            ->customizeProperties()
-            ->show();
-
-        break;
-    }
-    case QQmlComponent::Loading:
-        CPP_LOG_INFO("This QQmlComponent is loading network data.")
-        break;
-    case QQmlComponent::Error:
-        CPP_LOG_INFO("An error has occurred. Call errors() to retrieve a list of errors.")
-        break;
-    default:
-        break;
-    }
-}
-
-void CNgin::onSignalPushEnter(const S_VIEW_INFORMATION *nextView, E_CACHE_STATUS status)
-{
-    if(status == E_CACHE_STATUS::HIT)
-    {
-        m_view_managers[m_last_view_type]->pushEnterExisted(nextView);
-    }
-    else if(status == E_CACHE_STATUS::MISS)
-    {
-        if(nextView == nullptr || m_last_view_type == E_VIEW_TYPE::NONE_TYPE) return;
-        CPP_LOG_DEBUG("Path %s", nextView->path);
-        m_base->loadUrl(QUrl(nextView->path), QQmlComponent::Asynchronous);
+        if (m_root_object == nullptr || m_qml_window == nullptr || m_qml_base == nullptr) return;
+        CNgin::instance()->sendEvent(event);
     }
 }
 
@@ -286,15 +240,4 @@ const S_VIEW_EVENT *CNgin::findEventByID(const uchar &id)
         ++it;
     }
     return nullptr;
-}
-
-void CNgin::pushEnter(const S_VIEW_INFORMATION *view)
-{
-    m_view_managers[m_last_view_type]->pushEnter(view);
-}
-
-void CNgin::popExit(const S_VIEW_INFORMATION *view)
-{
-    Q_UNUSED(view)
-    m_view_managers[m_last_view_type]->popExit();
 }

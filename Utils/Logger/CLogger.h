@@ -1,6 +1,7 @@
 #ifndef CLOGGER_H
 #define CLOGGER_H
 
+#include <QJSEngine>
 #include <QObject>
 #include <string>
 #include <sstream>
@@ -50,20 +51,13 @@ public:
 
     void selectQtLog(const uint64_t&, const char*);
 
-public slots:
-    void qmlLogInfo(QString);
-    void qmlLogWarn(QString);
-    void qmlLogError(QString);
-    void qmlLogDebug(QString);
-    void qmlLogFatal(QString);
-    void qmlLogTrace(QString);
-
 private:
     explicit CLogger(QObject *parent = nullptr);
     ~CLogger();
 
 private:
     static CLogger  *s_instance;
+    QJSEngine        m_jsNgin;
     E_LOGGER_FLAG    m_flag = E_LOGGER_FLAG::CPP;
     std::mutex       m_mutex;
 };

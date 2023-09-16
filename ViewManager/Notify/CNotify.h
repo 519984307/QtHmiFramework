@@ -1,18 +1,17 @@
 #ifndef CNOTIFY_H
 #define CNOTIFY_H
 
-#include <QTimer>
-#include "AView.h"
+#include <CView.h>
 
-class CNotify : public AView
+class CNotify : public CView
 {
     Q_OBJECT
 public:
-    CNotify(const S_VIEW_INFORMATION *info, QQuickItem *parent = nullptr);
-    ~CNotify();
-    // AView interface
+    CNotify(QQuickItem *parent = nullptr);
+
+    // CView interface
 public:
-    virtual AView *customizeProperties() override;
+    virtual CView *customizeProperties() override;
 };
 
 #endif // CNOTIFY_H

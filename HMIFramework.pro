@@ -10,70 +10,59 @@ QMAKE_CXXFLAGS_WARN_ON += \
     -Wunused-parameter
 
 SOURCES += \
-        $$PWD/AnimationManager/AAnimation.cpp \
-        $$PWD/CNgin.cpp \
-        $$PWD/Utils/Logger/CLogger.cpp \
-        $$PWD/Utils/Memory/LFUCache/CLFUCache.cpp \
-        $$PWD/Utils/Memory/LRUCache/CLRUCache.cpp \
-        $$PWD/View/ViewStates.cpp \
-        $$PWD/ViewManager/AView.cpp \
-        $$PWD/ViewManager/AViewManager.cpp \
-        $$PWD/ViewManager/Notify/CNotify.cpp \
-        $$PWD/ViewManager/Toast/CToast.cpp \
-        $$PWD/ViewManager/Popup/CPopup.cpp \
-        $$PWD/ViewManager/Popup/CPopupManager.cpp \
-        $$PWD/ViewManager/Screen/CScreen.cpp \
-        $$PWD/ViewManager/Screen/CScreenManager.cpp \
-        $$PWD/ViewManager/Screen/CScreenTransitions.cpp \
-        $$PWD/AnimationManager/ATransition.cpp \
-        $$PWD/main.cpp \
-        QmlTypes/CQmlRootContainer.cpp \
-        ViewManager/Notify/CNotifyManager.cpp \
-        ViewManager/Toast/CToastManager.cpp
+        AnimationManager/AAnimation.cpp \
+        CNgin.cpp \
+        Utils/Logger/CLogger.cpp \
+        Utils/Memory/LFUCache/CLFUCache.cpp \
+        Utils/Memory/LRUCache/CLRUCache.cpp \
+        View/ViewStates.cpp \
+        ViewManager/CView.cpp \
+        ViewManager/CViewManager.cpp \
+        ViewManager/Notify/CNotify.cpp \
+        ViewManager/Popup/CPopup.cpp \
+        ViewManager/Popup/CPopupManager.cpp \
+        ViewManager/Screen/CScreen.cpp \
+        ViewManager/Screen/CScreenManager.cpp \
+        ViewManager/Toast/CToast.cpp \
+        main.cpp
 
 HEADERS += \
-    $$PWD/CNgin.h \
-    $$PWD/Common/Common.h \
-    $$PWD/Common/CommonDefine.h \
-    $$PWD/Common/CommonEnums.h \
-    $$PWD/Common/CommonStructs.h \
-    $$PWD/QmlTypes/QmlTypes.h \
-    $$PWD/Utils/Utils.h \
-    $$PWD/Utils/Memory/LFUCache/CLFUCache.h \
-    $$PWD/Utils/Memory/LRUCache/CLRUCache.h \
-    $$PWD/View/CViewEnums.h \
-    $$PWD/View/ViewStates.h \
-    $$PWD/View/ViewData.h \
-    $$PWD/View/ViewDefines.h \
-    $$PWD/Utils/Logger/CLogger.h \
-    $$PWD/Utils/Logger/LoggerDefines.h \
-    $$PWD/ViewManager/AView.h \
-    $$PWD/ViewManager/AViewManager.h \
-    $$PWD/AnimationManager/AAnimation.h \
-    $$PWD/AnimationManager/ATransition.h \
-    $$PWD/ViewManager/Notify/CNotify.h \
-    $$PWD/ViewManager/Toast/CToast.h \
-    $$PWD/ViewManager/Popup/CPopup.h \
-    $$PWD/ViewManager/Popup/CPopupManager.h \
-    $$PWD/ViewManager/Screen/CScreen.h \
-    $$PWD/ViewManager/Screen/CScreenManager.h \
-    $$PWD/ViewManager/Screen/CScreenTransitions.h \
-    QmlTypes/CQmlRootContainer.h \
-    ViewManager/Notify/CNotifyManager.h \
-    ViewManager/Toast/CToastManager.h
+    CNgin.h \
+    Common/Common.h \
+    Common/CommonDefine.h \
+    Common/CommonEnums.h \
+    Common/CommonStructs.h \
+    Utils/Utils.h \
+    Utils/Memory/LFUCache/CLFUCache.h \
+    Utils/Memory/LRUCache/CLRUCache.h \
+    View/CViewEnums.h \
+    View/ViewStates.h \
+    View/ViewData.h \
+    View/ViewDefines.h \
+    Utils/Logger/CLogger.h \
+    Utils/Logger/LoggerDefines.h \
+    AnimationManager/AAnimation.h \
+    AnimationManager/ATransition.h \
+    ViewManager/CView.h \
+    ViewManager/CViewManager.h \
+    ViewManager/Notify/CNotify.h \
+    ViewManager/Popup/CPopup.h \
+    ViewManager/Popup/CPopupManager.h \
+    ViewManager/Screen/CScreen.h \
+    ViewManager/Screen/CScreenManager.h \
+    ViewManager/Toast/CToast.h
 
 INCLUDEPATH += \
-    $$PWD/View \
-    $$PWD/QmlTypes \
-    $$PWD/ViewManager \
-    $$PWD/AnimationManager \
-    $$PWD/Common \
-    $$PWD/Utils \
-    $$PWD
+    View \
+    QmlTypes \
+    ViewManager \
+    AnimationManager \
+    Common \
+    Utils
 
 RESOURCES += \
-    $$PWD/Resources/QML/qml_resources.qrc \
-    $$PWD/Resources/Images/image_resources.qrc
+    Resources/QML/qml_resources.qrc \
+    Resources/Images/image_resources.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =

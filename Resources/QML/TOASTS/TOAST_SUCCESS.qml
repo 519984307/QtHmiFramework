@@ -4,7 +4,7 @@ import Common.Qml 1.0
 
 import "../" as Qml
 
-QmlRootContainer {
+QmlToast {
     title: "TOAST SUCCESS"
     color: "green"
     width: 250

@@ -1,19 +1,22 @@
 #ifndef CPOPUP_H
 #define CPOPUP_H
 
-#include <QTimer>
-#include "AView.h"
+#include <CView.h>
 
-class CPopup : public AView
+class CPopup : public CView
 {
     Q_OBJECT
 public:
-    CPopup(const S_VIEW_INFORMATION *info, QQuickItem *parent = nullptr);
-    ~CPopup();
+    CPopup(QQuickItem *parent = nullptr);
 
-    // AView interface
+    // CView interface
 public:
-    virtual AView *customizeProperties() override;
+    virtual CView *customizeProperties() override;
+
+    // QQuickItem interface
+protected:
+    virtual void mousePressEvent(QMouseEvent *event) override;
+    virtual void mouseReleaseEvent(QMouseEvent *event) override;
 };
 
 #endif // CPOPUP_H

@@ -1,12 +1,12 @@
 #include "CNotify.h"
 
-CNotify::CNotify(const S_VIEW_INFORMATION *info, QQuickItem *parent) : AView(info, parent)
-{}
 
-CNotify::~CNotify()
-{}
+CNotify::CNotify(QQuickItem *parent) : CView(parent)
+{
+    m_str_type = __FUNCTION__;
+}
 
-AView *CNotify::customizeProperties()
+CView *CNotify::customizeProperties()
 {
     CPP_LOG_INFO("[Entry]")
     QObject *position = qvariant_cast<QObject*>(m_properties["anchors"]);
