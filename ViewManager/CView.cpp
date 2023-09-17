@@ -59,14 +59,17 @@ void CView::readProperties()
     CPP_LOG_INFO("[Exit]")
 }
 
+void CView::onSignalVisible()
+{}
+
+void CView::onSignalInvisible()
+{}
+
 void CView::initConnections()
 {
-    connect(this, &CView::signalVisible, [this]() {this->show();});
-    connect(this, &CView::signalInvisible, [this]() {this->hide();});
-
     if(m_timer != nullptr)
     {
-        connect(m_timer, &QTimer::timeout, this, &CView::signalInvisible, Qt::DirectConnection);
+        connect(m_timer, &QTimer::timeout, this, &CView::signalVisibleTimeout, Qt::DirectConnection);
     }
 }
 
@@ -88,6 +91,13 @@ E_VIEW_TYPE CView::type() const
 const QString CView::strType() const
 {
     return m_str_type;
+}
+
+const char *CView::c_strType() const
+{
+    std::string str = m_str_type.toStdString();
+    const char* c_str = str.c_str();
+    return c_str;
 }
 
 const char *CView::path() const

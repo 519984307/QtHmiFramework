@@ -23,13 +23,15 @@ public:
 
     void show()
     {
-        CPP_LOG_INFO("[%s][%s]", strType().toStdString().c_str(), path())
+        CPP_LOG_INFO("[%s][%s]", c_strType(), path())
         this->setProperty("visible", true);
+        emit signalVisible();
     }
     void hide()
     {
-        CPP_LOG_INFO("[%s][%s]", strType().toStdString().c_str(), path())
+        CPP_LOG_INFO("[%s][%s]", c_strType(), path())
         this->setProperty("visible", false);
+        emit signalInvisible();
     }
 
     CView *initialize(const S_VIEW_INFORMATION *, QQuickItem*);
@@ -38,6 +40,7 @@ public:
     E_DURATION duration() const;
     E_VIEW_TYPE type() const;
     const QString strType() const;
+    const char* c_strType() const;
     const char *path() const;
 
 
@@ -61,12 +64,16 @@ protected:
     QHash<QString, QVariant>     m_properties;
 
 signals:
+    void titleChanged();
+    void colorChanged();
+
     void signalVisible();
     void signalInvisible();
+    void signalVisibleTimeout();
 
-    void titleChanged();
-
-    void colorChanged();
+public slots:
+    void onSignalVisible();
+    void onSignalInvisible();
 
 protected:
     QString                  m_str_type;

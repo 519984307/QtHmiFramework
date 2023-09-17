@@ -33,6 +33,11 @@ public:
 
     void pushBack(CView*);
     void popBack();
+    void popOne(CView*);
+    void popOne(const uint32_t &);
+    void removeOne(CView*);
+    void removeOne(const uint32_t &);
+    int indexOf(CView*);
 
     CView *findViewObjectByID(const uint32_t &id);
 

@@ -58,15 +58,11 @@ void CNgin::initConnections()
     QHash<E_VIEW_TYPE, CViewManager*>::iterator it = m_view_managers.begin();
     while(it != m_view_managers.end())
     {
-        connect(it.value(),
-                &CViewManager::signalPushBack,
-                this,
-                &CNgin::onSignalPushBack, Qt::QueuedConnection);
+        connect(it.value(), &CViewManager::signalPushBack,
+                this, &CNgin::onSignalPushBack, Qt::QueuedConnection);
 
-        connect(it.value(),
-                &CViewManager::signalPopBack,
-                this,
-                &CNgin::onSignalPopBack, Qt::QueuedConnection);
+        connect(it.value(), &CViewManager::signalPopBack,
+                this, &CNgin::onSignalPopBack, Qt::QueuedConnection);
         ++it;
     }
 }
@@ -272,12 +268,12 @@ void CNgin::onSignalPushBack(const S_VIEW_INFORMATION *nextView, E_CACHE_STATUS 
     }
 
     if(obj == nullptr) return;
-    if(obj->type() == E_VIEW_TYPE::POPUP_TYPE)
-    {
-        m_view_managers[E_VIEW_TYPE::SCREEN_TYPE]
-            ->views().last()
-            ->setProperty("enabled", false);
-    }
+//    if(obj->type() == E_VIEW_TYPE::POPUP_TYPE)
+//    {
+//        m_view_managers[E_VIEW_TYPE::SCREEN_TYPE]
+//            ->views().last()
+//            ->setProperty("enabled", false);
+//    }
 
     obj->show();
     m_view_managers[m_last_view_type]->pushBack(obj);
@@ -286,11 +282,19 @@ void CNgin::onSignalPushBack(const S_VIEW_INFORMATION *nextView, E_CACHE_STATUS 
 
 void CNgin::onSignalPopBack()
 {
+    CPP_LOG_INFO("[Entry")
     CViewManager *manager   = m_view_managers[m_last_view_type];
     CView        *lastView  = manager->lastView();
+
     if(!manager->isValidDepth()) return;
+    if(lastView == nullptr) return;
+
     lastView->hide();
     manager->popBack();
+
+    if(manager->views().isEmpty()) return;
+    manager->lastView()->show();
+    CPP_LOG_INFO("[Exit")
 }
 
 const S_VIEW_INFORMATION *CNgin::findViewByID(const uint32_t &id)
