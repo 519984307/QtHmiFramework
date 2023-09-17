@@ -10,6 +10,11 @@ class CScreenManager: public CViewManager
 public:
     CScreenManager(QObject *parent = nullptr);
     ~CScreenManager();
+    // CViewManager interface
+public:
+    virtual bool isValidDepth() override;
+    //    virtual void pushEnter(const S_VIEW_INFORMATION *) override;
+    //    virtual void popExit() override;
 };
 
 #endif // CSCREENMANAGER_H

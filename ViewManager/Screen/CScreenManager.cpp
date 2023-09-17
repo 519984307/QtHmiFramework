@@ -2,11 +2,14 @@
 
 
 CScreenManager::CScreenManager(QObject *parent) : CViewManager(parent)
-{
-    m_is_valid_depth = depth() > 1;
-}
+{}
 
 CScreenManager::~CScreenManager()
 {
 
+}
+
+bool CScreenManager::isValidDepth()
+{
+    return depth() > 1;
 }

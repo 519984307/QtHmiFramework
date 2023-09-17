@@ -33,12 +33,16 @@ public:
     inline QQmlComponent *qmlBase() const { return m_qml_base; }
     inline QQuickWindow *qmlWindow() const { return m_qml_window; }
 
+
+    void setLastViewType(const E_VIEW_TYPE&);
+
 public:
     Q_INVOKABLE void sendEvent(const uchar&);
 
 
 signals:
-    void initCompleted(const uchar&);
+    void signalCompleted(const uchar&);
+    void signalOnTopChanged(const E_VIEW_TYPE&);
 
 private:
     explicit CNgin(QObject *parent = nullptr);

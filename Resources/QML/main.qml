@@ -12,7 +12,7 @@ Window {
 
     Connections {
         target: QmlNgin
-        function onInitCompleted() {
+        function onSignalCompleted() {
         }
     }
 }

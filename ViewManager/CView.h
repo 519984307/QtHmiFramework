@@ -23,15 +23,13 @@ public:
 
     void show()
     {
-        CPP_LOG_INFO("[Entry]")
+        CPP_LOG_INFO("[%s][%s]", strType().toStdString().c_str(), path())
         this->setProperty("visible", true);
-        CPP_LOG_INFO("[Exit]")
     }
     void hide()
     {
-        CPP_LOG_INFO("[Entry]")
+        CPP_LOG_INFO("[%s][%s]", strType().toStdString().c_str(), path())
         this->setProperty("visible", false);
-        CPP_LOG_INFO("[Exit]")
     }
 
     CView *initialize(const S_VIEW_INFORMATION *, QQuickItem*);

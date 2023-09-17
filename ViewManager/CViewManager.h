@@ -13,12 +13,6 @@ class CViewManager: public QObject
 public:
     CViewManager(QObject *parent = nullptr);
     virtual ~CViewManager();
-
-
-    virtual E_CACHE_STATUS hasCached(const uint32_t&) { return E_CACHE_STATUS::MISS; }
-
-    int depth() const;
-    inline bool isValidDepth() { return m_is_valid_depth; }
     inline CView* readCache(uint32_t key) const { return m_view_cached[key]; }
     inline void writecache(uint32_t key, CView* view) { m_view_cached[key] = view; }
     inline E_CACHE_STATUS cacheStatus(const uint32_t key)
@@ -28,8 +22,14 @@ public:
                    ? E_CACHE_STATUS::HIT:E_CACHE_STATUS::MISS;
     }
 
+    virtual bool isValidDepth() = 0;
     virtual void pushEnter(const S_VIEW_INFORMATION*);
     virtual void popExit();
+
+    // start encapsulate
+    int depth() const;
+    CView *lastView() const;
+    // end encapsulate
 
     void pushBack(CView*);
     void popBack();
@@ -64,7 +64,6 @@ protected:
     QList<CView*>                           m_views;
     QHash<uint32_t, CView*>                 m_view_cached;
     QHash<uint32_t, int>                    m_view_history;
-    bool                                    m_is_valid_depth{false};
 
 private:
     void initConnections();
