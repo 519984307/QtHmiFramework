@@ -231,7 +231,7 @@ void CNgin::onSignalPushBack(const S_VIEW_INFORMATION *nextView, E_CACHE_STATUS 
     CView *obj = nullptr;
     if(status == E_CACHE_STATUS::HIT)
     {
-        CPP_LOG_INFO("Load SCREEN [%s] from cache memory", nextView->path);
+        CPP_LOG_DEBUG("Load SCREEN [%s] from cache memory", nextView->path);
         obj = m_view_managers[m_last_view_type]->findViewObjectByID(nextView->id);
         if(obj == nullptr) return;
 
@@ -243,23 +243,23 @@ void CNgin::onSignalPushBack(const S_VIEW_INFORMATION *nextView, E_CACHE_STATUS 
         m_qml_base->loadUrl(QUrl(nextView->path), QQmlComponent::PreferSynchronous);
         switch (m_qml_base->status()) {
         case QQmlComponent::Null:
-            CPP_LOG_INFO("This QQmlComponent has no data. Call loadUrl() or setData() to add QML content.")
+            CPP_LOG_DEBUG("This QQmlComponent has no data. Call loadUrl() or setData() to add QML content.")
 
             break;
         case QQmlComponent::Ready:
         {
-            CPP_LOG_INFO("This QQmlComponent is ready and create() may be called.")
+            CPP_LOG_DEBUG("This QQmlComponent is ready and create() may be called.")
             obj = qobject_cast<CView*>(m_qml_base->create());
             obj->initialize(nextView, m_qml_parent);
             m_view_managers[m_last_view_type]->writecache(nextView->id, obj);
             break;
         }
         case QQmlComponent::Loading:
-            CPP_LOG_INFO("This QQmlComponent is loading network data.")
+            CPP_LOG_DEBUG("This QQmlComponent is loading network data.")
 
             break;
         case QQmlComponent::Error:
-            CPP_LOG_INFO("An error has occurred. Call errors() to retrieve a list of errors.")
+            CPP_LOG_DEBUG("An error has occurred. Call errors() to retrieve a list of errors.")
 
             break;
         default:
@@ -277,24 +277,32 @@ void CNgin::onSignalPushBack(const S_VIEW_INFORMATION *nextView, E_CACHE_STATUS 
 
     obj->show();
     m_view_managers[m_last_view_type]->pushBack(obj);
-
 }
 
 void CNgin::onSignalPopBack()
 {
-    CPP_LOG_INFO("[Entry")
+    CPP_LOG_DEBUG("[Entry")
     CViewManager *manager   = m_view_managers[m_last_view_type];
     CView        *lastView  = manager->lastView();
 
-    if(!manager->isValidDepth()) return;
-    if(lastView == nullptr) return;
+    if(!manager->isValidDepth())
+    {
+        CPP_LOG_DEBUG("Depth is not valid")
+        return;
+    }
+    if(lastView == nullptr)
+    {
+        CPP_LOG_DEBUG("Last view is not valid")
+        return;
+    }
 
     lastView->hide();
     manager->popBack();
 
     if(manager->views().isEmpty()) return;
     manager->lastView()->show();
-    CPP_LOG_INFO("[Exit")
+
+    CPP_LOG_DEBUG("[Exit]")
 }
 
 const S_VIEW_INFORMATION *CNgin::findViewByID(const uint32_t &id)

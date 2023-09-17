@@ -23,13 +23,13 @@ public:
 
     void show()
     {
-        CPP_LOG_INFO("[%s][%s]", c_strType(), path())
+        CPP_LOG_DEBUG("[%s][%s]", c_strType(), path())
         this->setProperty("visible", true);
         emit signalVisible();
     }
     void hide()
     {
-        CPP_LOG_INFO("[%s][%s]", c_strType(), path())
+        CPP_LOG_DEBUG("[%s][%s]", c_strType(), path())
         this->setProperty("visible", false);
         emit signalInvisible();
     }

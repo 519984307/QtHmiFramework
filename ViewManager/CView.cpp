@@ -20,7 +20,7 @@ CView::~CView()
 
 CView * CView::initialize(const S_VIEW_INFORMATION *info, QQuickItem *parent)
 {
-    CPP_LOG_INFO("[Entry]")
+    CPP_LOG_DEBUG("[Entry]")
 
     {
         m_id        = info->id;
@@ -43,20 +43,20 @@ CView * CView::initialize(const S_VIEW_INFORMATION *info, QQuickItem *parent)
     this->readProperties();
     this->customizeProperties();
 
-    CPP_LOG_INFO("[Exit]")
+    CPP_LOG_DEBUG("[Exit]")
     return this;
 }
 
 void CView::readProperties()
 {
-    CPP_LOG_INFO("[Entry]")
+    CPP_LOG_DEBUG("[Entry]")
     m_properties["x"]           = this->property("x").toReal();
     m_properties["y"]           = this->property("y").toReal();
     m_properties["z"]           = this->property("z").toReal();
     m_properties["width"]       = this->property("width").toReal();
     m_properties["height"]      = this->property("height").toReal();
     m_properties["anchors"]     = this->property("anchors");
-    CPP_LOG_INFO("[Exit]")
+    CPP_LOG_DEBUG("[Exit]")
 }
 
 void CView::onSignalVisible()

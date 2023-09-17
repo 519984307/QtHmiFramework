@@ -7,21 +7,21 @@ CScreen::CScreen(QQuickItem *parent) : CView(parent)
 
 CView *CScreen::customizeProperties()
 {
-    CPP_LOG_INFO("[Entry]")
+    CPP_LOG_DEBUG("[Entry]")
     qvariant_cast<QObject*>(m_properties["anchors"])->setProperty("fill", QVariant::fromValue(parentItem()));
     this->setProperty("z", SCREEN_Z);
-    CPP_LOG_INFO("[Exit]")
+    CPP_LOG_DEBUG("[Exit]")
     return this;
 }
 
 void CScreen::mousePressEvent(QMouseEvent *event)
 {
     Q_UNUSED(event)
-    CPP_LOG_INFO("mousePressEvent")
+    CPP_LOG_DEBUG("mousePressEvent")
 }
 
 void CScreen::mouseReleaseEvent(QMouseEvent *event)
 {
     Q_UNUSED(event)
-    CPP_LOG_INFO("mouseReleaseEvent")
+    CPP_LOG_DEBUG("mouseReleaseEvent")
 }

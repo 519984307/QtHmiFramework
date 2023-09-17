@@ -8,12 +8,12 @@ CNotify::CNotify(QQuickItem *parent) : CView(parent)
 
 CView *CNotify::customizeProperties()
 {
-    CPP_LOG_INFO("[Entry]")
+    CPP_LOG_DEBUG("[Entry]")
     QObject *position = qvariant_cast<QObject*>(m_properties["anchors"]);
     position->setProperty("horizontalCenter", QVariant::fromValue(parentItem()->property("horizontalCenter")));
     position->setProperty("top", QVariant::fromValue(parentItem()->property("top")));
     position->setProperty("topMargin", 50);
     this->setProperty("z", NOTIFY_Z);
-    CPP_LOG_INFO("[Exit]")
+    CPP_LOG_DEBUG("[Exit]")
     return this;
 }

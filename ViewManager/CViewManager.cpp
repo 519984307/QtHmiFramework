@@ -19,22 +19,23 @@ CView *CViewManager::lastView() const
 
 void CViewManager::pushEnter(const S_VIEW_INFORMATION *nextView)
 {
-    CPP_LOG_INFO("[Entry]")
+    if(nextView == nullptr) return;
     E_CACHE_STATUS status = cacheStatus(nextView->id);
     emit signalPushBack(nextView, status);
-    CPP_LOG_INFO("[Exit]")
 }
 
 void CViewManager::popExit()
 {
-    CPP_LOG_INFO("[Entry]")
     emit signalPopBack();
-    CPP_LOG_INFO("[Exit]")
 }
 
 void CViewManager::pushBack(CView *newView)
 {
-    CPP_LOG_INFO("[Entry]")
+    if(newView == nullptr)
+    {
+        CPP_LOG_DEBUG("New View is NULL")
+        return;
+    }
     m_views.push_back(newView);
     connect(newView, &CView::signalVisibleTimeout, this, [&](){
         this->popOne(newView);
@@ -43,24 +44,23 @@ void CViewManager::pushBack(CView *newView)
     ++m_view_history[newView->id()];
 
     emit depthChanged();
-    CPP_LOG_INFO("[Exit]")
 }
 
 void CViewManager::popBack()
 {
-    CPP_LOG_INFO("[Entry]")
-    if(m_views.isEmpty()) return;
+    if(m_views.isEmpty())
+    {
+        CPP_LOG_DEBUG("View container is empty")
+        return;
+    }
 
     CView *view = m_views.last();
     popOne(view);
 
-    CPP_LOG_INFO("[Exit]")
 }
 
 void CViewManager::popOne(CView *view)
 {
-    CPP_LOG_INFO("[Entry]")
-
     if(view == nullptr) return;
 
     removeOne(view);
@@ -69,55 +69,43 @@ void CViewManager::popOne(CView *view)
     --m_view_history[view->id()];
     if (m_view_history[view->id()] < 1)
     {
-        CPP_LOG_INFO("Release [%s]", view->c_strType())
+        CPP_LOG_DEBUG("Release [%s]", view->c_strType())
         writecache(view->id(), nullptr);
         m_view_history[view->id()] = 0;
         safeRelease(view);
     }
-
-
-    CPP_LOG_INFO("[Exit]")
 }
 
 void CViewManager::popOne(const uint32_t &id)
 {
-    CPP_LOG_INFO("[Entry]")
-
     CView *view = findViewObjectByID(id);
     popOne(view);
-
-    CPP_LOG_INFO("[Exit]")
 }
 
 void CViewManager::removeOne(CView *view)
 {
-    CPP_LOG_INFO("[Entry]")
+    if(view == nullptr) return;
 
     int index  = indexOf(view);
     m_views.removeAt(index);
-
-    CPP_LOG_INFO("[Exit]")
 }
 
 void CViewManager::removeOne(const uint32_t &id)
 {
-    CPP_LOG_INFO("[Entry]")
-
     CView *obj = findViewObjectByID(id);
     removeOne(obj);
-
-    CPP_LOG_INFO("[Exit]")
 }
 
 int CViewManager::indexOf(CView *view)
 {
     int index = -1;
-    for(CView *e: m_views)
+    QList<CView*>::iterator it = m_views.end();
+    while(it != m_views.begin())
     {
-        index++;
-        if(e->id() == view->id())
+        --it;
+        if((*it)->id() == view->id())
         {
-            break;
+            return (it - m_views.begin());
         }
     }
     return index;
@@ -125,14 +113,14 @@ int CViewManager::indexOf(CView *view)
 
 CView *CViewManager::findViewObjectByID(const uint32_t &id)
 {
-    QList<CView*>::iterator it = m_views.begin();
-    while(it != m_views.end())
+    QList<CView*>::iterator it = m_views.end();
+    while(it != m_views.begin())
     {
+        --it;
         if((*it)->id() == id)
         {
             return (*it);
         }
-        ++it;
     }
     return nullptr;
 }
