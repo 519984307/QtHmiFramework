@@ -25,19 +25,12 @@ CView * CView::initialize(const S_VIEW_INFORMATION *info, QQuickItem *parent)
     {
         m_id        = info->id;
         m_type      = info->type;
-        m_duration  = info->duration;
+        m_duration  = info->duration * ONE_SEC;
         m_path      = info->path;
     }
 
 
-    if(m_type > E_VIEW_TYPE::SCREEN_TYPE && m_timer != nullptr)
-    {
-        if(m_duration > 0)
-        {
-            m_timer->setSingleShot(true);
-            m_timer->start(m_duration * ONE_SEC);
-        }
-    }
+    m_timer->setSingleShot(true);
 
     this->setParentItem(parent);
     this->readProperties();
@@ -60,17 +53,53 @@ void CView::readProperties()
 }
 
 void CView::onSignalVisible()
-{}
+{
+    startTimer();
+}
 
 void CView::onSignalInvisible()
-{}
+{
+}
+
+void CView::onTimeout()
+{
+    this->hide();
+    emit signalVisibleTimeout();
+
+}
+
+void CView::startTimer()
+{
+    if(m_type > E_VIEW_TYPE::SCREEN_TYPE && m_timer != nullptr)
+    {
+        if(m_duration > 0)
+        {
+            m_timer->start(m_duration);
+        }
+    }
+}
+
+void CView::stopTimer()
+{
+    if(m_type > E_VIEW_TYPE::SCREEN_TYPE && m_timer != nullptr)
+    {
+        if(m_timer->isActive())
+        {
+            m_timer->stop();
+        }
+    }
+}
 
 void CView::initConnections()
 {
     if(m_timer != nullptr)
     {
-        connect(m_timer, &QTimer::timeout, this, &CView::signalVisibleTimeout, Qt::DirectConnection);
+        connect(m_timer, &QTimer::timeout, this, &CView::onTimeout, Qt::DirectConnection);
     }
+
+    connect(this, &CView::signalVisible, this, &CView::onSignalVisible, Qt::DirectConnection);
+    connect(this, &CView::signalInvisible, this, &CView::onSignalInvisible, Qt::DirectConnection);
+
 }
 
 uint32_t CView::id() const
@@ -78,7 +107,7 @@ uint32_t CView::id() const
     return m_id;
 }
 
-E_DURATION CView::duration() const
+uint32_t CView::duration() const
 {
     return m_duration;
 }

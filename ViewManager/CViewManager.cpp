@@ -37,7 +37,7 @@ void CViewManager::pushBack(CView *newView)
         return;
     }
     m_views.push_back(newView);
-    connect(newView, &CView::signalVisibleTimeout, this, [&](){
+    connect(newView, &CView::signalVisibleTimeout, this, [this, newView](){
         this->popOne(newView);
     });
 
@@ -64,7 +64,6 @@ void CViewManager::popOne(CView *view)
     if(view == nullptr) return;
 
     removeOne(view);
-    emit depthChanged();
 
     --m_view_history[view->id()];
     if (m_view_history[view->id()] < 1)
@@ -85,9 +84,9 @@ void CViewManager::popOne(const uint32_t &id)
 void CViewManager::removeOne(CView *view)
 {
     if(view == nullptr) return;
-
     int index  = indexOf(view);
     m_views.removeAt(index);
+    emit depthChanged();
 }
 
 void CViewManager::removeOne(const uint32_t &id)
@@ -105,8 +104,10 @@ int CViewManager::indexOf(CView *view)
         --it;
         if((*it)->id() == view->id())
         {
-            return (it - m_views.begin());
+            index = (it - m_views.begin());
+            break;
         }
+        index = 0;
     }
     return index;
 }

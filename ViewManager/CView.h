@@ -37,7 +37,7 @@ public:
     CView *initialize(const S_VIEW_INFORMATION *, QQuickItem*);
 
     uint32_t id() const;
-    E_DURATION duration() const;
+    uint32_t duration() const;
     E_VIEW_TYPE type() const;
     const QString strType() const;
     const char* c_strType() const;
@@ -74,9 +74,14 @@ signals:
 public slots:
     void onSignalVisible();
     void onSignalInvisible();
+    void onTimeout();
 
 protected:
     QString                  m_str_type;
+
+private:
+    void startTimer();
+    void stopTimer();
 
 private:
     QRectF                   m_rect;
@@ -84,7 +89,7 @@ private:
 
     // view info
     uint32_t                 m_id{0};
-    E_DURATION               m_duration{E_DURATION::NONE};
+    uint32_t                 m_duration{E_DURATION::NONE};
     E_VIEW_TYPE              m_type{E_VIEW_TYPE::NONE_TYPE};
     const char*              m_path;
 
