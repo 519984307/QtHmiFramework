@@ -7,10 +7,10 @@ CScreen::CScreen(QQuickItem *parent) : CView(parent)
 
 CView *CScreen::customizeProperties()
 {
-    CPP_LOG_DEBUG("[Entry]")
+    CPP_LOG_DEBUG("[%s][Entry]", c_strType())
     qvariant_cast<QObject*>(m_properties["anchors"])->setProperty("fill", QVariant::fromValue(parentItem()));
     this->setProperty("z", SCREEN_Z);
-    CPP_LOG_DEBUG("[Exit]")
+    CPP_LOG_DEBUG("[%s][Exit]", c_strType())
     return this;
 }
 

@@ -19,11 +19,13 @@ SOURCES += \
         ViewManager/CView.cpp \
         ViewManager/CViewManager.cpp \
         ViewManager/Notify/CNotify.cpp \
+        ViewManager/Notify/CNotifyManager.cpp \
         ViewManager/Popup/CPopup.cpp \
         ViewManager/Popup/CPopupManager.cpp \
         ViewManager/Screen/CScreen.cpp \
         ViewManager/Screen/CScreenManager.cpp \
         ViewManager/Toast/CToast.cpp \
+        ViewManager/Toast/CToastManager.cpp \
         main.cpp
 
 HEADERS += \
@@ -46,11 +48,13 @@ HEADERS += \
     ViewManager/CView.h \
     ViewManager/CViewManager.h \
     ViewManager/Notify/CNotify.h \
+    ViewManager/Notify/CNotifyManager.h \
     ViewManager/Popup/CPopup.h \
     ViewManager/Popup/CPopupManager.h \
     ViewManager/Screen/CScreen.h \
     ViewManager/Screen/CScreenManager.h \
-    ViewManager/Toast/CToast.h
+    ViewManager/Toast/CToast.h \
+    ViewManager/Toast/CToastManager.h
 
 INCLUDEPATH += \
     View \

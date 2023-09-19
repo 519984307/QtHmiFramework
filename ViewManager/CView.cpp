@@ -8,8 +8,6 @@ CView::CView(QQuickItem *parent):QQuickPaintedItem{parent}
     setAcceptTouchEvents(true);
     setAcceptedMouseButtons(Qt::AllButtons);
 
-    setVisible(false);
-
     initConnections();
 }
 
@@ -20,36 +18,42 @@ CView::~CView()
 
 CView * CView::initialize(const S_VIEW_INFORMATION *info, QQuickItem *parent)
 {
-    CPP_LOG_DEBUG("[Entry]")
+    CPP_LOG_DEBUG("[%s][Entry]", c_strType())
 
     {
         m_id        = info->id;
         m_type      = info->type;
-        m_duration  = info->duration * ONE_SEC;
+        m_duration  = info->duration;
         m_path      = info->path;
     }
 
+    m_count_down = m_duration;
 
-    m_timer->setSingleShot(true);
+    m_timer->setSingleShot(false);
+    m_timer->setInterval(ONE_SEC);
 
+    CPP_LOG_DEBUG("%d", m_duration)
+
+    this->setVisible(false);
     this->setParentItem(parent);
     this->readProperties();
     this->customizeProperties();
 
-    CPP_LOG_DEBUG("[Exit]")
+    CPP_LOG_DEBUG("[%s][Exit]", c_strType())
+
     return this;
 }
 
 void CView::readProperties()
 {
-    CPP_LOG_DEBUG("[Entry]")
+    CPP_LOG_DEBUG("[%s][Entry]", c_strType())
     m_properties["x"]           = this->property("x").toReal();
     m_properties["y"]           = this->property("y").toReal();
     m_properties["z"]           = this->property("z").toReal();
     m_properties["width"]       = this->property("width").toReal();
     m_properties["height"]      = this->property("height").toReal();
     m_properties["anchors"]     = this->property("anchors");
-    CPP_LOG_DEBUG("[Exit]")
+    CPP_LOG_DEBUG("[%s][Exit]", c_strType())
 }
 
 void CView::onSignalVisible()
@@ -59,34 +63,40 @@ void CView::onSignalVisible()
 
 void CView::onSignalInvisible()
 {
+    stopTimer();
 }
 
 void CView::onTimeout()
 {
-    this->hide();
-    emit signalVisibleTimeout();
+    --m_count_down;
+    if(m_count_down < 1)
+    {
+        m_count_down = m_duration;
+        stopTimer();
 
+        this->hide();
+        emit signalVisibleTimeout();
+    }
+
+    emit countDownChanged();
 }
 
 void CView::startTimer()
 {
-    if(m_type > E_VIEW_TYPE::SCREEN_TYPE && m_timer != nullptr)
+    if(m_type > E_VIEW_TYPE::SCREEN_TYPE && !m_timer->isActive())
     {
         if(m_duration > 0)
         {
-            m_timer->start(m_duration);
+            m_timer->start();
         }
     }
 }
 
 void CView::stopTimer()
 {
-    if(m_type > E_VIEW_TYPE::SCREEN_TYPE && m_timer != nullptr)
+    if(m_type > E_VIEW_TYPE::SCREEN_TYPE && m_timer->isActive())
     {
-        if(m_timer->isActive())
-        {
-            m_timer->stop();
-        }
+        m_timer->stop();
     }
 }
 
@@ -165,4 +175,9 @@ void CView::setColor(const QString &newColor)
         return;
     m_color = newColor;
     emit colorChanged();
+}
+
+uint8_t CView::countDown() const
+{
+    return m_count_down;
 }

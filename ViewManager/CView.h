@@ -17,6 +17,7 @@ class CView: public QQuickPaintedItem
     Q_OBJECT
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged FINAL)
     Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged FINAL)
+    Q_PROPERTY(uint8_t countDown READ countDown NOTIFY countDownChanged FINAL)
 public:
     explicit CView(QQuickItem *parent = nullptr);
     ~CView();
@@ -56,6 +57,8 @@ public:
     QString color() const;
     void setColor(const QString &newColor);
 
+    uint8_t countDown() const;
+
 private:
     void initConnections();
     void readProperties();
@@ -70,6 +73,8 @@ signals:
     void signalVisible();
     void signalInvisible();
     void signalVisibleTimeout();
+
+    void countDownChanged();
 
 public slots:
     void onSignalVisible();
@@ -86,6 +91,7 @@ private:
 private:
     QRectF                   m_rect;
     QTimer                  *m_timer = nullptr;
+    uint32_t                 m_count_down{0};
 
     // view info
     uint32_t                 m_id{0};

@@ -7,8 +7,8 @@
 #include "Toast/CToast.h"
 #include "Screen/CScreenManager.h"
 #include "Popup/CPopupManager.h"
-//#include "Notify/CNotifyManager.h"
-//#include "Toast/CToastManager.h"
+#include "Notify/CNotifyManager.h"
+#include "Toast/CToastManager.h"
 #include "CViewEnums.h"
 
 #define QML_BASE "qrc:/QML_RESOURCE//main.qml"
@@ -28,8 +28,8 @@ CNgin::CNgin(QObject *parent)
 
     m_view_managers[E_VIEW_TYPE::SCREEN_TYPE]   = new CScreenManager(this);
     m_view_managers[E_VIEW_TYPE::POPUP_TYPE]    = new CPopupManager(this);
-    //    m_view_managers[E_VIEW_TYPE::NOTIFY_TYPE]   = new CNotifyManager(this);
-    //    m_view_managers[E_VIEW_TYPE::TOAST_TYPE]    = new CToastManager(this);
+    m_view_managers[E_VIEW_TYPE::NOTIFY_TYPE]   = new CNotifyManager(this);
+    m_view_managers[E_VIEW_TYPE::TOAST_TYPE]    = new CToastManager(this);
 
 
     m_view_types_dict[E_VIEW_TYPE::SCREEN_TYPE] = "Screen";
@@ -268,12 +268,12 @@ void CNgin::onSignalPushBack(const S_VIEW_INFORMATION *nextView, E_CACHE_STATUS 
     }
 
     if(obj == nullptr) return;
-//    if(obj->type() == E_VIEW_TYPE::POPUP_TYPE)
-//    {
-//        m_view_managers[E_VIEW_TYPE::SCREEN_TYPE]
-//            ->views().last()
-//            ->setProperty("enabled", false);
-//    }
+    //    if(obj->type() == E_VIEW_TYPE::POPUP_TYPE)
+    //    {
+    //        m_view_managers[E_VIEW_TYPE::SCREEN_TYPE]
+    //            ->views().last()
+    //            ->setProperty("enabled", false);
+    //    }
 
     obj->show();
     m_view_managers[m_last_view_type]->pushBack(obj);
