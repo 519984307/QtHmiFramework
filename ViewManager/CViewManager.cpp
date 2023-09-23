@@ -40,7 +40,6 @@ void CViewManager::pushBack(CView *newView)
     connect(newView, &CView::signalVisibleTimeout, this, [this, newView](){
         this->popOne(newView);
     });
-
     ++m_view_history[newView->id()];
 
     emit depthChanged();
@@ -65,7 +64,6 @@ void CViewManager::popOne(CView *view)
 
     removeOne(view);
 
-    --m_view_history[view->id()];
     if (m_view_history[view->id()] < 1)
     {
         CPP_LOG_DEBUG("Release [%s]", view->c_strType())
@@ -86,6 +84,9 @@ void CViewManager::removeOne(CView *view)
     if(view == nullptr) return;
     int index  = indexOf(view);
     m_views.removeAt(index);
+
+    --m_view_history[view->id()];
+
     emit depthChanged();
 }
 

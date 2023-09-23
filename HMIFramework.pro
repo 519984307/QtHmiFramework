@@ -10,7 +10,6 @@ QMAKE_CXXFLAGS_WARN_ON += \
     -Wunused-parameter
 
 SOURCES += \
-        AnimationManager/AAnimation.cpp \
         CNgin.cpp \
         Utils/Logger/CLogger.cpp \
         Utils/Memory/LFUCache/CLFUCache.cpp \
@@ -43,8 +42,6 @@ HEADERS += \
     View/ViewDefines.h \
     Utils/Logger/CLogger.h \
     Utils/Logger/LoggerDefines.h \
-    AnimationManager/AAnimation.h \
-    AnimationManager/ATransition.h \
     ViewManager/CView.h \
     ViewManager/CViewManager.h \
     ViewManager/Notify/CNotify.h \
@@ -60,7 +57,6 @@ INCLUDEPATH += \
     View \
     QmlTypes \
     ViewManager \
-    AnimationManager \
     Common \
     Utils
 

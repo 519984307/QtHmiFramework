@@ -8,5 +8,5 @@ QmlToast {
     title: "TOAST FAIL"
     color: "blue"
     width: 250
-    height: 80
+    height: 30
 }

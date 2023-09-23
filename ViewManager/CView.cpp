@@ -75,7 +75,6 @@ void CView::onTimeout()
         stopTimer();
 
         this->hide();
-        emit signalVisibleTimeout();
     }
 
     emit countDownChanged();
