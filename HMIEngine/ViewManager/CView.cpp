@@ -16,6 +16,22 @@ CView::~CView()
     safeRelease(m_timer);
 }
 
+void CView::show()
+{
+    CPP_LOG_DEBUG("[%s][%s]", c_strType(), path())
+    this->setProperty("visible", true);
+    emit signalVisible();
+}
+
+void CView::hide()
+{
+    CPP_LOG_DEBUG("[%s][%s]", c_strType(), path())
+    this->setProperty("visible", false);
+    this->setProperty("enable", false);
+    this->setProperty("focus", false);
+    emit signalInvisible();
+}
+
 CView * CView::initialize(const S_VIEW_INFORMATION *info, QQuickItem *parent)
 {
     CPP_LOG_DEBUG("[%s][Entry]", c_strType())
@@ -66,10 +82,9 @@ void CView::onSignalInvisible()
 
 void CView::onTimeout()
 {
-    --m_count_down;
+    m_count_down--;
     if(m_count_down < 1)
     {
-        m_count_down = m_duration;
         stopTimer();
 
         this->hide();
@@ -94,6 +109,7 @@ void CView::stopTimer()
     if(m_type > E_VIEW_TYPE::SCREEN_TYPE && m_timer->isActive())
     {
         m_timer->stop();
+        m_count_down = m_duration;
     }
 }
 

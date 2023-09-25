@@ -16,8 +16,13 @@ public:
     virtual void attach(const S_VIEW_INFORMATION*) override;
     virtual void detach(const S_VIEW_INFORMATION*) override;
 
+    // CViewManager interface
+protected:
+    virtual void loadQmlCallBack(CView *) override;
+
 private:
     CPopup                  *m_view;
+
 
 };
 

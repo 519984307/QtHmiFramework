@@ -18,11 +18,14 @@
 
 #ifdef _WIN32
 #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
-#define __MAIN_WINDOW_WIDTH__ 640
-#define __MAIN_WINDOW_HEIGHT__ 720
-
 #elif __unix
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
+#endif
+
+#ifdef _WIN32
+#define __MAIN_WINDOW_WIDTH__ 640
+#define __MAIN_WINDOW_HEIGHT__ 720
+#elif __ANDROID__
 #define __MAIN_WINDOW_WIDTH__ 480
 #define __MAIN_WINDOW_HEIGHT__ 640
 #endif

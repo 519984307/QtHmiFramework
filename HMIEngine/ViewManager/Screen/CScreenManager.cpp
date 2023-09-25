@@ -62,19 +62,19 @@ void CScreenManager::attach(const S_VIEW_INFORMATION *info)
 
 void CScreenManager::detach(const S_VIEW_INFORMATION *info)
 {
-    CScreen *view = nullptr;
+    CScreen *last = nullptr;
+    last = readCache(info->id);
+    if(last == nullptr) return;
     if(!isValidDepth()) return;
 
-    m_views.removeIf([&](CScreen* obj){
-        if(obj == nullptr) return false;
-        if(obj->id() != info->id) return false;
-        view = obj;
-        m_view_history[info->id]--;
-        return true;
-    });
+    last->hide();
 
-    if(view == nullptr) return;
-    view->hide();
+    int index = -1;
+    index = indexOf(last);
+    m_views.removeAt(index);
+
+    m_view_history[info->id]--;
+
 
     if(m_views.isEmpty()) return;
     m_views.last()->show();
@@ -89,12 +89,11 @@ void CScreenManager::initConnections()
 
 void CScreenManager::loadQmlCallBack(CView *view)
 {
-    CPP_LOG_DEBUG("[Entry][%p]", view)
+    CPP_LOG_DEBUG("[Entry]", view)
 
     if(view == nullptr) return;
 
     CScreen* next = (CScreen*)view;
-    CPP_LOG_DEBUG("[%p]", next)
     next->show();
 
     writecache(view->id(), next);

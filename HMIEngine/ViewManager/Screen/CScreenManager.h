@@ -39,6 +39,7 @@ private:
     QList<CScreen*>                         m_views;
     QHash<uint32_t, CScreen*>               m_view_cached;
     QHash<uint32_t, int>                    m_view_history;
+    QList<CScreen *> m_screens;
 };
 
 #endif // CSCREENMANAGER_H

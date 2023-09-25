@@ -21,6 +21,22 @@ QmlScreen {
         }
     }
 
+    ListView {
+        orientation: ListView.Vertical
+        width: 100
+        height: 420
+        anchors {
+            top: idStackDepth.bottom
+            topMargin: 50
+            left: parent.left
+            leftMargin: 50
+        }
+        model: QmlScreenManager.screens
+        delegate: Text {
+            text: title
+        }
+    }
+
     Row {
         spacing: 10
         anchors {

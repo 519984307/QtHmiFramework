@@ -22,18 +22,8 @@ public:
     explicit CView(QQuickItem *parent = nullptr);
     ~CView();
 
-    void show()
-    {
-        CPP_LOG_DEBUG("[%s][%s]", c_strType(), path())
-        this->setProperty("visible", true);
-        emit signalVisible();
-    }
-    void hide()
-    {
-        CPP_LOG_DEBUG("[%s][%s]", c_strType(), path())
-        this->setProperty("visible", false);
-        emit signalInvisible();
-    }
+    void show();
+    void hide();
 
     CView *initialize(const S_VIEW_INFORMATION *, QQuickItem*);
 
