@@ -11,7 +11,7 @@
 #include "Toast/CToastManager.h"
 #include "CViewEnums.h"
 
-#define QML_BASE "qrc:/QML_RESOURCE//main.qml"
+#define QML_BASE "qrc:/QML/main.qml"
 
 CNgin *CNgin::s_instance = nullptr;
 CNgin *CNgin::instance()

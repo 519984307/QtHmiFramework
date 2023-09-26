@@ -6,7 +6,6 @@
         <file>SCREENS/SCREEN_A.qml</file>
         <file>SCREENS/SCREEN_B.qml</file>
         <file>SCREENS/SCREEN_C.qml</file>
-        <file>main.qml</file>
         <file>NOTIFYS/NOTIFY_INFO.qml</file>
         <file>TOASTS/TOAST_SUCCESS.qml</file>
         <file>TOASTS/TOAST_FAIL.qml</file>
