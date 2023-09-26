@@ -1,29 +1,11 @@
 #include "CScreenManager.h"
 
-
 CScreenManager::CScreenManager(QObject *parent) : CViewManager(parent)
 {}
 
 CScreenManager::~CScreenManager()
 {
 
-}
-
-CScreen *CScreenManager::readCache(uint32_t key) const
-{
-    return m_view_cached[key];
-}
-
-void CScreenManager::writecache(uint32_t key, CScreen *view)
-{
-    m_view_cached[key] = view;
-}
-
-E_CACHE_STATUS CScreenManager::cacheStatus(const uint32_t key)
-{
-    if(m_view_cached.isEmpty()) return E_CACHE_STATUS::MISS;
-    return (m_view_cached[key] != nullptr)
-               ? E_CACHE_STATUS::HIT:E_CACHE_STATUS::MISS;
 }
 
 void CScreenManager::attach(const S_VIEW_INFORMATION *info)
@@ -41,21 +23,23 @@ void CScreenManager::attach(const S_VIEW_INFORMATION *info)
         last->hide();
     }
 
-    E_CACHE_STATUS status = cacheStatus(info->id);
+    E_CACHE_STATUS status = m_cacheManager->cacheStatus(info->id);
     if(status == E_CACHE_STATUS::HIT)
     {
         CPP_LOG_DEBUG("Load SCREEN [%s] from cache memory", info->path);
 
-        next = readCache(info->id);
+        next = m_cacheManager->readCache<CScreen>(info->id);
         next->show();
 
-        m_view_history[next->id()]++;
+        m_freqTable->increase(info->id);
+
         m_views.push_back(next);
         emit depthChanged();
     }
     else if(status == E_CACHE_STATUS::MISS)
     {
         CPP_LOG_DEBUG("Load SCREEN from path [%s]", info->path);
+        m_freqTable->append(info->id, 0);
         emit signalLoadQml(info, m_load_qml_cb);
     }
 }
@@ -63,7 +47,7 @@ void CScreenManager::attach(const S_VIEW_INFORMATION *info)
 void CScreenManager::detach(const S_VIEW_INFORMATION *info)
 {
     CScreen *last = nullptr;
-    last = readCache(info->id);
+    last = m_cacheManager->readCache<CScreen>(info->id);
     if(last == nullptr) return;
     if(!isValidDepth()) return;
 
@@ -73,7 +57,7 @@ void CScreenManager::detach(const S_VIEW_INFORMATION *info)
     index = indexOf(last);
     m_views.removeAt(index);
 
-    m_view_history[info->id]--;
+    m_freqTable->reduce(info->id);
 
 
     if(m_views.isEmpty()) return;
@@ -96,8 +80,9 @@ void CScreenManager::loadQmlCallBack(CView *view)
     CScreen* next = (CScreen*)view;
     next->show();
 
-    writecache(view->id(), next);
-    m_view_history[view->id()]++;
+    m_cacheManager->writecache(view->id(), next);
+    m_freqTable->increase(view->id());
+
     m_views.push_back(next);
     emit depthChanged();
 

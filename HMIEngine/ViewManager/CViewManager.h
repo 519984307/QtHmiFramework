@@ -5,6 +5,8 @@
 #include <QStack>
 #include <functional>
 #include "CView.h"
+#include "CCacheManager.h"
+#include "CFreqTable.h"
 
 class CViewManager: public QObject
 {
@@ -25,6 +27,9 @@ protected:
 
 protected:
     const std::function<void(CView*)>  m_load_qml_cb = std::bind(&CViewManager::loadQmlCallBack, this, std::placeholders::_1);
+
+    CCacheManager                     *m_cacheManager = nullptr;
+    CFreqTable                        *m_freqTable = nullptr;
 
 signals:
     void signalLoadQml(const S_VIEW_INFORMATION*, const std::function<void(CView*)>&);

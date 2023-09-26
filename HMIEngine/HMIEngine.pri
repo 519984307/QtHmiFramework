@@ -3,6 +3,8 @@ SOURCES += \
         $$PWD/Utils/Logger/CLogger.cpp \
         $$PWD/Utils/Memory/LFUCache/CLFUCache.cpp \
         $$PWD/Utils/Memory/LRUCache/CLRUCache.cpp \
+    $$PWD/ViewManager/CCacheManager.cpp \
+    $$PWD/ViewManager/CFreqTable.cpp \
         $$PWD/ViewManager/CView.cpp \
         $$PWD/ViewManager/CViewManager.cpp \
         $$PWD/ViewManager/Notify/CNotify.cpp \
@@ -25,6 +27,8 @@ HEADERS += \
     $$PWD/Utils/Memory/LRUCache/CLRUCache.h \
     $$PWD/Utils/Logger/CLogger.h \
     $$PWD/Utils/Logger/LoggerDefines.h \
+    $$PWD/ViewManager/CCacheManager.h \
+    $$PWD/ViewManager/CFreqTable.h \
     $$PWD/ViewManager/CView.h \
     $$PWD/ViewManager/CViewManager.h \
     $$PWD/ViewManager/Notify/CNotify.h \

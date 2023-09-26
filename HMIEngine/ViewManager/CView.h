@@ -15,9 +15,9 @@
 class CView: public QQuickPaintedItem
 {
     Q_OBJECT
-    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged FINAL)
-    Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged FINAL)
-    Q_PROPERTY(uint8_t countDown READ countDown NOTIFY countDownChanged FINAL)
+    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
+    Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
+    Q_PROPERTY(uint8_t countDown READ countDown NOTIFY countDownChanged)
 public:
     explicit CView(QQuickItem *parent = nullptr);
     ~CView();

@@ -13,10 +13,6 @@ public:
     CScreenManager(QObject *parent = nullptr);
     ~CScreenManager();
 
-    CScreen* readCache(uint32_t key) const;
-    void writecache(uint32_t key, CScreen* view);
-    E_CACHE_STATUS cacheStatus(const uint32_t key);
-
     // CViewManager interface
 public:
     virtual void attach(const S_VIEW_INFORMATION*) override;
@@ -37,9 +33,6 @@ private:
 
 private:
     QList<CScreen*>                         m_views;
-    QHash<uint32_t, CScreen*>               m_view_cached;
-    QHash<uint32_t, int>                    m_view_history;
-    QList<CScreen *> m_screens;
 };
 
 #endif // CSCREENMANAGER_H
