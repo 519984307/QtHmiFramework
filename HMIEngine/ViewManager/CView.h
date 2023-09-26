@@ -37,6 +37,7 @@ public:
 
     virtual CView *customizeProperties() { return this; };
 
+
     // QQuickPaintedItem interface
 public:
     virtual void paint(QPainter *painter) override;

@@ -98,6 +98,7 @@ void CNgin::initialize(QGuiApplication&app, const uint32_t &screenWidth, const u
 
 
 
+
     // register QML types and other types
     qmlRegisterType<CViewEnums>("VIEWENUMS", 1, 0, "EVT");
 
