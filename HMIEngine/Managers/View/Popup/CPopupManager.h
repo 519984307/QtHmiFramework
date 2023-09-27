@@ -2,13 +2,13 @@
 #define CPOPUPMANAGER_H
 
 #include <QObject>
-#include "CViewManager.h"
+#include "AViewManager.h"
 #include "Popup/CPopup.h"
-class CPopupManager : public CViewManager
+class CPopupManager: public AViewManager
 {
     Q_OBJECT
 public:
-    CPopupManager(QObject *parent = nullptr);
+    CPopupManager();
     ~CPopupManager();
 
     // CViewManager interface

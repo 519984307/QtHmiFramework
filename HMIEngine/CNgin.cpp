@@ -43,7 +43,7 @@ CNgin::~CNgin()
     safeRelease(m_qml_ngin);
     safeRelease(m_qml_base);
 
-    QHash<E_VIEW_TYPE, CViewManager*>::iterator it = m_view_managers.begin();
+    QHash<E_VIEW_TYPE, AViewManager*>::iterator it = m_view_managers.begin();
     while(it != m_view_managers.end())
     {
         safeRelease(it.value());
@@ -55,10 +55,10 @@ void CNgin::initConnections()
 {
     connect(this, &CNgin::signalCompleted, this, &CNgin::onCompleted);
 
-    QHash<E_VIEW_TYPE, CViewManager*>::iterator it = m_view_managers.begin();
+    QHash<E_VIEW_TYPE, AViewManager*>::iterator it = m_view_managers.begin();
     while(it != m_view_managers.end())
     {
-        connect(it.value(), &CViewManager::signalLoadQml, this, &CNgin::onLoadQml, Qt::QueuedConnection);
+        connect(it.value(), &AViewManager::signalLoadQml, this, &CNgin::onLoadQml, Qt::QueuedConnection);
         ++it;
     }
 }
@@ -221,6 +221,7 @@ void CNgin::onLoadQml(const S_VIEW_INFORMATION *info, const std::function<void (
         CPP_LOG_DEBUG("This QQmlComponent is ready and create() may be called.")
         CView *obj = qobject_cast<CView*>(m_qml_base->create());
         obj->initialize(info, m_qml_parent);
+        obj->completed();
         cb(obj);
         break;
     }

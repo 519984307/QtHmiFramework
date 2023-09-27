@@ -55,5 +55,12 @@ enum E_LOGGER_LEVEL_COLOR: uint64_t
 
 };
 
+enum E_POPUP_PRIORITY_LEVEL
+{
+    LOW = 0,
+    MEDIUM,
+    HIGH
+};
+
 
 #endif // COMMONENUMS_H

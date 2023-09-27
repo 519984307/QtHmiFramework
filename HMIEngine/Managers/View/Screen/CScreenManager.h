@@ -2,15 +2,15 @@
 #define CSCREENMANAGER_H
 
 #include <QObject>
-#include "CViewManager.h"
+#include "AViewManager.h"
 #include "Screen/CScreen.h"
 
-class CScreenManager: public CViewManager
+class CScreenManager: public AViewManager
 {
     Q_OBJECT
     Q_PROPERTY(int depth READ depth NOTIFY depthChanged)
 public:
-    CScreenManager(QObject *parent = nullptr);
+    CScreenManager();
     ~CScreenManager();
 
     // CViewManager interface

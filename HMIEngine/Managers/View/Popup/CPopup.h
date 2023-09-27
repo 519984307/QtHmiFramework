@@ -11,12 +11,18 @@ public:
 
     // CView interface
 public:
-    virtual CView *customizeProperties() override;
+    virtual void customizeProperties() override;
+    virtual void completed() override;
+
 
     // QQuickItem interface
 protected:
     virtual void mousePressEvent(QMouseEvent *event) override;
     virtual void mouseReleaseEvent(QMouseEvent *event) override;
+
+
+private:
+    E_POPUP_PRIORITY_LEVEL                  m_priority_level;
 };
 
 #endif // CPOPUP_H

@@ -1,14 +1,7 @@
 #include "CCacheManager.h"
 
-CCacheManager *CCacheManager::s_instance = nullptr;
-CCacheManager *CCacheManager::instance()
-{
-    return s_instance = (s_instance == nullptr)? new CCacheManager: s_instance;
-}
-
 CCacheManager::CCacheManager()
 {
-
 }
 
 void CCacheManager::writecache(uint32_t key, CView *view)

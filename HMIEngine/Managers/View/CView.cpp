@@ -32,7 +32,7 @@ void CView::hide()
     emit signalInvisible();
 }
 
-CView * CView::initialize(const S_VIEW_INFORMATION *info, QQuickItem *parent)
+void CView::initialize(const S_VIEW_INFORMATION *info, QQuickItem *parent)
 {
     CPP_LOG_DEBUG("[%s][Entry]", c_strType())
 
@@ -44,6 +44,7 @@ CView * CView::initialize(const S_VIEW_INFORMATION *info, QQuickItem *parent)
     }
 
     m_count_down = m_duration;
+    emit countDownChanged();
 
     m_timer->setSingleShot(false);
     m_timer->setInterval(ONE_SEC);
@@ -54,8 +55,6 @@ CView * CView::initialize(const S_VIEW_INFORMATION *info, QQuickItem *parent)
     this->customizeProperties();
 
     CPP_LOG_DEBUG("[%s][Exit]", c_strType())
-
-    return this;
 }
 
 void CView::readProperties()

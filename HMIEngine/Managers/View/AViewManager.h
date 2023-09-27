@@ -1,5 +1,5 @@
-#ifndef CVIEWMANAGER_H
-#define CVIEWMANAGER_H
+#ifndef AVIEWMANAGER_H
+#define AVIEWMANAGER_H
 
 #include <QObject>
 #include <QStack>
@@ -8,13 +8,10 @@
 #include "CCacheManager.h"
 #include "CFreqTable.h"
 
-class CViewManager: public QObject
+class AViewManager: public QObject
 {
     Q_OBJECT
 public:
-    CViewManager(QObject *parent = nullptr);
-    virtual ~CViewManager();
-
     void show(const S_VIEW_INFORMATION*);
     void hide(const S_VIEW_INFORMATION*);
 
@@ -26,14 +23,14 @@ protected:
     virtual void loadQmlCallBack(CView*){};
 
 protected:
-    const std::function<void(CView*)>  m_load_qml_cb = std::bind(&CViewManager::loadQmlCallBack, this, std::placeholders::_1);
+    const std::function<void(CView*)>   m_load_qml_cb = std::bind(&AViewManager::loadQmlCallBack, this, std::placeholders::_1);
 
-    CCacheManager                     *m_cacheManager = nullptr;
-    CFreqTable                        *m_freqTable = nullptr;
+    CCacheManager                       m_cache_manager;
+    CFreqTable                          m_freq_table;
 
 signals:
     void signalLoadQml(const S_VIEW_INFORMATION*, const std::function<void(CView*)>&);
 };
 
 
-#endif // CVIEWMANAGER_H
+#endif // AVIEWMANAGER_H

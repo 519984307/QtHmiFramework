@@ -1,7 +1,6 @@
 #include "CToastManager.h"
 
-CToastManager::CToastManager(QObject *parent)
-    : CViewManager{parent}
+CToastManager::CToastManager()
 {
 
 }

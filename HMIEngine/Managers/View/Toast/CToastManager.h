@@ -1,14 +1,14 @@
 #ifndef CTOASTMANAGER_H
 #define CTOASTMANAGER_H
 
-#include <CViewManager.h>
+#include <AViewManager.h>
 #include <QObject>
 
-class CToastManager : public CViewManager
+class CToastManager: public AViewManager
 {
     Q_OBJECT
 public:
-    explicit CToastManager(QObject *parent = nullptr);
+    CToastManager();
 
     // CViewManager interface
 public:

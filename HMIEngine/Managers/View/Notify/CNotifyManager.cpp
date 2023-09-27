@@ -1,7 +1,6 @@
 #include "CNotifyManager.h"
 
-CNotifyManager::CNotifyManager(QObject *parent)
-    : CViewManager{parent}
+CNotifyManager::CNotifyManager()
 {
 
 }

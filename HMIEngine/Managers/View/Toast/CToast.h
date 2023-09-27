@@ -12,7 +12,7 @@ public:
 
     // CView interface
 public:
-    virtual CView *customizeProperties() override;
+    virtual void customizeProperties() override;
 };
 
 #endif // CTOAST_H

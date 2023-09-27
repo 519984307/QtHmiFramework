@@ -7,6 +7,4 @@ import "../" as Qml
 QmlToast {
     title: "TOAST SUCCESS"
     color: "green"
-    width: 250
-    height: 30
 }

@@ -6,7 +6,7 @@
 class CCacheManager
 {
 public:
-    static CCacheManager *instance();
+    CCacheManager();
 
     template<typename T>
     T* readCache(uint32_t key) const
@@ -16,10 +16,6 @@ public:
 
     void writecache(uint32_t key, CView* view);
     E_CACHE_STATUS cacheStatus(const uint32_t key);
-
-private:
-    CCacheManager();
-    static CCacheManager *s_instance;
 
 private:
     QHash<uint32_t, CView*>                 m_view_cached;

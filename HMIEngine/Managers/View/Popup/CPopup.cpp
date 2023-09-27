@@ -3,9 +3,16 @@
 CPopup::CPopup(QQuickItem *parent) : CView(parent)
 {
     m_str_type = __FUNCTION__;
+
+    m_timer = new QTimer(this);
+    m_timer->setInterval(ONE_SEC);
+    connect(m_timer, &QTimer::timeout, [&](){
+        m_timer->stop();
+        m_timer->start();
+    });
 }
 
-CView *CPopup::customizeProperties()
+void CPopup::customizeProperties()
 {
     CPP_LOG_DEBUG("[%s][Entry]", c_strType())
     setWidth(400);
@@ -13,7 +20,14 @@ CView *CPopup::customizeProperties()
     qvariant_cast<QObject*>(m_properties["anchors"])->setProperty("centerIn", QVariant::fromValue(parentItem()));
     this->setProperty("z", POPUP_z);
     CPP_LOG_DEBUG("[%s][Exit]", c_strType())
-    return this;
+}
+
+void CPopup::completed()
+{
+    if(duration() > 0)
+    {
+        m_timer->start();
+    }
 }
 
 void CPopup::mousePressEvent(QMouseEvent *event)

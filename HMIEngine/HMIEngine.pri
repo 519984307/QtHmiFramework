@@ -1,25 +1,26 @@
 RESOURCES += \
-        $$PWD/Resource/root_resource.qrc \
-        $$PWD/Resources/root_resource.qrc
+    $$PWD/Resource/root_resource.qrc \
+    $$PWD/Resources/root_resource.qrc
 
 
 SOURCES += \
-        $$PWD/CNgin.cpp \
-        $$PWD/Utils/Logger/CLogger.cpp \
-        $$PWD/Utils/Memory/LFUCache/CLFUCache.cpp \
-        $$PWD/Utils/Memory/LRUCache/CLRUCache.cpp \
-        $$PWD/ViewManager/CCacheManager.cpp \
-        $$PWD/ViewManager/CFreqTable.cpp \
-        $$PWD/ViewManager/CView.cpp \
-        $$PWD/ViewManager/CViewManager.cpp \
-        $$PWD/ViewManager/Notify/CNotify.cpp \
-        $$PWD/ViewManager/Notify/CNotifyManager.cpp \
-        $$PWD/ViewManager/Popup/CPopup.cpp \
-        $$PWD/ViewManager/Popup/CPopupManager.cpp \
-        $$PWD/ViewManager/Screen/CScreen.cpp \
-        $$PWD/ViewManager/Screen/CScreenManager.cpp \
-        $$PWD/ViewManager/Toast/CToast.cpp \
-        $$PWD/ViewManager/Toast/CToastManager.cpp \
+    $$PWD/CNgin.cpp \
+    $$PWD/Managers/Event/CEventBase.cpp \
+    $$PWD/Managers/View/AViewManager.cpp \
+    $$PWD/Utils/Logger/CLogger.cpp \
+    $$PWD/Utils/Memory/LFUCache/CLFUCache.cpp \
+    $$PWD/Utils/Memory/LRUCache/CLRUCache.cpp \
+    $$PWD/Managers/View/CCacheManager.cpp \
+    $$PWD/Managers/View/CFreqTable.cpp \
+    $$PWD/Managers/View/CView.cpp \
+    $$PWD/Managers/View/Notify/CNotify.cpp \
+    $$PWD/Managers/View/Notify/CNotifyManager.cpp \
+    $$PWD/Managers/View/Popup/CPopup.cpp \
+    $$PWD/Managers/View/Popup/CPopupManager.cpp \
+    $$PWD/Managers/View/Screen/CScreen.cpp \
+    $$PWD/Managers/View/Screen/CScreenManager.cpp \
+    $$PWD/Managers/View/Toast/CToast.cpp \
+    $$PWD/Managers/View/Toast/CToastManager.cpp \
 
 HEADERS += \
     $$PWD/CNgin.h \
@@ -27,27 +28,29 @@ HEADERS += \
     $$PWD/Common/CommonDefine.h \
     $$PWD/Common/CommonEnums.h \
     $$PWD/Common/CommonStructs.h \
+    $$PWD/Managers/View/AViewManager.h \
     $$PWD/Utils/Utils.h \
     $$PWD/Utils/Memory/LFUCache/CLFUCache.h \
     $$PWD/Utils/Memory/LRUCache/CLRUCache.h \
     $$PWD/Utils/Logger/CLogger.h \
+    $$PWD/Managers/Event/CEventBase.h \
     $$PWD/Utils/Logger/LoggerDefines.h \
-    $$PWD/ViewManager/CCacheManager.h \
-    $$PWD/ViewManager/CFreqTable.h \
-    $$PWD/ViewManager/CView.h \
-    $$PWD/ViewManager/CViewManager.h \
-    $$PWD/ViewManager/Notify/CNotify.h \
-    $$PWD/ViewManager/Notify/CNotifyManager.h \
-    $$PWD/ViewManager/Popup/CPopup.h \
-    $$PWD/ViewManager/Popup/CPopupManager.h \
-    $$PWD/ViewManager/Screen/CScreen.h \
-    $$PWD/ViewManager/Screen/CScreenManager.h \
-    $$PWD/ViewManager/Toast/CToast.h \
-    $$PWD/ViewManager/Toast/CToastManager.h
+    $$PWD/Managers/View/CCacheManager.h \
+    $$PWD/Managers/View/CFreqTable.h \
+    $$PWD/Managers/View/CView.h \
+    $$PWD/Managers/View/Notify/CNotify.h \
+    $$PWD/Managers/View/Notify/CNotifyManager.h \
+    $$PWD/Managers/View/Popup/CPopup.h \
+    $$PWD/Managers/View/Popup/CPopupManager.h \
+    $$PWD/Managers/View/Screen/CScreen.h \
+    $$PWD/Managers/View/Screen/CScreenManager.h \
+    $$PWD/Managers/View/Toast/CToast.h \
+    $$PWD/Managers/View/Toast/CToastManager.h
 
 INCLUDEPATH += \
     $$PWD/QmlTypes \
-    $$PWD/ViewManager \
+    $$PWD/Managers/View \
+    $$PWD/Managers/Event \
     $$PWD/Common \
     $$PWD/Utils
 

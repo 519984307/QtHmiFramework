@@ -13,7 +13,7 @@
 #include <QQueue>
 #include <QSensor>
 #include <vector>
-#include "CViewManager.h"
+#include "AViewManager.h"
 #include "Common.h"
 
 class CNgin : public QObject
@@ -76,7 +76,7 @@ private:
     QQueue<uchar>                                            m_events_queue;
     uchar                                                    m_last_event{0};
     bool                                                     m_event_is_processing{false};
-    QHash<E_VIEW_TYPE, CViewManager*>                        m_view_managers;
+    QHash<E_VIEW_TYPE, AViewManager*>                        m_view_managers;
     E_VIEW_TYPE                                              m_last_view_type{E_VIEW_TYPE::NONE_TYPE};
 };
 

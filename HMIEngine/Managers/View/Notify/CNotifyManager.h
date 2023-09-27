@@ -2,13 +2,13 @@
 #define CNOTIFYMANAGER_H
 
 #include <QObject>
-#include <CViewManager.h>
+#include <AViewManager.h>
 
-class CNotifyManager : public CViewManager
+class CNotifyManager: public AViewManager
 {
     Q_OBJECT
 public:
-    explicit CNotifyManager(QObject *parent = nullptr);
+    CNotifyManager();
 
     // CViewManager interface
 public:

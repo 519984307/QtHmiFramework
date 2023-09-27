@@ -25,7 +25,7 @@ public:
     void show();
     void hide();
 
-    CView *initialize(const S_VIEW_INFORMATION *, QQuickItem*);
+    void initialize(const S_VIEW_INFORMATION *, QQuickItem*);
 
     uint32_t id() const;
     uint32_t duration() const;
@@ -35,7 +35,8 @@ public:
     const char *path() const;
 
 
-    virtual CView *customizeProperties() { return this; };
+    virtual void customizeProperties() { };
+    virtual void completed() {};
 
 
     // QQuickPaintedItem interface
@@ -74,13 +75,13 @@ public slots:
 
 protected:
     QString                  m_str_type;
+    QTimer                  *m_timer = nullptr;
 
 private:
     void startTimer();
     void stopTimer();
 
 private:
-    QTimer                  *m_timer = nullptr;
     uint32_t                 m_count_down{0};
 
     // view info

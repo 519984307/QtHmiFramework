@@ -1,9 +1,8 @@
 #include "CFreqTable.h"
 
-CFreqTable *CFreqTable::s_instance = nullptr;
-CFreqTable *CFreqTable::instance()
+CFreqTable::CFreqTable()
 {
-    return s_instance = (s_instance == nullptr)? new CFreqTable: s_instance;
+
 }
 
 void CFreqTable::append(uint32_t key, int val)
@@ -22,7 +21,4 @@ void CFreqTable::reduce(uint32_t key)
     if(m_view_history[key] < 1) m_view_history[key] = 0;
 }
 
-CFreqTable::CFreqTable()
-{
 
-}
