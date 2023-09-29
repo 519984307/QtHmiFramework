@@ -8,6 +8,7 @@ QmlScreen {
     color: "red"
     title: "SCREEN A"
 
+    
     Text {
         id: idStackDepth
         text: `[Title:${title}][Duration:${countDown}] Depth: ${QmlScreenManager.depth}`
