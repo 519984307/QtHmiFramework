@@ -118,7 +118,7 @@ void CNgin::completed()
     }
 }
 
-void CNgin::setCtxProperty(QString label, QVariant value)
+void CNgin::setCtxProperty(const QString &label, QVariant value)
 {
     if(m_qml_ctx != nullptr)
     {

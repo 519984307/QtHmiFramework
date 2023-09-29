@@ -6,10 +6,10 @@ CPopup::CPopup(QQuickItem *parent) : CView(parent)
 
     m_timer = new QTimer(this);
     m_timer->setInterval(ONE_SEC);
-    connect(m_timer, &QTimer::timeout, [&](){
-        m_timer->stop();
-        m_timer->start();
-    });
+//    connect(m_timer, &QTimer::timeout, [&](){
+//        m_timer->stop();
+//        m_timer->start();
+//    });
 }
 
 void CPopup::customizeProperties()

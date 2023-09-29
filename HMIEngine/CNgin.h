@@ -24,7 +24,7 @@ public:
 
     void initialize(QGuiApplication&, const uint32_t&, const uint32_t&, const uchar&);
     void completed();
-    void setCtxProperty(QString, QVariant);
+    void setCtxProperty(const QString&, QVariant);
     void registerViews(const S_VIEW_INFORMATION*, uint32_t);
     void registerEvents(const S_VIEW_EVENT*, uint32_t);
 
