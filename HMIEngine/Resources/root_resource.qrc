@@ -1,7 +1,5 @@
 <RCC>
     <qresource prefix="/QML">
         <file>main.qml</file>
-<!--        <file>QmlModule/qmldir</file>
-        <file>QmlModule/QmlContainer.qml</file>-->
     </qresource>
 </RCC>

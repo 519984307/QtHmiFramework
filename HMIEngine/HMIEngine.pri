@@ -1,5 +1,4 @@
 RESOURCES += \
-    $$PWD/Resource/root_resource.qrc \
     $$PWD/Resources/root_resource.qrc
 
 
