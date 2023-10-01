@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "qobject": "cpp"
+        "qobject": "cpp",
+        "qquickitem": "cpp"
     }
 }
