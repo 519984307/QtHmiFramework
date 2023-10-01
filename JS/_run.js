@@ -10,10 +10,10 @@ qmake_process.stdout.on("data", data => {
 
 qmake_process.stderr.on("data", data => {
   // Display any errors from the command
-  console.error(`Error: ${data}`);
+  console.error(`${data}`);
 });
 
 qmake_process.on("close", code => {
   // Capture the exit code of the command
-  console.log(`Command exited with code ${code}`);
+  console.log(`EXECUTE exited with code ${code}`);
 });
