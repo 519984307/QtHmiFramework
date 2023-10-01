@@ -4,6 +4,7 @@
 #include "ViewData.h"
 #include "CController.h"
 #include "CModels.h"
+#include <QDebug>
 
 int main(int argc, char *argv[])
 {
@@ -13,6 +14,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
 
+    
     CController ctrl;
     CModels model;
 

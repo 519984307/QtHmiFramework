@@ -10,7 +10,7 @@ QmlScreen {
 
     Text {
         id: idStackDepth
-        text: `[Title:${title}][Duration:${countDown}] Depth: ${QmlScreenManager.depth}`
+        text: `[Title:${title}] Depth: ${QmlScreenManager.depth}`
         color: "black"
         font.bold: true
         anchors {

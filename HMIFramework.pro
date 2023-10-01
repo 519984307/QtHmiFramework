@@ -1,5 +1,6 @@
 QT +=  core gui qml quick sensors
-CONFIG += c++11 qml_debug
+CONFIG += c++11 qml_debug console
+
 
 
 include(Application/Application.pri)

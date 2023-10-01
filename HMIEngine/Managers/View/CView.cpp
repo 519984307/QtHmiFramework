@@ -3,8 +3,6 @@
 
 CView::CView(QQuickItem *parent):QQuickPaintedItem{parent}
 {
-    m_timer = new QTimer(this);
-
     setAcceptTouchEvents(true);
     setAcceptedMouseButtons(Qt::AllButtons);
 
@@ -13,7 +11,6 @@ CView::CView(QQuickItem *parent):QQuickPaintedItem{parent}
 
 CView::~CView()
 {
-    safeRelease(m_timer);
 }
 
 void CView::show()
@@ -43,12 +40,6 @@ void CView::initialize(const S_VIEW_INFORMATION *info, QQuickItem *parent)
         m_path      = info->path;
     }
 
-    m_count_down = m_duration;
-    emit countDownChanged();
-
-    m_timer->setSingleShot(false);
-    m_timer->setInterval(ONE_SEC);
-
     this->setVisible(false);
     this->setParentItem(parent);
     this->readProperties();
@@ -71,57 +62,16 @@ void CView::readProperties()
 
 void CView::onSignalVisible()
 {
-    startTimer();
 }
 
 void CView::onSignalInvisible()
 {
-    stopTimer();
-}
-
-void CView::onTimeout()
-{
-    m_count_down--;
-    if(m_count_down < 1)
-    {
-        stopTimer();
-
-        this->hide();
-    }
-
-    emit countDownChanged();
-}
-
-void CView::startTimer()
-{
-    if(m_type > E_VIEW_TYPE::SCREEN_TYPE && !m_timer->isActive())
-    {
-        if(m_duration > 0)
-        {
-            m_timer->start();
-        }
-    }
-}
-
-void CView::stopTimer()
-{
-    if(m_type > E_VIEW_TYPE::SCREEN_TYPE && m_timer->isActive())
-    {
-        m_timer->stop();
-        m_count_down = m_duration;
-    }
 }
 
 void CView::initConnections()
 {
-    if(m_timer != nullptr)
-    {
-        connect(m_timer, &QTimer::timeout, this, &CView::onTimeout, Qt::DirectConnection);
-    }
-
     connect(this, &CView::signalVisible, this, &CView::onSignalVisible, Qt::DirectConnection);
     connect(this, &CView::signalInvisible, this, &CView::onSignalInvisible, Qt::DirectConnection);
-
 }
 
 uint32_t CView::id() const
@@ -190,9 +140,4 @@ void CView::setColor(const QString &newColor)
         return;
     m_color = newColor;
     emit colorChanged();
-}
-
-uint8_t CView::countDown() const
-{
-    return m_count_down;
 }

@@ -4,8 +4,7 @@ CPopup::CPopup(QQuickItem *parent) : CView(parent)
 {
     m_str_type = __FUNCTION__;
 
-    m_timer = new QTimer(this);
-    m_timer->setInterval(ONE_SEC);
+    m_timer.setInterval(ONE_SEC);
 //    connect(m_timer, &QTimer::timeout, [&](){
 //        m_timer->stop();
 //        m_timer->start();
@@ -26,7 +25,7 @@ void CPopup::completed()
 {
     if(duration() > 0)
     {
-        m_timer->start();
+        m_timer.start();
     }
 }
 

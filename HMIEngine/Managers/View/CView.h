@@ -17,7 +17,6 @@ class CView: public QQuickPaintedItem
     Q_OBJECT
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
     Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
-    Q_PROPERTY(uint8_t countDown READ countDown NOTIFY countDownChanged)
 public:
     explicit CView(QQuickItem *parent = nullptr);
     ~CView();
@@ -49,8 +48,6 @@ public:
     QString color() const;
     void setColor(const QString &newColor);
 
-    uint8_t countDown() const;
-
 private:
     void initConnections();
     void readProperties();
@@ -58,32 +55,11 @@ private:
 protected:
     QHash<QString, QVariant>     m_properties;
 
-signals:
-    void titleChanged();
-    void colorChanged();
-
-    void signalVisible();
-    void signalInvisible();
-    void signalVisibleTimeout();
-
-    void countDownChanged();
-
-public slots:
-    void onSignalVisible();
-    void onSignalInvisible();
-    void onTimeout();
-
 protected:
     QString                  m_str_type;
-    QTimer                  *m_timer = nullptr;
+    QTimer                   m_timer;
 
 private:
-    void startTimer();
-    void stopTimer();
-
-private:
-    uint32_t                 m_count_down{0};
-
     // view info
     uint32_t                 m_id{0};
     uint32_t                 m_duration{E_DURATION::NONE};
@@ -93,6 +69,17 @@ private:
     // Qml properties
     QString m_title;
     QString m_color;
+
+signals:
+    void titleChanged();
+    void colorChanged();
+
+    void signalVisible();
+    void signalInvisible();
+
+public slots:
+    void onSignalVisible();
+    void onSignalInvisible();
 };
 
 

@@ -22,8 +22,6 @@ protected:
 
 private:
     CPopup                  *m_view;
-
-
 };
 
 #endif // CPOPUPMANAGER_H
