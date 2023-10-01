@@ -1,3 +1,3 @@
 @echo off 
 
-node .\_build.js
+node .\JS\_build.js

@@ -1,3 +1,3 @@
 @echo off
 
-node _clean.js
+node .\JS\_clean.js

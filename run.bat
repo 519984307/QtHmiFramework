@@ -1,3 +1,3 @@
 @echo off 
  
-node .\_run.js
+node .\JS\_run.js

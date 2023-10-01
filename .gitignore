@@ -54,5 +54,5 @@ compile_commands.json
 *_qmlcache.qrc
 
 *build
-/node_modules
-/package-lock.json
+*/node_modules
+*/package-lock.json
