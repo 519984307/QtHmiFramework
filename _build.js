@@ -1,11 +1,24 @@
-const PATH      = require("./_env_path.js")
-const {exec}    = require("child_process")
+const PATH = require("./_env_path.js");
+const process = require("child_process");
 
-const command   = `if NOT exist ${PATH.BUILD} mkdir ${PATH.BUILD} && cd ${PATH.BUILD} && ${PATH.QMAKE} ${PATH.PROFILE} "CONFIG+=${PATH.EXTRA}" && ${PATH.MAKE} -j16 && cd ../`
-exec(command, function (error, stdout, stderr) {
-    console.log('stdout: ' + stdout);
-    console.log('stderr: ' + stderr);
-    if (error !== null) {
-         console.log('exec error: ' + error);
-    }
-})
+var commands = [
+  `if NOT exist ${PATH.BUILD} mkdir ${PATH.BUILD}`,
+  `cd ${PATH.BUILD} && pwd && ${PATH.QMAKE} ${PATH.PROFILE} "CONFIG+=${PATH.EXTRA}" && ${PATH.MAKE} -j16 && cd ..`
+];
+
+process.execSync(commands[0]);
+const qmake_process = process.spawn(commands[1], {shell: true});
+qmake_process.stdout.on("data", data => {
+  // Process and display the log output
+  console.log(`Log output: ${data}`);
+});
+
+qmake_process.stderr.on("data", data => {
+  // Display any errors from the command
+  console.error(`Error: ${data}`);
+});
+
+qmake_process.on("close", code => {
+  // Capture the exit code of the command
+  console.log(`Command exited with code ${code}`);
+});

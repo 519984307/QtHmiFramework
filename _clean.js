@@ -1,11 +1,19 @@
 const PATH      = require("./_env_path.js")
-const {exec}    = require("child_process")
+const process   = require("child_process")
 
 const command   = `cd ${PATH.BUILD} && ${PATH.MAKE} clean -j16 && cd ..`
-exec(command, function (error, stdout, stderr) {
-    console.log('stdout: ' + stdout);
-    console.log('stderr: ' + stderr);
-    if (error !== null) {
-         console.log('exec error: ' + error);
-    }
-})
+const qmake_process = process.spawn(command, {shell: true});
+qmake_process.stdout.on("data", data => {
+  // Process and display the log output
+  console.log(`Log output: ${data}`);
+});
+
+qmake_process.stderr.on("data", data => {
+  // Display any errors from the command
+  console.error(`Error: ${data}`);
+});
+
+qmake_process.on("close", code => {
+  // Capture the exit code of the command
+  console.log(`Command exited with code ${code}`);
+});
