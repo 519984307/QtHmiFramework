@@ -3,14 +3,14 @@ const process = require("child_process");
 
 var commands = [
   `if NOT exist ${PATH.BUILD} mkdir ${PATH.BUILD}`,
-  `cd ${PATH.BUILD} && pwd && ${PATH.QMAKE} ${PATH.PROFILE} "CONFIG+=${PATH.EXTRA}" && ${PATH.MAKE} -j16 && cd ..`
+  `cd ${PATH.BUILD} && ${PATH.QMAKE} ${PATH.PROFILE} "CONFIG+=${PATH.EXTRA}" && ${PATH.MAKE} -j16 && cd ..`
 ];
 
 process.execSync(commands[0]);
 const qmake_process = process.spawn(commands[1], {shell: true});
 qmake_process.stdout.on("data", data => {
   // Process and display the log output
-  console.log(`Log output: ${data}`);
+  console.log(`${data}`);
 });
 
 qmake_process.stderr.on("data", data => {

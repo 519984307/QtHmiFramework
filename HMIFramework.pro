@@ -1,7 +1,6 @@
 QT +=  core gui qml quick sensors
-CONFIG += c++11
-CONFIG += shared
-QMAKE_LFLAGS += "-Wl,-rpath,./$$[QT_INSTALL_LIBS]"
+CONFIG += c++11 qml_debug
+
 
 include(Application/Application.pri)
 include(HMIEngine/HMIEngine.pri)

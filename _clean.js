@@ -5,7 +5,7 @@ const command   = `cd ${PATH.BUILD} && ${PATH.MAKE} clean -j16 && cd ..`
 const qmake_process = process.spawn(command, {shell: true});
 qmake_process.stdout.on("data", data => {
   // Process and display the log output
-  console.log(`Log output: ${data}`);
+  console.log(`${data}`);
 });
 
 qmake_process.stderr.on("data", data => {
