@@ -38,9 +38,7 @@ void CScreenManager::attach(const S_VIEW_INFORMATION *info)
     }
     else if(status == E_CACHE_STATUS::MISS)
     {
-        CPP_LOG_DEBUG("Load SCREEN from path [%s]", info->path);
-        m_freq_table.append(info->id, 0);
-        
+        CPP_LOG_DEBUG("Load SCREEN from path [%s]", info->path);        
         m_load_qml_payload.info = info;
         m_load_qml_payload.cb   = &m_load_qml_cb;
         CEventManager::instance()->dispatchEvent(E_EVENT_LOAD_QML, &m_load_qml_payload);
@@ -53,6 +51,8 @@ void CScreenManager::detach(const S_VIEW_INFORMATION *info)
     last = m_cache_manager.readCache<CScreen>(info->id);
     if(last == nullptr) return;
     if(!isValidDepth()) return;
+
+    m_freq_table.append(info->id, 0);
 
     last->hide();
 

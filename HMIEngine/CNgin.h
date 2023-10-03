@@ -15,16 +15,6 @@
 #include <vector>
 #include "AViewManager.h"
 #include "Common.h"
-#include "CEventManager.h"
-
-#include "Screen/CScreen.h"
-#include "Popup/CPopup.h"
-#include "Notify/CNotify.h"
-#include "Toast/CToast.h"
-#include "Screen/CScreenManager.h"
-#include "Popup/CPopupManager.h"
-#include "Notify/CNotifyManager.h"
-#include "Toast/CToastManager.h"
     
 class CNgin : public QObject
 {
@@ -87,11 +77,6 @@ private:
     QQueue<uchar>                                            m_events_queue;
     uchar                                                    m_last_event{0};
     bool                                                     m_event_is_processing{false};
-
-    CScreenManager                                           m_screen_manager;
-    CPopupManager                                            m_popup_manager;
-    CToastManager                                            m_toast_manager;
-    CNotifyManager                                           m_notify_manager;
     
     QHash<E_VIEW_TYPE, AViewManager*>                        m_view_managers;
     E_VIEW_TYPE                                              m_last_view_type{E_VIEW_TYPE::NONE_TYPE};
