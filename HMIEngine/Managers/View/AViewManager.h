@@ -5,6 +5,13 @@
 #include "CView.h"
 #include "CCacheManager.h"
 #include "CFreqTable.h"
+#include "CEventManager.h"
+
+struct s_load_qml_cb_param: public IEvent
+{
+    const S_VIEW_INFORMATION* info;
+    const std::function<void(CView*)> *cb;
+};
 
 class AViewManager
 {
@@ -17,12 +24,11 @@ protected:
     virtual void loadNewQmFromCallback(CView*){};
 
 protected:
+    s_load_qml_cb_param                 m_load_qml_payload;
     const std::function<void(CView*)>   m_load_qml_cb = std::bind(&AViewManager::loadNewQmFromCallback, this, std::placeholders::_1);
     CCacheManager                       m_cache_manager;
     CFreqTable                          m_freq_table;
 
-// signals:
-//     void signalLoadQml(const S_VIEW_INFORMATION*, const std::function<void(CView*)>&);
 };
 
 

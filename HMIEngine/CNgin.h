@@ -15,6 +15,8 @@
 #include <vector>
 #include "AViewManager.h"
 #include "Common.h"
+#include "CEventManager.h"
+
 #include "Screen/CScreen.h"
 #include "Popup/CPopup.h"
 #include "Notify/CNotify.h"
@@ -23,7 +25,7 @@
 #include "Popup/CPopupManager.h"
 #include "Notify/CNotifyManager.h"
 #include "Toast/CToastManager.h"
-
+    
 class CNgin : public QObject
 {
     Q_OBJECT
@@ -61,7 +63,8 @@ private:
 
 public slots:
     void onCompleted(const uchar&);
-    void onLoadQml(const S_VIEW_INFORMATION*, const std::function<void(CView*)>&);
+    // void onLoadQml(const S_VIEW_INFORMATION*, const std::function<void(CView*)>&);
+    void onLoadQml(IEvent*);
 
 private:
     const S_VIEW_INFORMATION* findViewByID(const uint32_t&);
@@ -92,6 +95,9 @@ private:
     
     QHash<E_VIEW_TYPE, AViewManager*>                        m_view_managers;
     E_VIEW_TYPE                                              m_last_view_type{E_VIEW_TYPE::NONE_TYPE};
+
+    EventCallBack                                            loadQMLCallBack;
+
 };
 
 #endif // CNGIN_H

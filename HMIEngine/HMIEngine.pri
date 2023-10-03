@@ -8,6 +8,7 @@ SOURCES += \
     $$PWD/Utils/Logger/CLogger.cpp \
     $$PWD/Utils/Memory/LFUCache/CLFUCache.cpp \
     $$PWD/Utils/Memory/LRUCache/CLRUCache.cpp \
+    $$PWD/Managers/Event/CEventManager.cpp \
     $$PWD/Managers/View/CCacheManager.cpp \
     $$PWD/Managers/View/CFreqTable.cpp \
     $$PWD/Managers/View/CView.cpp \
@@ -31,8 +32,10 @@ HEADERS += \
     $$PWD/Utils/Memory/LFUCache/CLFUCache.h \
     $$PWD/Utils/Memory/LRUCache/CLRUCache.h \
     $$PWD/Utils/Logger/CLogger.h \
-    $$PWD/Managers/Event/IEvent.h \
     $$PWD/Utils/Logger/LoggerDefines.h \
+    $$PWD/Managers/Event/EventEnums.h \
+    $$PWD/Managers/Event/IEvent.h \
+    $$PWD/Managers/Event/CEventManager.h \
     $$PWD/Managers/View/CCacheManager.h \
     $$PWD/Managers/View/CFreqTable.h \
     $$PWD/Managers/View/CView.h \

@@ -26,6 +26,9 @@ CNgin::CNgin(QObject *parent)
     m_view_types_dict[E_VIEW_TYPE::SCREEN_TYPE] = "Screen";
     m_view_types_dict[E_VIEW_TYPE::POPUP_TYPE]  = "Popup";
 
+
+    loadQMLCallBack = std::bind(&CNgin::onLoadQml, this, std::placeholders::_1);
+
     initConnections();
 }
 
@@ -39,12 +42,7 @@ void CNgin::initConnections()
 {
     connect(this, &CNgin::signalCompleted, this, &CNgin::onCompleted);
 
-    QHash<E_VIEW_TYPE, AViewManager *>::iterator it = m_view_managers.begin();
-    while (it != m_view_managers.end())
-    {
-        // connect(it.value(), &AViewManager::signalLoadQml, this, &CNgin::onLoadQml, Qt::QueuedConnection);
-        ++it;
-    }
+    CEventManager::instance()->registerListener(E_EVENT_LOAD_QML, loadQMLCallBack);
 }
 
 void CNgin::updateLastViewType(E_VIEW_TYPE type)
@@ -205,8 +203,12 @@ void CNgin::onCompleted(const uchar &event)
     }
 }
 
-void CNgin::onLoadQml(const S_VIEW_INFORMATION *info, const std::function<void(CView *)> &cb)
+void CNgin::onLoadQml(IEvent* res)
 {
+    s_load_qml_cb_param *data = (s_load_qml_cb_param*)res;
+    const S_VIEW_INFORMATION* info = data->info;
+    const std::function<void(CView*)> *cb = data->cb;
+
     m_qml_base->loadUrl(QUrl(info->path), QQmlComponent::PreferSynchronous);
     switch (m_qml_base->status())
     {
@@ -219,7 +221,7 @@ void CNgin::onLoadQml(const S_VIEW_INFORMATION *info, const std::function<void(C
         CView *obj = qobject_cast<CView *>(m_qml_base->create());
         obj->initialize(info, m_qml_parent);
         obj->completed();
-        cb(obj);
+        (*cb)(obj);
         break;
     }
     case QQmlComponent::Loading:

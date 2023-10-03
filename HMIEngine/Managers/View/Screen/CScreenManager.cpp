@@ -40,7 +40,9 @@ void CScreenManager::attach(const S_VIEW_INFORMATION *info)
     {
         CPP_LOG_DEBUG("Load SCREEN from path [%s]", info->path);
         m_freq_table.append(info->id, 0);
-        // emit signalLoadQml(info, m_load_qml_cb);
+        m_load_qml_payload.info = info;
+        m_load_qml_payload.cb   = &m_load_qml_cb;
+        CEventManager::instance()->dispatchEvent(E_EVENT_LOAD_QML, &m_load_qml_payload);
     }
 }
 
