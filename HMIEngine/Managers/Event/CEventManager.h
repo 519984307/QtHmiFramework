@@ -25,6 +25,7 @@ public:
 
     void registerListener(E_EVENT_ID eventID, EventCallBack &listener);
     void dispatchEvent(E_EVENT_ID eventID, IEvent *payload);
+    void dispatchEvent(E_EVENT_ID eventID);
 
 };
 

@@ -33,3 +33,8 @@ void CEventManager::dispatchEvent(E_EVENT_ID eventID, IEvent *payload)
     }
     
 }
+
+void CEventManager::dispatchEvent(E_EVENT_ID eventID)
+{
+    dispatchEvent(eventID, nullptr);
+}
