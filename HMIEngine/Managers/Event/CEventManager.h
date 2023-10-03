@@ -14,7 +14,7 @@ class CEventManager
 {
 private:
     static CEventManager                                         *s_instance;
-    std::unordered_map<E_EVENT_ID, std::vector<EventCallBack>>   m_cb_dict;
+    std::unordered_map<E_EVENT_ID, std::vector<EventCallBack>>    m_cb_dict;
 
 private:
     CEventManager();
@@ -23,7 +23,6 @@ private:
 public:
     static CEventManager *instance();
 
-    // void registerEvent(E_EVENT_ID eventID);
     void registerListener(E_EVENT_ID eventID, EventCallBack &listener);
     void dispatchEvent(E_EVENT_ID eventID, IEvent *payload);
 
