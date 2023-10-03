@@ -20,7 +20,7 @@ protected:
 
 protected:
     s_load_qml_cb_param                 m_load_qml_payload;
-    const std::function<void(CView*)>   m_load_qml_cb = std::bind(&AViewManager::loadNewQmFromCallback, this, std::placeholders::_1);
+    std::function<void(CView*)>         m_load_qml_cb = std::bind(&AViewManager::loadNewQmFromCallback, this, std::placeholders::_1);
     CCacheManager                       m_cache_manager;
     CFreqTable                          m_freq_table;
 

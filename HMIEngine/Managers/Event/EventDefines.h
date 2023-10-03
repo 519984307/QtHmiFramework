@@ -9,7 +9,7 @@
 struct s_load_qml_cb_param: public IEvent
 {
     const S_VIEW_INFORMATION* info;
-    const std::function<void(CView*)> *cb;
+    std::function<void(CView*)> *cb;
 };
 
 #endif // __EVENTDEFINES_H__
