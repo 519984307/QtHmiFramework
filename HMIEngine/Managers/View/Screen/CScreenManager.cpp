@@ -40,6 +40,7 @@ void CScreenManager::attach(const S_VIEW_INFORMATION *info)
     {
         CPP_LOG_DEBUG("Load SCREEN from path [%s]", info->path);
         m_freq_table.append(info->id, 0);
+        
         m_load_qml_payload.info = info;
         m_load_qml_payload.cb   = &m_load_qml_cb;
         CEventManager::instance()->dispatchEvent(E_EVENT_LOAD_QML, &m_load_qml_payload);
@@ -61,7 +62,6 @@ void CScreenManager::detach(const S_VIEW_INFORMATION *info)
 
     m_freq_table.reduce(info->id);
 
-
     if(m_views.isEmpty()) return;
     m_views.last()->show();
 
@@ -75,7 +75,7 @@ void CScreenManager::initConnections()
 
 void CScreenManager::loadNewQmFromCallback(CView *view)
 {
-    CPP_LOG_DEBUG("[Entry]", view)
+    CPP_LOG_DEBUG("[Entry] %s", view->path())
 
     if(view == nullptr) return;
 

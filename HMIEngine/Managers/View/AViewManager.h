@@ -6,12 +6,7 @@
 #include "CCacheManager.h"
 #include "CFreqTable.h"
 #include "CEventManager.h"
-
-struct s_load_qml_cb_param: public IEvent
-{
-    const S_VIEW_INFORMATION* info;
-    const std::function<void(CView*)> *cb;
-};
+#include "EventDefines.h"
 
 class AViewManager
 {
