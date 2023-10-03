@@ -1,14 +1,6 @@
 #include "CNgin.h"
 #include "Utils.h"
 #include "Logger/LoggerDefines.h"
-#include "Screen/CScreen.h"
-#include "Popup/CPopup.h"
-#include "Notify/CNotify.h"
-#include "Toast/CToast.h"
-#include "Screen/CScreenManager.h"
-#include "Popup/CPopupManager.h"
-#include "Notify/CNotifyManager.h"
-#include "Toast/CToastManager.h"
 #include "CViewEnums.h"
 
 #define QML_BASE "qrc:/QML/main.qml"
@@ -23,16 +15,16 @@ CNgin::CNgin(QObject *parent)
     : QObject{parent}
 {
     m_qml_ngin = new QQmlApplicationEngine(this);
-    m_qml_ctx = m_qml_ngin->rootContext();
+    m_qml_ctx  = m_qml_ngin->rootContext();
     m_qml_base = new QQmlComponent(m_qml_ngin, this);
 
-    m_view_managers[E_VIEW_TYPE::SCREEN_TYPE] = new CScreenManager();
-    m_view_managers[E_VIEW_TYPE::POPUP_TYPE] = new CPopupManager();
-    m_view_managers[E_VIEW_TYPE::NOTIFY_TYPE] = new CNotifyManager();
-    m_view_managers[E_VIEW_TYPE::TOAST_TYPE] = new CToastManager();
+    m_view_managers[E_VIEW_TYPE::SCREEN_TYPE]   = &m_screen_manager;
+    m_view_managers[E_VIEW_TYPE::POPUP_TYPE]    = &m_popup_manager;
+    m_view_managers[E_VIEW_TYPE::NOTIFY_TYPE]   = &m_notify_manager;
+    m_view_managers[E_VIEW_TYPE::TOAST_TYPE]    = &m_toast_manager;
 
     m_view_types_dict[E_VIEW_TYPE::SCREEN_TYPE] = "Screen";
-    m_view_types_dict[E_VIEW_TYPE::POPUP_TYPE] = "Popup";
+    m_view_types_dict[E_VIEW_TYPE::POPUP_TYPE]  = "Popup";
 
     initConnections();
 }
@@ -41,13 +33,6 @@ CNgin::~CNgin()
 {
     safeRelease(m_qml_ngin);
     safeRelease(m_qml_base);
-
-    QHash<E_VIEW_TYPE, AViewManager *>::iterator it = m_view_managers.begin();
-    while (it != m_view_managers.end())
-    {
-        safeRelease(it.value());
-        ++it;
-    }
 }
 
 void CNgin::initConnections()
@@ -57,7 +42,7 @@ void CNgin::initConnections()
     QHash<E_VIEW_TYPE, AViewManager *>::iterator it = m_view_managers.begin();
     while (it != m_view_managers.end())
     {
-        connect(it.value(), &AViewManager::signalLoadQml, this, &CNgin::onLoadQml, Qt::QueuedConnection);
+        // connect(it.value(), &AViewManager::signalLoadQml, this, &CNgin::onLoadQml, Qt::QueuedConnection);
         ++it;
     }
 }

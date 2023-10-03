@@ -4,7 +4,7 @@
 #include <QObject>
 #include <AViewManager.h>
 
-class CNotifyManager: public AViewManager
+class CNotifyManager: public QObject, public AViewManager
 {
     Q_OBJECT
 public:

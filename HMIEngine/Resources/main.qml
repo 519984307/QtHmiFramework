@@ -9,7 +9,7 @@ Window {
     height: QmlRootScreenHeight
     visible: true
     title: qsTr("HMIFramework")
-
+    
     Connections {
         target: QmlNgin
         function onSignalCompleted() {

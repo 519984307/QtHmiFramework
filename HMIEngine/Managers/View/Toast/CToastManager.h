@@ -4,7 +4,7 @@
 #include <AViewManager.h>
 #include <QObject>
 
-class CToastManager: public AViewManager
+class CToastManager: public QObject, public AViewManager
 {
     Q_OBJECT
 public:

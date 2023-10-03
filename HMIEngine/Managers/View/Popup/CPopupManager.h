@@ -4,7 +4,7 @@
 #include <QObject>
 #include "AViewManager.h"
 #include "Popup/CPopup.h"
-class CPopupManager: public AViewManager
+class CPopupManager: public QObject, public AViewManager
 {
     Q_OBJECT
 public:
@@ -18,7 +18,7 @@ public:
 
     // CViewManager interface
 protected:
-    virtual void loadQmlCallBack(CView *) override;
+    virtual void loadNewQmFromCallback(CView *) override;
 
 private:
     CPopup                  *m_view;

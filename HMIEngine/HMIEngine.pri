@@ -4,7 +4,6 @@ RESOURCES += \
 
 SOURCES += \
     $$PWD/CNgin.cpp \
-    $$PWD/Managers/Event/CEventBase.cpp \
     $$PWD/Managers/View/AViewManager.cpp \
     $$PWD/Utils/Logger/CLogger.cpp \
     $$PWD/Utils/Memory/LFUCache/CLFUCache.cpp \
@@ -32,7 +31,7 @@ HEADERS += \
     $$PWD/Utils/Memory/LFUCache/CLFUCache.h \
     $$PWD/Utils/Memory/LRUCache/CLRUCache.h \
     $$PWD/Utils/Logger/CLogger.h \
-    $$PWD/Managers/Event/CEventBase.h \
+    $$PWD/Managers/Event/IEvent.h \
     $$PWD/Utils/Logger/LoggerDefines.h \
     $$PWD/Managers/View/CCacheManager.h \
     $$PWD/Managers/View/CFreqTable.h \

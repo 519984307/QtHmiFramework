@@ -5,7 +5,7 @@
 #include "AViewManager.h"
 #include "Screen/CScreen.h"
 
-class CScreenManager: public AViewManager
+class CScreenManager: public QObject, public AViewManager
 {
     Q_OBJECT
     Q_PROPERTY(int depth READ depth NOTIFY depthChanged)
@@ -25,7 +25,7 @@ signals:
 
 protected:
     virtual void initConnections() override;
-    virtual void loadQmlCallBack(CView*) override;
+    virtual void loadNewQmFromCallback(CView*) override;
 
 private:
     bool isValidDepth();
