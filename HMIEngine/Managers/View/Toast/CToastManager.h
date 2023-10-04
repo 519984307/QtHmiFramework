@@ -4,17 +4,19 @@
 #include <AViewManager.h>
 #include <QObject>
 
-class CToastManager: public QObject, public AViewManager
+namespace HmiNgin
 {
-    Q_OBJECT
-public:
-    CToastManager();
+    class CToastManager : public QObject, public AViewManager
+    {
+        Q_OBJECT
+    public:
+        CToastManager();
 
-    // CViewManager interface
-public:
-    virtual void attach(const S_VIEW_INFORMATION*) override;
-    virtual void detach(const S_VIEW_INFORMATION*) override;
-
-};
+        // CViewManager interface
+    public:
+        virtual void attach(const S_VIEW_INFORMATION *) override;
+        virtual void detach(const S_VIEW_INFORMATION *) override;
+    };
+} // namespace HmiNgin
 
 #endif // CTOASTMANAGER_H

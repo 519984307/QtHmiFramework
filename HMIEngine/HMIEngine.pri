@@ -27,15 +27,16 @@ HEADERS += \
     $$PWD/Common/CommonDefine.h \
     $$PWD/Common/CommonEnums.h \
     $$PWD/Common/CommonStructs.h \
-    $$PWD/Managers/View/AViewManager.h \
     $$PWD/Utils/Utils.h \
     $$PWD/Utils/Memory/LFUCache/CLFUCache.h \
     $$PWD/Utils/Memory/LRUCache/CLRUCache.h \
     $$PWD/Utils/Logger/CLogger.h \
     $$PWD/Utils/Logger/LoggerDefines.h \
     $$PWD/Managers/Event/EventEnums.h \
-    $$PWD/Managers/Event/IEvent.h \
+    $$PWD/Managers/Event/EventDefines.h \
+    $$PWD/Managers/Event/EventStructs.h \
     $$PWD/Managers/Event/CEventManager.h \
+    $$PWD/Managers/View/AViewManager.h \
     $$PWD/Managers/View/CCacheManager.h \
     $$PWD/Managers/View/CFreqTable.h \
     $$PWD/Managers/View/CView.h \

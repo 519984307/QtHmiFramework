@@ -4,24 +4,29 @@
 #include <QObject>
 #include "AViewManager.h"
 #include "Popup/CPopup.h"
-class CPopupManager: public QObject, public AViewManager
+
+namespace HmiNgin
 {
-    Q_OBJECT
-public:
-    CPopupManager();
-    ~CPopupManager();
+    class CPopupManager : public QObject, public AViewManager
+    {
+        Q_OBJECT
+    public:
+        CPopupManager();
+        ~CPopupManager();
 
-    // CViewManager interface
-public:
-    virtual void attach(const S_VIEW_INFORMATION*) override;
-    virtual void detach(const S_VIEW_INFORMATION*) override;
+        // CViewManager interface
+    public:
+        virtual void attach(const S_VIEW_INFORMATION *) override;
+        virtual void detach(const S_VIEW_INFORMATION *) override;
 
-    // CViewManager interface
-protected:
-    virtual void loadNewQmFromCallback(CView *) override;
+        // CViewManager interface
+    protected:
+        virtual void loadNewQmFromCallback(CView *) override;
 
-private:
-    CPopup                  *m_view;
-};
+    private:
+        CPopup *m_view;
+    };
+
+} // namespace HmiNgin
 
 #endif // CPOPUPMANAGER_H

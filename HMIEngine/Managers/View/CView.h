@@ -12,75 +12,76 @@
 #include "CommonDefine.h"
 #include "Logger/LoggerDefines.h"
 
-class CView: public QQuickPaintedItem
+namespace HmiNgin
 {
-    Q_OBJECT
-    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
-    Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
-public:
-    explicit CView(QQuickItem *parent = nullptr);
-    ~CView();
+    class CView : public QQuickPaintedItem
+    {
+        Q_OBJECT
+        Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
+        Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
+    public:
+        explicit CView(QQuickItem *parent = nullptr);
+        ~CView();
 
-    void show();
-    void hide();
+        void show();
+        void hide();
 
-    void initialize(const S_VIEW_INFORMATION *, QQuickItem*);
+        void initialize(const S_VIEW_INFORMATION *, QQuickItem *);
 
-    uint32_t id() const;
-    uint32_t duration() const;
-    E_VIEW_TYPE type() const;
-    const QString strType() const;
-    const char* c_strType() const;
-    const char *path() const;
+        uint32_t id() const;
+        uint32_t duration() const;
+        E_VIEW_TYPE type() const;
+        const QString strType() const;
+        const char *c_strType() const;
+        const char *path() const;
 
+        virtual void customizeProperties(){};
+        virtual void completed(){};
 
-    virtual void customizeProperties() { };
-    virtual void completed() {};
+        // QQuickPaintedItem interface
+    public:
+        virtual void paint(QPainter *painter) override;
 
+        QString title() const;
+        void setTitle(const QString &newTitle);
 
-    // QQuickPaintedItem interface
-public:
-    virtual void paint(QPainter *painter) override;
+        QString color() const;
+        void setColor(const QString &newColor);
 
-    QString title() const;
-    void setTitle(const QString &newTitle);
+    private:
+        void initConnections();
+        void readProperties();
 
-    QString color() const;
-    void setColor(const QString &newColor);
+    protected:
+        QHash<QString, QVariant> m_properties;
 
-private:
-    void initConnections();
-    void readProperties();
+    protected:
+        QString m_str_type;
+        QTimer m_timer;
 
-protected:
-    QHash<QString, QVariant>     m_properties;
+    private:
+        // view info
+        uint32_t m_id{0};
+        uint32_t m_duration{E_DURATION::NONE};
+        E_VIEW_TYPE m_type{E_VIEW_TYPE::NONE_TYPE};
+        const char *m_path;
 
-protected:
-    QString                  m_str_type;
-    QTimer                   m_timer;
+        // Qml properties
+        QString m_title;
+        QString m_color;
 
-private:
-    // view info
-    uint32_t                 m_id{0};
-    uint32_t                 m_duration{E_DURATION::NONE};
-    E_VIEW_TYPE              m_type{E_VIEW_TYPE::NONE_TYPE};
-    const char*              m_path;
+    signals:
+        void titleChanged();
+        void colorChanged();
 
-    // Qml properties
-    QString m_title;
-    QString m_color;
+        void signalVisible();
+        void signalInvisible();
 
-signals:
-    void titleChanged();
-    void colorChanged();
+    public slots:
+        void onSignalVisible();
+        void onSignalInvisible();
+    };
 
-    void signalVisible();
-    void signalInvisible();
-
-public slots:
-    void onSignalVisible();
-    void onSignalInvisible();
-};
-
+} // namespace HmiNgin
 
 #endif // CVIEW_H

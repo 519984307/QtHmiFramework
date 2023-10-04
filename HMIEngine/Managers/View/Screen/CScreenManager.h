@@ -5,34 +5,38 @@
 #include "AViewManager.h"
 #include "Screen/CScreen.h"
 
-class CScreenManager: public QObject, public AViewManager
+namespace HmiNgin
 {
-    Q_OBJECT
-    Q_PROPERTY(int depth READ depth NOTIFY depthChanged)
-public:
-    CScreenManager();
-    ~CScreenManager();
+    class CScreenManager : public QObject, public AViewManager
+    {
+        Q_OBJECT
+        Q_PROPERTY(int depth READ depth NOTIFY depthChanged)
+    public:
+        CScreenManager();
+        ~CScreenManager();
 
-    // CViewManager interface
-public:
-    virtual void attach(const S_VIEW_INFORMATION*) override;
-    virtual void detach(const S_VIEW_INFORMATION*) override;
+        // CViewManager interface
+    public:
+        virtual void attach(const S_VIEW_INFORMATION *) override;
+        virtual void detach(const S_VIEW_INFORMATION *) override;
 
-    int depth() const;
+        int depth() const;
 
-signals:
-    void depthChanged();
+    signals:
+        void depthChanged();
 
-protected:
-    virtual void initConnections() override;
-    virtual void loadNewQmFromCallback(CView*) override;
+    protected:
+        virtual void initConnections() override;
+        virtual void loadNewQmFromCallback(CView *) override;
 
-private:
-    bool isValidDepth();
-    int indexOf(CScreen *view);
+    private:
+        bool isValidDepth();
+        int indexOf(CScreen *view);
 
-private:
-    QList<CScreen*>                         m_views;
-};
+    private:
+        QList<CScreen *> m_views;
+    };
+
+} // namespace HmiNgin
 
 #endif // CSCREENMANAGER_H

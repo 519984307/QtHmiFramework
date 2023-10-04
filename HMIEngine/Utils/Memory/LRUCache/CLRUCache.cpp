@@ -13,9 +13,9 @@ CLRUCache<T>::~CLRUCache()
 }
 
 template<class T>
-E_CACHE_STATUS CLRUCache<T>::status() const
+HmiNgin::E_CACHE_STATUS CLRUCache<T>::status() const
 {
-    return E_CACHE_STATUS::MISS;
+    return HmiNgin::E_CACHE_STATUS::MISS;
 }
 
 template<class T>

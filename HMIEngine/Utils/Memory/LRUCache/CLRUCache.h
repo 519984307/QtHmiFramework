@@ -11,7 +11,7 @@ class CLRUCache
 public:
     CLRUCache();
     ~CLRUCache();
-    E_CACHE_STATUS status() const;
+    HmiNgin::E_CACHE_STATUS status() const;
     T* get(uint32_t);
     void put(uint32_t, T*);
 

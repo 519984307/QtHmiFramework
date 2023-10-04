@@ -3,22 +3,26 @@
 
 #include "CView.h"
 
-class CCacheManager
+namespace HmiNgin
 {
-public:
-    CCacheManager();
-
-    template<typename T>
-    T* readCache(uint32_t key) const
+    class CCacheManager
     {
-        return dynamic_cast<T*>(m_view_cached[key]);
-    }
+    public:
+        CCacheManager();
 
-    void writecache(uint32_t key, CView* view);
-    E_CACHE_STATUS cacheStatus(const uint32_t key);
+        template <typename T>
+        T *readCache(uint32_t key) const
+        {
+            return dynamic_cast<T *>(m_view_cached[key]);
+        }
 
-private:
-    QHash<uint32_t, CView*>                 m_view_cached;
-};
+        void writecache(uint32_t key, CView *view);
+        E_CACHE_STATUS cacheStatus(const uint32_t key);
+
+    private:
+        QHash<uint32_t, CView *> m_view_cached;
+    };
+
+} // namespace HmiNgin
 
 #endif // CCACHEMANAGER_H

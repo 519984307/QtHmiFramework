@@ -2,14 +2,12 @@
 #define __EVENTDEFINES_H__
 
 #include <functional>
-#include "CommonStructs.h"
-#include "IEvent.h"
-#include "CView.h"
+#include "EventStructs.h"
 
-struct s_load_qml_cb_param: public IEvent
+namespace HmiNgin
 {
-    const S_VIEW_INFORMATION* info;
-    std::function<void(CView*)> *cb;
-};
+    typedef std::function<void(IEventPayload*)> EventCallBack;
+} 
+
 
 #endif // __EVENTDEFINES_H__

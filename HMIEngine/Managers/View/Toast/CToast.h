@@ -3,16 +3,19 @@
 
 #include <CView.h>
 
-class CToast : public CView
+namespace HmiNgin
 {
-    Q_OBJECT
-public:
-    CToast(QQuickItem *parent = nullptr);
+    class CToast : public CView
+    {
+        Q_OBJECT
+    public:
+        CToast(QQuickItem *parent = nullptr);
 
+        // CView interface
+    public:
+        virtual void customizeProperties() override;
+    };
 
-    // CView interface
-public:
-    virtual void customizeProperties() override;
-};
+} // namespace HmiNgin
 
 #endif // CTOAST_H
