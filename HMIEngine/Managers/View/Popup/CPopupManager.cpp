@@ -15,8 +15,24 @@ namespace HmiNgin
     {
         CPP_LOG_DEBUG("Load POPUP from path [%s]", info->path);
 
-        m_initQmlEventPayload.info = info;
-        CEventManager::instance()->dispatchEvent(E_EVENT_LOAD_QML, &m_initQmlEventPayload);
+        if(m_view != nullptr) m_view->hide();
+
+        E_CACHE_STATUS status = m_cache_manager.cacheStatus(info->id);
+        if (status == E_CACHE_STATUS::HIT)
+        {
+            CPP_LOG_DEBUG("Load SCREEN [%s] from cache memory", info->path);
+
+            if(m_view != nullptr) m_view->hide();
+
+            m_view = m_cache_manager.readCache<CPopup>(info->id);
+            m_view->show();
+        }
+        else if (status == E_CACHE_STATUS::MISS)
+        {
+            CPP_LOG_DEBUG("Load SCREEN from path [%s]", info->path);
+            m_initQmlEventPayload.info = info;
+            CEventManager::instance()->dispatchEvent(E_EVENT_LOAD_QML, &m_initQmlEventPayload);
+        }
     }
 
     void CPopupManager::detach(const S_VIEW_INFORMATION *info)
@@ -34,6 +50,8 @@ namespace HmiNgin
 
         CPopup *next = (CPopup *)view;
         next->show();
+
+        m_cache_manager.writecache(view->id(), next);
 
         m_view = next;
 
