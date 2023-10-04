@@ -4,6 +4,7 @@ namespace HmiNgin
 {
     CScreenManager::CScreenManager()
     {
+        m_initQmlEventPayload.cb = std::bind(&CScreenManager::loadNewQmFromCallback, this, std::placeholders::_1);
     }
 
     CScreenManager::~CScreenManager()
@@ -36,7 +37,7 @@ namespace HmiNgin
             m_freq_table.increase(info->id);
 
             m_views.push_back(next);
-            emit depthChanged();
+            
         }
         else if (status == E_CACHE_STATUS::MISS)
         {
@@ -44,7 +45,6 @@ namespace HmiNgin
             m_freq_table.append(info->id, 0);
 
             m_initQmlEventPayload.info = info;
-            m_initQmlEventPayload.cb = &m_load_qml_cb;
             CEventManager::instance()->dispatchEvent(E_EVENT_LOAD_QML, &m_initQmlEventPayload);
         }
     }
@@ -70,7 +70,7 @@ namespace HmiNgin
             return;
         m_views.last()->show();
 
-        emit depthChanged();
+        
     }
 
     void CScreenManager::initConnections()
@@ -79,7 +79,7 @@ namespace HmiNgin
 
     void CScreenManager::loadNewQmFromCallback(CView *view)
     {
-        CPP_LOG_DEBUG("[Entry] %s", view->path())
+        CPP_LOG_DEBUG("[Entry]")
 
         if (view == nullptr)
             return;
@@ -91,14 +91,14 @@ namespace HmiNgin
         m_freq_table.increase(view->id());
 
         m_views.push_back(next);
-        emit depthChanged();
+        
 
         CPP_LOG_DEBUG("[Exit]")
     }
 
     bool CScreenManager::isValidDepth()
     {
-        return depth() > 1;
+        return m_views.count() > 1;
     }
 
     int CScreenManager::indexOf(CScreen *view)
@@ -116,11 +116,6 @@ namespace HmiNgin
             index = 0;
         }
         return index;
-    }
-
-    int CScreenManager::depth() const
-    {
-        return m_views.count();
     }
 
 } // namespace HmiNgin

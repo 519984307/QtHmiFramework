@@ -12,7 +12,7 @@ namespace HmiNgin
     struct SInitQmlEventPayload: public IEventPayload
     {
         const S_VIEW_INFORMATION*  info;
-        const std::function<void(CView*)> *cb;
+        std::function<void(CView*)> cb;
     };
 }
 

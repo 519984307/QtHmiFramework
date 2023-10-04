@@ -22,5 +22,10 @@ namespace HmiNgin
         if (m_view_history[key] < 1)
             m_view_history[key] = 0;
     }
+    
+    int CFreqTable::get(uint32_t key)
+    {
+        return m_view_history[key];
+    }
 
 } // namespace HmiNgin

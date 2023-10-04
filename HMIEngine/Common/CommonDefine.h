@@ -49,6 +49,24 @@ static const HmiNgin::S_VIEW_INFORMATION NAME##_INFORMATION = { E_NOTIFY_ID::E_#
     inline void NAME##_BACK(){} \
     inline void NAME##_EXIT(){}
 
+
+#define EVENT_REGISTER_LISTENER_NO_ARG(SPACE, INS,LISTENER, EVENT) \
+    m_##LISTENER##CallBack = std::bind(&SPACE::on##LISTENER, INS);\
+    CEventManager::instance()->registerListener(EVENT, m_##LISTENER##CallBack);
+
+#define EVENT_REGISTER_LISTENER_1_ARG(SPACE, INS, LISTENER, EVENT) \
+    m_##LISTENER##CallBack = std::bind(&SPACE::on##LISTENER, INS, std::placeholders::_1);\
+    CEventManager::instance()->registerListener(EVENT, m_##LISTENER##CallBack);
+
+#define EVENT_REGISTER_LISTENER_2_ARGS(SPACE, INS, LISTENER, EVENT) \
+    m_##LISTENER##CallBack = std::bind(&SPACE::on##LISTENER, INS, std::placeholders::_1, std::placeholders::_2);\
+    CEventManager::instance()->registerListener(EVENT, m_##LISTENER##CallBack);
+
+#define EVENT_REGISTER_LISTENER_N_ARGS(SPACE, INS, LISTENER, EVENT, ...) \
+    m_##LISTENER##CallBack = std::bind(&SPACE::on##LISTENER, INS, __VA_ARGS__ ); \
+    CEventManager::instance()->registerListener(EVENT, m_##LISTENER##CallBack);
+
 #define UNUSED(x) (void)x;
+
 
 #endif // COMMONDEFINE_H

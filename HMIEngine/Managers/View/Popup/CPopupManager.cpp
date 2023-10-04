@@ -4,6 +4,7 @@ namespace HmiNgin
 {
     CPopupManager::CPopupManager()
     {
+        m_initQmlEventPayload.cb = std::bind(&CPopupManager::loadNewQmFromCallback, this, std::placeholders::_1);
     }
 
     CPopupManager::~CPopupManager()
@@ -15,7 +16,6 @@ namespace HmiNgin
         CPP_LOG_DEBUG("Load POPUP from path [%s]", info->path);
 
         m_initQmlEventPayload.info = info;
-        m_initQmlEventPayload.cb = &m_load_qml_cb;
         CEventManager::instance()->dispatchEvent(E_EVENT_LOAD_QML, &m_initQmlEventPayload);
     }
 

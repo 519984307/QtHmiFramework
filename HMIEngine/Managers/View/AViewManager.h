@@ -21,10 +21,11 @@ namespace HmiNgin
         virtual void loadNewQmFromCallback(CView *){};
 
     protected:
-        CCacheManager m_cache_manager;
-        CFreqTable m_freq_table;
-        const std::function<void(CView *)> m_load_qml_cb = std::bind(&AViewManager::loadNewQmFromCallback, this, std::placeholders::_1);
-        HmiNgin::SInitQmlEventPayload m_initQmlEventPayload;
+        CCacheManager           m_cache_manager;
+        CFreqTable              m_freq_table;
+
+        // payloads
+        SInitQmlEventPayload    m_initQmlEventPayload;
     };
 } // namespace HmiNgin
 

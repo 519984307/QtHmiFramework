@@ -55,7 +55,7 @@ namespace HmiNgin
 
     public slots:
         void onCompleted(const uchar&);
-        // void onLoadQml(const S_VIEW_INFORMATION*, const std::function<void(CView*)>&);
+
         void onLoadQml(IEventPayload*);
 
     private:
@@ -83,7 +83,7 @@ namespace HmiNgin
         QHash<E_VIEW_TYPE, AViewManager*>                        m_view_managers;
         E_VIEW_TYPE                                              m_last_view_type{E_VIEW_TYPE::NONE_TYPE};
 
-        EventCallBack                                            loadQMLCallBack;
+        EventCallBack                                            m_LoadQmlCallBack;
     };
 
 } // namespace HmiNgin

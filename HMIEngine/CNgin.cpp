@@ -30,15 +30,13 @@ namespace HmiNgin
         m_qml_ctx = m_qml_ngin->rootContext();
         m_qml_base = new QQmlComponent(m_qml_ngin, this);
 
-        m_view_managers[E_VIEW_TYPE::SCREEN_TYPE] = new CScreenManager;
-        m_view_managers[E_VIEW_TYPE::POPUP_TYPE] = new CPopupManager;
-        m_view_managers[E_VIEW_TYPE::NOTIFY_TYPE] = new CNotifyManager;
-        m_view_managers[E_VIEW_TYPE::TOAST_TYPE] = new CToastManager;
+        m_view_managers[E_VIEW_TYPE::SCREEN_TYPE]   = new CScreenManager();
+        m_view_managers[E_VIEW_TYPE::POPUP_TYPE]    = new CPopupManager();
+        m_view_managers[E_VIEW_TYPE::NOTIFY_TYPE]   = new CNotifyManager();
+        m_view_managers[E_VIEW_TYPE::TOAST_TYPE]    = new CToastManager();
 
         m_view_types_dict[E_VIEW_TYPE::SCREEN_TYPE] = "Screen";
         m_view_types_dict[E_VIEW_TYPE::POPUP_TYPE] = "Popup";
-
-        loadQMLCallBack = std::bind(&CNgin::onLoadQml, this, std::placeholders::_1);
 
         initConnections();
     }
@@ -59,8 +57,8 @@ namespace HmiNgin
     void CNgin::initConnections()
     {
         connect(this, &CNgin::signalCompleted, this, &CNgin::onCompleted);
-
-        CEventManager::instance()->registerListener(E_EVENT_LOAD_QML, loadQMLCallBack);
+        
+        EVENT_REGISTER_LISTENER_1_ARG(CNgin, this, LoadQml, E_EVENT_LOAD_QML)
     }
 
     void CNgin::updateLastViewType(E_VIEW_TYPE type)
@@ -95,8 +93,8 @@ namespace HmiNgin
 
         // set context
         setCtxProperty("QmlNgin", QVariant::fromValue(this));
-        setCtxProperty("QmlScreenManager", QVariant::fromValue(m_view_managers[E_VIEW_TYPE::SCREEN_TYPE]));
-        setCtxProperty("QmlPopupManager", QVariant::fromValue(m_view_managers[E_VIEW_TYPE::POPUP_TYPE]));
+        setCtxProperty("QmlScreenManager", QVariant::fromValue((CScreenManager*)m_view_managers[E_VIEW_TYPE::SCREEN_TYPE]));
+        setCtxProperty("QmlPopupManager", QVariant::fromValue((CPopupManager*)m_view_managers[E_VIEW_TYPE::POPUP_TYPE]));
 
         // register QML types and other types
         qmlRegisterType<CViewEnums>("VIEWENUMS", 1, 0, "EVT");
@@ -225,7 +223,7 @@ namespace HmiNgin
     {
         HmiNgin::SInitQmlEventPayload *data = (HmiNgin::SInitQmlEventPayload *)payload;
         const S_VIEW_INFORMATION *info = data->info;
-        const std::function<void(CView *)> *cb = data->cb;
+        const std::function<void(CView *)> &cb = data->cb;
 
         m_qml_base->loadUrl(QUrl(info->path), QQmlComponent::PreferSynchronous);
         switch (m_qml_base->status())
@@ -239,7 +237,7 @@ namespace HmiNgin
             CView *obj = qobject_cast<CView *>(m_qml_base->create());
             obj->initialize(info, m_qml_parent);
             obj->completed();
-            (*cb)(obj);
+            cb(obj);
             break;
         }
         case QQmlComponent::Loading:
