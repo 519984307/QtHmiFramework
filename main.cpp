@@ -16,7 +16,11 @@ int main(int argc, char *argv[])
     CController ctrl;
     CModels model;
 
-    HmiNgin::CNgin::instance()->initialize(app, __MAIN_WINDOW_WIDTH__, __MAIN_WINDOW_HEIGHT__, CViewEnums::E_SCREEN_A_EVT_SHOW);
+    HmiNgin::CNgin::instance()->initialize(
+        app,
+        __MAIN_WINDOW_WIDTH__,
+        __MAIN_WINDOW_HEIGHT__,
+        CViewEnums::E_SCREEN_A_EVT_SHOW);
     HmiNgin::CNgin::instance()->registerViews(ALL_INFOR, SIZE_OF_ARRAY(ALL_INFOR));
     HmiNgin::CNgin::instance()->registerEvents(ALL_EVENTS, SIZE_OF_ARRAY(ALL_EVENTS));
     HmiNgin::CNgin::instance()->setCtxProperty("QmlCtrl", QVariant::fromValue(&ctrl));

@@ -7,6 +7,7 @@
 #include "CFreqTable.h"
 #include "CEventManager.h"
 #include "EventStructs.h"
+#include "IAnimation.h"
 
 BEGIN_NAMESPACE(HmiNgin)
 class AViewManager
@@ -25,6 +26,11 @@ protected:
 
     // payloads
     SInitQmlEventPayload    m_initQmlEventPayload;
+
+
+    // animations
+    IAnimation             *m_transition;
+    
 };
 END_NAMESPACE
 

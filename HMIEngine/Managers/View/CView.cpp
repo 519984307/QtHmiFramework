@@ -52,12 +52,12 @@ void CView::initialize(const S_VIEW_INFORMATION *info, QQuickItem *parent)
 void CView::readProperties()
 {
     CPP_LOG_DEBUG("[%s][Entry]", c_strType())
-    m_properties["x"] = this->property("x").toReal();
-    m_properties["y"] = this->property("y").toReal();
-    m_properties["z"] = this->property("z").toReal();
-    m_properties["width"] = this->property("width").toReal();
-    m_properties["height"] = this->property("height").toReal();
-    m_properties["anchors"] = this->property("anchors");
+    m_properties["x"]           = this->property("x").toReal();
+    m_properties["y"]           = this->property("y").toReal();
+    m_properties["z"]           = this->property("z").toReal();
+    m_properties["width"]       = this->property("width").toReal();
+    m_properties["height"]      = this->property("height").toReal();
+    m_properties["anchors"]     = this->property("anchors");
     CPP_LOG_DEBUG("[%s][Exit]", c_strType())
 }
 

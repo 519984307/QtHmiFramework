@@ -56,7 +56,7 @@ protected:
 
 protected:
     QString m_str_type;
-    QTimer m_timer;
+    QTimer  m_timer;
 
 private:
     // view info

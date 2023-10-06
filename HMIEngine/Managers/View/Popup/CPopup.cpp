@@ -4,12 +4,9 @@ BEGIN_NAMESPACE(HmiNgin)
 CPopup::CPopup(QQuickItem *parent) : CView(parent)
 {
     m_str_type = __FUNCTION__;
-
-    m_timer.setInterval(ONE_SEC);
-    //    connect(m_timer, &QTimer::timeout, [&](){
-    //        m_timer->stop();
-    //        m_timer->start();
-    //    });
+    connect(this, &CPopup::signalVisible, [&](){ if(duration() > 0) m_timer.start(duration() * ONE_SEC);});
+    connect(this, &CPopup::signalInvisible, [&](){ m_timer.stop(); });
+    connect(&m_timer, &QTimer::timeout, [&](){ this->hide(); });
 }
 
 void CPopup::customizeProperties()
@@ -26,7 +23,7 @@ void CPopup::completed()
 {
     if (duration() > 0)
     {
-        m_timer.start();
+        m_timer.start(duration() * ONE_SEC);
     }
 }
 
