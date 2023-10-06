@@ -8,6 +8,7 @@ SOURCES += \
     $$PWD/Utils/Logger/CLogger.cpp \
     $$PWD/Utils/Memory/LFUCache/CLFUCache.cpp \
     $$PWD/Utils/Memory/LRUCache/CLRUCache.cpp \
+    $$PWD/Managers/Animation/CAnimationManager.cpp \
     $$PWD/Managers/Event/CEventManager.cpp \
     $$PWD/Managers/View/CCacheManager.cpp \
     $$PWD/Managers/View/CFreqTable.cpp \
@@ -32,6 +33,9 @@ HEADERS += \
     $$PWD/Utils/Memory/LRUCache/CLRUCache.h \
     $$PWD/Utils/Logger/CLogger.h \
     $$PWD/Utils/Logger/LoggerDefines.h \
+    $$PWD/Managers/Animation/CAnimationManager.h \
+    $$PWD/Managers/Animation/IAnimation.h \
+    $$PWD/Managers/Sound/ISound.h \
     $$PWD/Managers/Event/EventEnums.h \
     $$PWD/Managers/Event/EventDefines.h \
     $$PWD/Managers/Event/EventStructs.h \
@@ -51,8 +55,11 @@ HEADERS += \
 
 INCLUDEPATH += \
     $$PWD/QmlTypes \
+    $$PWD/Managers \
     $$PWD/Managers/View \
     $$PWD/Managers/Event \
+    $$PWD/Managers/Sound \
+    $$PWD/Managers/Animation \
     $$PWD/Common \
     $$PWD/Utils
 

@@ -8,7 +8,7 @@ Window {
     width: QmlRootScreenWidth
     height: QmlRootScreenHeight
     visible: true
-    title: qsTr("HMIFramework")
+    title: qsTr("GameClicker")
     
     Connections {
         target: QmlNgin

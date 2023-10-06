@@ -61,11 +61,6 @@ namespace HmiNgin
         EVENT_REGISTER_LISTENER_1_ARG(CNgin, this, LoadQml, E_EVENT_LOAD_QML)
     }
 
-    void CNgin::updateLastViewType(E_VIEW_TYPE type)
-    {
-        m_last_view_type = type;
-    }
-
     void CNgin::initialize(QGuiApplication &app, const uint32_t &screenWidth, const uint32_t &screenHeight, const uchar &event)
     {
         CPP_LOG_DEBUG("[Entry]")
@@ -153,10 +148,7 @@ namespace HmiNgin
     void CNgin::setLastViewType(const E_VIEW_TYPE &type)
     {
         if (m_last_view_type == type)
-        {
             return;
-        }
-
         m_last_view_type = type;
         emit signalOnTopChanged(m_last_view_type);
     }
@@ -179,7 +171,7 @@ namespace HmiNgin
         evt->fn();
 
         if (anyId.contains(evt->destination))
-        {
+        {   
             m_view_managers[m_last_view_type]->detach(info);
         }
         else

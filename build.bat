@@ -1,3 +1,3 @@
 @echo off 
 
-node .\JS\_build.js && node .\JS\_run.js
+cls && node .\JS\_build.js && node .\JS\_run.js

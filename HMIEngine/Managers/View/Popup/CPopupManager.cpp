@@ -13,9 +13,10 @@ namespace HmiNgin
 
     void CPopupManager::attach(const S_VIEW_INFORMATION *info)
     {
-        CPP_LOG_DEBUG("Load POPUP from path [%s]", info->path);
-
+        if(info == nullptr) return;
         if(m_view != nullptr) m_view->hide();
+
+        CPP_LOG_DEBUG("Load POPUP from path [%s]", info->path);
 
         E_CACHE_STATUS status = m_cache_manager.cacheStatus(info->id);
         if (status == E_CACHE_STATUS::HIT)
