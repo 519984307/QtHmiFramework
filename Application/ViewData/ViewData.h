@@ -8,6 +8,8 @@
 #include "CommonEnums.h"
 #include "CommonDefine.h"
 
+BEGIN_NAMESPACE(App)
+
 // [screens]
 DECLARE_SCREEN_INFO(SCREEN_A);
 DECLARE_SCREEN_INFO(SCREEN_B);
@@ -78,5 +80,7 @@ static const HmiNgin::S_VIEW_EVENT  ALL_EVENTS[] = {
     {E_POPUP_ID::E_POPUP_Z_ID, CViewEnums::E_POPUP_Z_EVT_OPEN_POPUP_X, &POPUP_X_ENTRY, E_POPUP_ID::E_POPUP_X_ID},
     {E_POPUP_ID::E_POPUP_Z_ID, CViewEnums::E_POPUP_Z_EVT_OPEN_POPUP_Y, &POPUP_Y_ENTRY, E_POPUP_ID::E_POPUP_Y_ID}
 };
+
+END_NAMESPACE
 
 #endif // VIEWDATA_H

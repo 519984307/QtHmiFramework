@@ -97,7 +97,7 @@ void CNgin::initialize(QGuiApplication &app, const char* appName, const uint32_t
     setCtxProperty("QmlPopupManager", QVariant::fromValue((CPopupManager*)m_view_managers[E_VIEW_TYPE::POPUP_TYPE]));
 
     // register QML types and other types
-    qmlRegisterType<CViewEnums>("VIEWENUMS", 1, 0, "EVT");
+    qmlRegisterType<App::CViewEnums>("VIEWENUMS", 1, 0, "EVT");
 
     qmlRegisterType<CScreen>("Common.Qml", 1, 0, "QmlScreen");
     qmlRegisterType<CPopup>("Common.Qml", 1, 0, "QmlPopup");

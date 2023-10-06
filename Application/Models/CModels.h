@@ -2,7 +2,9 @@
 #define CMODELS_H
 
 #include <QObject>
+#include "CommonDefine.h"
 
+BEGIN_NAMESPACE(App)
 class CModels : public QObject
 {
     Q_OBJECT
@@ -12,5 +14,6 @@ public:
 signals:
 
 };
+END_NAMESPACE
 
 #endif // CMODELS_H

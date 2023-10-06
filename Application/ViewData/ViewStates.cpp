@@ -1,6 +1,8 @@
 #include "ViewStates.h"
 #include "Logger/LoggerDefines.h"
 
+BEGIN_NAMESPACE(App)
+
 void SCREEN_A_ENTRY() { CPP_LOG_DEBUG("[ENTRY][SCREEN A]");}
 void SCREEN_A_BACK() { CPP_LOG_DEBUG("[BACK][SCREEN A]");}
 void SCREEN_A_EXIT() { CPP_LOG_DEBUG("[EXIT][SCREEN A]");}
@@ -25,3 +27,4 @@ void POPUP_Z_ENTRY() { CPP_LOG_DEBUG("[ENTRY][POPUP Z]");}
 void POPUP_Z_BACK() { CPP_LOG_DEBUG("[BACK][POPUP Z]");}
 void POPUP_Z_EXIT() { CPP_LOG_DEBUG("[EXIT][POPUP Z]");}
 
+END_NAMESPACE

@@ -2,7 +2,9 @@
 #define CCONTROLLER_H
 
 #include <QObject>
+#include "CommonDefine.h"
 
+BEGIN_NAMESPACE(App)
 class CController : public QObject
 {
     Q_OBJECT
@@ -12,5 +14,6 @@ public:
 signals:
 
 };
+END_NAMESPACE
 
 #endif // CCONTROLLER_H

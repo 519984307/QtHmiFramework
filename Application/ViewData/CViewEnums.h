@@ -2,7 +2,9 @@
 #define CVIEWENUMS_H
 
 #include <QObject>
+#include "CommonDefine.h"
 
+BEGIN_NAMESPACE(App)
 class CViewEnums: public QObject
 {
     Q_OBJECT
@@ -171,9 +173,11 @@ private:
     Q_ENUM(E_NOTIFY_ERROR_EVT)
 };
 
-using E_SCREEN_ID   = CViewEnums::E_SCREEN_ID;
-using E_POPUP_ID    = CViewEnums::E_POPUP_ID;
-using E_TOAST_ID    = CViewEnums::E_TOAST_ID;
-using E_NOTIFY_ID   = CViewEnums::E_NOTIFY_ID;
+END_NAMESPACE
+
+using E_SCREEN_ID   = App::CViewEnums::E_SCREEN_ID;
+using E_POPUP_ID    = App::CViewEnums::E_POPUP_ID;
+using E_TOAST_ID    = App::CViewEnums::E_TOAST_ID;
+using E_NOTIFY_ID   = App::CViewEnums::E_NOTIFY_ID;
 
 #endif // CVIEWENUMS_H

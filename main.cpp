@@ -14,17 +14,17 @@ int main(int argc, char *argv[])
 #endif
     QGuiApplication app(argc, argv);
 
-    CController ctrl;
-    CModels model;
+    App::CController ctrl;
+    App::CModels model;
 
     HmiNgin::CNgin::instance()->initialize(
         app,
         APP_NAME,
         __MAIN_WINDOW_WIDTH__,
         __MAIN_WINDOW_HEIGHT__,
-        CViewEnums::E_SCREEN_A_EVT_SHOW);
-    HmiNgin::CNgin::instance()->registerViews(ALL_INFOR, SIZE_OF_ARRAY(ALL_INFOR));
-    HmiNgin::CNgin::instance()->registerEvents(ALL_EVENTS, SIZE_OF_ARRAY(ALL_EVENTS));
+        App::CViewEnums::E_SCREEN_A_EVT_SHOW);
+    HmiNgin::CNgin::instance()->registerViews(App::ALL_INFOR, SIZE_OF_ARRAY(App::ALL_INFOR));
+    HmiNgin::CNgin::instance()->registerEvents(App::ALL_EVENTS, SIZE_OF_ARRAY(App::ALL_EVENTS));
     HmiNgin::CNgin::instance()->setCtxProperty("QmlCtrl", QVariant::fromValue(&ctrl));
     HmiNgin::CNgin::instance()->setCtxProperty("QmlModel", QVariant::fromValue(&model));
     HmiNgin::CNgin::instance()->completed();
