@@ -8,25 +8,24 @@
 #include "CEventManager.h"
 #include "EventStructs.h"
 
-namespace HmiNgin
+BEGIN_NAMESPACE(HmiNgin)
+class AViewManager
 {
-    class AViewManager
-    {
-    public:
-        virtual void attach(const S_VIEW_INFORMATION *) = 0;
-        virtual void detach(const S_VIEW_INFORMATION *) = 0;
+public:
+    virtual void attach(const S_VIEW_INFORMATION *) = 0;
+    virtual void detach(const S_VIEW_INFORMATION *) = 0;
 
-    protected:
-        virtual void initConnections(){};
-        virtual void loadNewQmFromCallback(CView *){};
+protected:
+    virtual void initConnections(){};
+    virtual void loadNewQmFromCallback(CView *){};
 
-    protected:
-        CCacheManager           m_cache_manager;
-        CFreqTable              m_freq_table;
+protected:
+    CCacheManager           m_cache_manager;
+    CFreqTable              m_freq_table;
 
-        // payloads
-        SInitQmlEventPayload    m_initQmlEventPayload;
-    };
-} // namespace HmiNgin
+    // payloads
+    SInitQmlEventPayload    m_initQmlEventPayload;
+};
+END_NAMESPACE
 
 #endif // AVIEWMANAGER_H

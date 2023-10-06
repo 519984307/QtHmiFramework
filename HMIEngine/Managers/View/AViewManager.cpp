@@ -1,5 +1,4 @@
 #include "AViewManager.h"
 
-namespace HmiNgin
-{
-} // namespace HmiNgin
+BEGIN_NAMESPACE(HmiNgin)
+END_NAMESPACE

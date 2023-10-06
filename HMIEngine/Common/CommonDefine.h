@@ -69,4 +69,7 @@ static const HmiNgin::S_VIEW_INFORMATION NAME##_INFORMATION = { E_NOTIFY_ID::E_#
 #define UNUSED(x) (void)x;
 
 
+#define BEGIN_NAMESPACE(N) namespace N {
+#define END_NAMESPACE }
+
 #endif // COMMONDEFINE_H

@@ -7,14 +7,15 @@
 
 class IEventPayload {};
 
-namespace HmiNgin 
+BEGIN_NAMESPACE(HmiNgin)
+
+struct SInitQmlEventPayload: public IEventPayload
 {
-    struct SInitQmlEventPayload: public IEventPayload
-    {
-        const S_VIEW_INFORMATION*  info;
-        std::function<void(CView*)> cb;
-    };
-}
+    const S_VIEW_INFORMATION*  info;
+    std::function<void(CView*)> cb;
+};
+
+END_NAMESPACE
 
 
 #endif // __EVENTSTRUCTS_H__

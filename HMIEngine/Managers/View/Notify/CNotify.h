@@ -3,18 +3,17 @@
 
 #include <CView.h>
 
-namespace HmiNgin
+BEGIN_NAMESPACE(HmiNgin)
+class CNotify : public CView
 {
-    class CNotify : public CView
-    {
-        Q_OBJECT
-    public:
-        CNotify(QQuickItem *parent = nullptr);
+    Q_OBJECT
+public:
+    CNotify(QQuickItem *parent = nullptr);
 
-        // CView interface
-    public:
-        virtual void customizeProperties() override;
-    };
-} // namespace HmiNgin
+    // CView interface
+public:
+    virtual void customizeProperties() override;
+};
+END_NAMESPACE
 
 #endif // CNOTIFY_H

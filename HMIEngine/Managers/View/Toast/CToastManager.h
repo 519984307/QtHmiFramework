@@ -4,8 +4,7 @@
 #include <AViewManager.h>
 #include <QObject>
 
-namespace HmiNgin
-{
+BEGIN_NAMESPACE(HmiNgin)
     class CToastManager : public QObject, public AViewManager
     {
         Q_OBJECT
@@ -17,6 +16,6 @@ namespace HmiNgin
         virtual void attach(const S_VIEW_INFORMATION *) override;
         virtual void detach(const S_VIEW_INFORMATION *) override;
     };
-} // namespace HmiNgin
+END_NAMESPACE
 
 #endif // CTOASTMANAGER_H

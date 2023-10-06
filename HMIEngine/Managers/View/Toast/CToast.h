@@ -3,8 +3,7 @@
 
 #include <CView.h>
 
-namespace HmiNgin
-{
+BEGIN_NAMESPACE(HmiNgin)
     class CToast : public CView
     {
         Q_OBJECT
@@ -16,6 +15,6 @@ namespace HmiNgin
         virtual void customizeProperties() override;
     };
 
-} // namespace HmiNgin
+END_NAMESPACE
 
 #endif // CTOAST_H

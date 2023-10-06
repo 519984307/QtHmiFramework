@@ -4,10 +4,10 @@
 #include <functional>
 #include "EventStructs.h"
 
-namespace HmiNgin
-{
-    typedef std::function<void(IEventPayload*)> EventCallBack;
-} 
+BEGIN_NAMESPACE(HmiNgin)
 
+typedef std::function<void(IEventPayload *)> EventCallBack;
+
+END_NAMESPACE
 
 #endif // __EVENTDEFINES_H__

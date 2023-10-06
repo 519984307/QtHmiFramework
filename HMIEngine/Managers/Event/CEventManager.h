@@ -9,26 +9,25 @@
 #include "EventStructs.h"
 #include "EventDefines.h"
 
-namespace HmiNgin
+BEGIN_NAMESPACE(HmiNgin)
+class CEventManager
 {
-    class CEventManager
-    {
-    private:
-        static CEventManager *s_instance;
-        std::unordered_map<E_EVENT_ID, std::vector<EventCallBack>> m_cb_dict;
+private:
+    static CEventManager *s_instance;
+    std::unordered_map<E_EVENT_ID, std::vector<EventCallBack>> m_cb_dict;
 
-    private:
-        CEventManager();
-        ~CEventManager();
+private:
+    CEventManager();
+    ~CEventManager();
 
-    public:
-        static CEventManager *instance();
+public:
+    static CEventManager *instance();
 
-        void registerListener(E_EVENT_ID eventID, EventCallBack &listener);
-        void dispatchEvent(E_EVENT_ID eventID, IEventPayload *payload);
-        void dispatchEvent(E_EVENT_ID eventID);
-    };
+    void registerListener(E_EVENT_ID eventID, EventCallBack &listener);
+    void dispatchEvent(E_EVENT_ID eventID, IEventPayload *payload);
+    void dispatchEvent(E_EVENT_ID eventID);
+};
 
-} // namespace HmiNgin
+END_NAMESPACE
 
 #endif // __CEVENTMANAGER_H__

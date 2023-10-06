@@ -1,7 +1,6 @@
 #include "CToast.h"
 
-namespace HmiNgin
-{
+BEGIN_NAMESPACE(HmiNgin)
     CToast::CToast(QQuickItem *parent) : CView(parent)
     {
         m_str_type = __FUNCTION__;
@@ -20,4 +19,4 @@ namespace HmiNgin
         CPP_LOG_DEBUG("[%s][Exit]", c_strType())
     }
 
-} // namespace HmiNgin
+END_NAMESPACE

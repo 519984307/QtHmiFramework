@@ -1,7 +1,6 @@
 #include "CToastManager.h"
 
-namespace HmiNgin
-{
+BEGIN_NAMESPACE(HmiNgin)
     CToastManager::CToastManager()
     {
     }
@@ -14,4 +13,4 @@ namespace HmiNgin
     {
     }
 
-} // namespace HmiNgin
+END_NAMESPACE

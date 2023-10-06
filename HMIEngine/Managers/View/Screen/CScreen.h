@@ -3,24 +3,23 @@
 
 #include <CView.h>
 
-namespace HmiNgin
+BEGIN_NAMESPACE(HmiNgin)
+class CScreen : public CView
 {
-    class CScreen : public CView
-    {
-        Q_OBJECT
-    public:
-        CScreen(QQuickItem *parent = nullptr);
+    Q_OBJECT
+public:
+    CScreen(QQuickItem *parent = nullptr);
 
-        // CView interface
-    public:
-        virtual void customizeProperties() override;
+    // CView interface
+public:
+    virtual void customizeProperties() override;
 
-        // QQuickItem interface
-    protected:
-        virtual void mousePressEvent(QMouseEvent *event) override;
-        virtual void mouseReleaseEvent(QMouseEvent *event) override;
-    };
+    // QQuickItem interface
+protected:
+    virtual void mousePressEvent(QMouseEvent *event) override;
+    virtual void mouseReleaseEvent(QMouseEvent *event) override;
+};
 
-} // namespace HmiNgin
+END_NAMESPACE
 
 #endif // CSCREEN_H

@@ -1,31 +1,30 @@
 #include "CScreen.h"
 
-namespace HmiNgin
+BEGIN_NAMESPACE(HmiNgin)
+
+CScreen::CScreen(QQuickItem *parent) : CView(parent)
 {
+    m_str_type = __FUNCTION__;
+}
 
-    CScreen::CScreen(QQuickItem *parent) : CView(parent)
-    {
-        m_str_type = __FUNCTION__;
-    }
+void CScreen::customizeProperties()
+{
+    CPP_LOG_DEBUG("[%s][Entry]", c_strType())
+    qvariant_cast<QObject *>(m_properties["anchors"])->setProperty("fill", QVariant::fromValue(parentItem()));
+    this->setProperty("z", SCREEN_Z);
+    CPP_LOG_DEBUG("[%s][Exit]", c_strType())
+}
 
-    void CScreen::customizeProperties()
-    {
-        CPP_LOG_DEBUG("[%s][Entry]", c_strType())
-        qvariant_cast<QObject *>(m_properties["anchors"])->setProperty("fill", QVariant::fromValue(parentItem()));
-        this->setProperty("z", SCREEN_Z);
-        CPP_LOG_DEBUG("[%s][Exit]", c_strType())
-    }
+void CScreen::mousePressEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event)
+    CPP_LOG_DEBUG("mousePressEvent")
+}
 
-    void CScreen::mousePressEvent(QMouseEvent *event)
-    {
-        Q_UNUSED(event)
-        CPP_LOG_DEBUG("mousePressEvent")
-    }
+void CScreen::mouseReleaseEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event)
+    CPP_LOG_DEBUG("mouseReleaseEvent")
+}
 
-    void CScreen::mouseReleaseEvent(QMouseEvent *event)
-    {
-        Q_UNUSED(event)
-        CPP_LOG_DEBUG("mouseReleaseEvent")
-    }
-
-} // namespace HmiNgin
+END_NAMESPACE

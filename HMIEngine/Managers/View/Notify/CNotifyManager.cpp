@@ -1,17 +1,16 @@
 #include "CNotifyManager.h"
 
-namespace HmiNgin
+BEGIN_NAMESPACE(HmiNgin)
+CNotifyManager::CNotifyManager()
 {
-    CNotifyManager::CNotifyManager()
-    {
-    }
+}
 
-    void CNotifyManager::attach(const S_VIEW_INFORMATION *)
-    {
-    }
+void CNotifyManager::attach(const S_VIEW_INFORMATION *)
+{
+}
 
-    void CNotifyManager::detach(const S_VIEW_INFORMATION *)
-    {
-    }
+void CNotifyManager::detach(const S_VIEW_INFORMATION *)
+{
+}
 
-} // namespace HmiNgin
+END_NAMESPACE
