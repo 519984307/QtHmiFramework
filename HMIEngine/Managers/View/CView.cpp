@@ -34,13 +34,16 @@ void CView::initialize(const S_VIEW_INFORMATION *info, QQuickItem *parent)
 {
     CPP_LOG_DEBUG("[%s][Entry]", c_strType())
 
-    {
+    if(info == nullptr || parent == nullptr) return;
+
+    do {
         m_id = info->id;
         m_type = info->type;
         m_duration = info->duration;
         m_path = info->path;
-    }
+    } while(0);
 
+    CPP_LOG_DEBUG("%d", parent->childItems().size())
     this->setVisible(false);
     this->setParentItem(parent);
     this->readProperties();

@@ -66,6 +66,8 @@
         "thread": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp",
-        "qanimationgroup": "cpp"
+        "qanimationgroup": "cpp",
+        "qsoundeffect": "cpp",
+        "qmediaplayer": "cpp"
     }
 }

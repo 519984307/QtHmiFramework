@@ -44,6 +44,10 @@ CNgin::~CNgin()
 {
     safeRelease(m_qml_ngin);
     safeRelease(m_qml_base);
+    safeRelease(m_qml_parent);
+    safeRelease(m_qml_window);
+    safeRelease(m_root_object);
+    safeRelease(m_qml_ctx);
 
     QHash<E_VIEW_TYPE, AViewManager *>::iterator it = m_view_managers.begin();
     while (it != m_view_managers.end())
@@ -166,6 +170,12 @@ void CNgin::sendEvent(const uchar &evtId)
 
     setLastViewType(info->type);
 
+    if(m_last_view_type == E_VIEW_TYPE::NONE_TYPE) 
+    {
+        CPP_LOG_WARN("Current View Type: NONE")
+        return;
+    }
+
     m_last_event = evt->event; // event id
     evt->fn();
 
@@ -193,8 +203,7 @@ void CNgin::onCompleted(const uchar &event)
     // [INITIALIZE]
     {
         m_root_object = m_qml_ngin->rootObjects().at(0);
-        if (m_root_object == nullptr)
-            return;
+        if (m_root_object == nullptr) return;
         if (m_qml_window == nullptr)
         {
             m_qml_window = qobject_cast<QQuickWindow *>(m_root_object);
@@ -206,6 +215,7 @@ void CNgin::onCompleted(const uchar &event)
     {
         if (m_root_object == nullptr || m_qml_window == nullptr || m_qml_base == nullptr)
             return;
+            
         CNgin::instance()->sendEvent(event);
     }
 }
@@ -225,6 +235,7 @@ void CNgin::onLoadQml(IEventPayload *payload)
     case QQmlComponent::Ready:
     {
         CPP_LOG_DEBUG("This QQmlComponent is ready and create() may be called.")
+
         CView *obj = qobject_cast<CView *>(m_qml_base->create());
         obj->initialize(info, m_qml_parent);
         obj->completed();

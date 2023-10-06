@@ -54,6 +54,7 @@ void CScreenManager::detach(const S_VIEW_INFORMATION *info)
     last = m_cache_manager.readCache<CScreen>(info->id);
     if (last == nullptr)
         return;
+        
     if (!isValidDepth())
         return;
 
@@ -67,6 +68,7 @@ void CScreenManager::detach(const S_VIEW_INFORMATION *info)
 
     if (m_views.isEmpty())
         return;
+
     m_views.last()->show();
 
     
