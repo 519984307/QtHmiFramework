@@ -1,6 +1,15 @@
 #ifndef __IANIMATION_H__
 #define __IANIMATION_H__
 
+#include <QAbstractAnimation>
+#include <QAnimationGroup>
+#include <QAnimationGroup>
+#include <QParallelAnimationGroup>
+#include <QPauseAnimation>
+#include <QPropertyAnimation>
+#include <QSequentialAnimationGroup>
+#include <QTimeLine>
+#include <QVariantAnimation>
 #include "CommonDefine.h"
 
 BEGIN_NAMESPACE(HmiNgin)

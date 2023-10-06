@@ -9,6 +9,7 @@ SOURCES += \
     $$PWD/Utils/Memory/LFUCache/CLFUCache.cpp \
     $$PWD/Utils/Memory/LRUCache/CLRUCache.cpp \
     $$PWD/Managers/Animation/CAnimationManager.cpp \
+    $$PWD/Managers/Animation/NumberAnimation/CNumberAnimation.cpp \
     $$PWD/Managers/Event/CEventManager.cpp \
     $$PWD/Managers/View/CCacheManager.cpp \
     $$PWD/Managers/View/CFreqTable.cpp \
@@ -34,6 +35,7 @@ HEADERS += \
     $$PWD/Utils/Logger/CLogger.h \
     $$PWD/Utils/Logger/LoggerDefines.h \
     $$PWD/Managers/Animation/CAnimationManager.h \
+    $$PWD/Managers/Animation/NumberAnimation/CNumberAnimation.h \
     $$PWD/Managers/Animation/IAnimation.h \
     $$PWD/Managers/Sound/ISound.h \
     $$PWD/Managers/Event/EventEnums.h \
