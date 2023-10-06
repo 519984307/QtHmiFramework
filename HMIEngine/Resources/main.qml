@@ -8,11 +8,5 @@ Window {
     width: QmlRootScreenWidth
     height: QmlRootScreenHeight
     visible: true
-    title: qsTr("GameClicker")
-    
-    Connections {
-        target: QmlNgin
-        function onSignalCompleted() {
-        }
-    }
+    title: qsTr(`${AppName}`)
 }

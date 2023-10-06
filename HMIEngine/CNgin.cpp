@@ -64,7 +64,7 @@ void CNgin::initConnections()
     EVENT_REGISTER_LISTENER_1_ARG(CNgin, this, LoadQml, E_EVENT_LOAD_QML)
 }
 
-void CNgin::initialize(QGuiApplication &app, const uint32_t &screenWidth, const uint32_t &screenHeight, const uchar &event)
+void CNgin::initialize(QGuiApplication &app, const char* appName, const uint32_t &screenWidth, const uint32_t &screenHeight, const uchar &event)
 {
     CPP_LOG_DEBUG("[Entry]")
     const QUrl url(QStringLiteral(QML_BASE));
@@ -88,6 +88,8 @@ void CNgin::initialize(QGuiApplication &app, const uint32_t &screenWidth, const 
         setCtxProperty("QmlRootScreenWidth", screenWidth);
         setCtxProperty("QmlRootScreenHeight", screenHeight);
     }
+
+    setCtxProperty("AppName", appName);
 
     // set context
     setCtxProperty("QmlNgin", QVariant::fromValue(this));

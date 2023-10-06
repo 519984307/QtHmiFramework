@@ -1,10 +1,11 @@
 #include <QGuiApplication>
+#include <QDebug>
 #include <thread>
+#include "config.h"
 #include "CNgin.h"
 #include "ViewData.h"
 #include "CController.h"
 #include "CModels.h"
-#include <QDebug>
 
 int main(int argc, char *argv[])
 {
@@ -18,6 +19,7 @@ int main(int argc, char *argv[])
 
     HmiNgin::CNgin::instance()->initialize(
         app,
+        APP_NAME,
         __MAIN_WINDOW_WIDTH__,
         __MAIN_WINDOW_HEIGHT__,
         CViewEnums::E_SCREEN_A_EVT_SHOW);

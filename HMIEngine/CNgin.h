@@ -23,7 +23,7 @@ class CNgin : public QObject
 public:
     static CNgin* instance();
 
-    void initialize(QGuiApplication&, const uint32_t&, const uint32_t&, const uchar&);
+    void initialize(QGuiApplication&, const char*, const uint32_t&, const uint32_t&, const uchar&);
     void completed();
     void setCtxProperty(const QString&, QVariant);
     void registerViews(const S_VIEW_INFORMATION*, uint32_t);
