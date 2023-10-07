@@ -36,7 +36,6 @@ void CScreenManager::attach(const S_VIEW_INFORMATION *info)
         m_freq_table.increase(info->id);
 
         m_views.push_back(next);
-        
     }
     else if (status == E_CACHE_STATUS::MISS)
     {

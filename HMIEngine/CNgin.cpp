@@ -25,9 +25,9 @@ CNgin *CNgin::instance()
 CNgin::CNgin(QObject *parent)
     : QObject{parent}
 {
-    m_qml_ngin = new QQmlApplicationEngine(this);
-    m_qml_ctx = m_qml_ngin->rootContext();
-    m_qml_base = new QQmlComponent(m_qml_ngin, this);
+    m_qml_ngin  = new QQmlApplicationEngine(this);
+    m_qml_ctx   = m_qml_ngin->rootContext();
+    m_qml_base  = new QQmlComponent(m_qml_ngin, this);
 
     m_view_managers[E_VIEW_TYPE::SCREEN_TYPE]   = new CScreenManager();
     m_view_managers[E_VIEW_TYPE::POPUP_TYPE]    = new CPopupManager();

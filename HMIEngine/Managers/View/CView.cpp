@@ -43,7 +43,6 @@ void CView::initialize(const S_VIEW_INFORMATION *info, QQuickItem *parent)
         m_path = info->path;
     } while(0);
 
-    CPP_LOG_DEBUG("%d", parent->childItems().size())
     this->setVisible(false);
     this->setParentItem(parent);
     this->readProperties();
