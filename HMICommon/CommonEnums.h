@@ -4,7 +4,6 @@
 #include <cstdint>
 #include "CommonDefine.h"
 
-BEGIN_NAMESPACE(HmiNgin)
 enum E_CACHE_STATUS : bool
 {
     HIT = true,
@@ -63,6 +62,5 @@ enum E_POPUP_PRIORITY_LEVEL
     MEDIUM,
     HIGH
 };
-END_NAMESPACE
 
 #endif // COMMONENUMS_H

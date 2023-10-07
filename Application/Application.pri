@@ -1,4 +1,5 @@
 HEADERS += \
+    $$PWD/Routes/Routes.h \
     $$PWD/Controllers/CController.h \
     $$PWD/Models/CModels.h \
     $$PWD/ViewData/CViewEnums.h \

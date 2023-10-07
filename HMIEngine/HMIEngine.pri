@@ -25,10 +25,6 @@ SOURCES += \
 
 HEADERS += \
     $$PWD/CNgin.h \
-    $$PWD/Common/Common.h \
-    $$PWD/Common/CommonDefine.h \
-    $$PWD/Common/CommonEnums.h \
-    $$PWD/Common/CommonStructs.h \
     $$PWD/Utils/Utils.h \
     $$PWD/Utils/Memory/LFUCache/CLFUCache.h \
     $$PWD/Utils/Memory/LRUCache/CLRUCache.h \
@@ -62,7 +58,6 @@ INCLUDEPATH += \
     $$PWD/Managers/Event \
     $$PWD/Managers/Sound \
     $$PWD/Managers/Animation \
-    $$PWD/Common \
     $$PWD/Utils
 
 

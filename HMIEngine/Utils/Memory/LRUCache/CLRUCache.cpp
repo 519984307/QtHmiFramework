@@ -1,5 +1,6 @@
 #include "CLRUCache.h"
 
+BEGIN_NAMESPACE(HmiNgin)
 template<class T>
 CLRUCache<T>::CLRUCache()
 {
@@ -13,9 +14,9 @@ CLRUCache<T>::~CLRUCache()
 }
 
 template<class T>
-HmiNgin::E_CACHE_STATUS CLRUCache<T>::status() const
+E_CACHE_STATUS CLRUCache<T>::status() const
 {
-    return HmiNgin::E_CACHE_STATUS::MISS;
+    return E_CACHE_STATUS::MISS;
 }
 
 template<class T>
@@ -31,3 +32,4 @@ void CLRUCache<T>::put(uint32_t key, T* value)
     {
     }
 }
+END_NAMESPACE

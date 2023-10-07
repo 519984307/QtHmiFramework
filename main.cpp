@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
         __MAIN_WINDOW_WIDTH__,
         __MAIN_WINDOW_HEIGHT__,
         App::CViewEnums::E_SCREEN_A_EVT_SHOW);
+        
     HmiNgin::CNgin::instance()->registerViews(App::ALL_INFOR, SIZE_OF_ARRAY(App::ALL_INFOR));
     HmiNgin::CNgin::instance()->registerEvents(App::ALL_EVENTS, SIZE_OF_ARRAY(App::ALL_EVENTS));
     HmiNgin::CNgin::instance()->setCtxProperty("QmlCtrl", QVariant::fromValue(&ctrl));

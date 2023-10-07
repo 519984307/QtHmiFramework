@@ -2,6 +2,7 @@ QT +=  core gui qml quick sensors multimedia
 CONFIG += c++11 qml_debug console
 
 include(Application/Application.pri)
+include(HMICommon/HMICommon.pri)
 include(HMIEngine/HMIEngine.pri)
 include(IPCEngine/IPCEngine.pri)
 
@@ -16,8 +17,14 @@ QMAKE_CXXFLAGS_WARN_ON += \
 
 INCLUDEPATH += \
     $$PWD/Application \
+    $$PWD/HMICommon \
     $$PWD/HMIEngine \
-    
+    $$PWD/IPCEngine
+
+  
+HEADERS += \
+    config.h
+      
 SOURCES += \
     main.cpp
 
@@ -27,5 +34,3 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-HEADERS += \
-    config.h

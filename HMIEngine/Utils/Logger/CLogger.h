@@ -16,10 +16,10 @@ class CLogger : public QObject
 {
     Q_OBJECT
 public:
-    static CLogger *instance(const HmiNgin::E_LOGGER_FLAG &flag = HmiNgin::E_LOGGER_FLAG::NOFLAG);
+    static CLogger *instance(const E_LOGGER_FLAG &flag = E_LOGGER_FLAG::NOFLAG);
 
     template<typename ...TArgs>
-    void log(const HmiNgin::E_LOGGER_LEVEL& level, const char* file, const char* fn, const uint32_t& line, const char* fm, TArgs... args)
+    void log(const E_LOGGER_LEVEL& level, const char* file, const char* fn, const uint32_t& line, const char* fm, TArgs... args)
     {
         Q_UNUSED(file)
 
@@ -58,7 +58,7 @@ private:
 private:
     static CLogger                 *s_instance;
     QJSEngine                       m_jsNgin;
-    HmiNgin::E_LOGGER_FLAG          m_flag = HmiNgin::E_LOGGER_FLAG::CPP;
+    E_LOGGER_FLAG          m_flag = E_LOGGER_FLAG::CPP;
     std::mutex                      m_mutex;
 };
 
